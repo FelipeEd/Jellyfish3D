@@ -1,4 +1,4 @@
-#include <jellyfish/Jellyfish3D.hpp>
+#include <jellyfish\Jellyfish3D.hpp>
 
 // Retorna o int da textura que foi alocada
 unsigned int createTexture(const char *textureName)

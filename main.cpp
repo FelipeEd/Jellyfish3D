@@ -1,4 +1,4 @@
-#include <jellyfish/Jellyfish3D.hpp>
+#include <jellyfish\Jellyfish3D.hpp>
 
 void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 void processInput(GLFWwindow *window);
@@ -7,6 +7,8 @@ void processInput(GLFWwindow *window);
 // Window size
 unsigned int WIDTH = 1600; //1280;
 unsigned int HEIGHT = 900; //720;
+
+Resources *assets;
 
 int main()
 {
@@ -40,7 +42,13 @@ int main()
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     //-------------------------------------------------
-    // Buffers e texturas
+
+    // Resources
+    Resources res_aux;
+    assets = &res_aux;
+
+    Renderer renderer;
+    Object test;
 
     while (!glfwWindowShouldClose(window))
     {
@@ -50,6 +58,8 @@ int main()
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         // Limpa algum buffer específico
         glClear(GL_COLOR_BUFFER_BIT);
+
+        renderer.draw(test);
 
         // Faz a troca do framebuffer antigo para o novo (double buffer)
         glfwSwapBuffers(window);
@@ -74,12 +84,15 @@ void processInput(GLFWwindow *window)
     if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
     {
     }
+
     if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_MIDDLE) == GLFW_PRESS)
     {
     }
+
     if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
     {
     }
+
     if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
     {
     }

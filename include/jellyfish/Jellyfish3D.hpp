@@ -17,13 +17,19 @@
 using namespace std::this_thread; // sleep_for, sleep_until
 using namespace std::chrono;
 
-extern Shader shaderProgram;
-
 struct Vertex
 {
     glm::vec3 position;
     glm::vec4 color;
 };
+
+class Shader;
+class Mesh;
+class Material;
+class Resources;
+
+// Useful default stuff
+extern Resources *assets;
 
 // Classe basica para compilar os shaders do openGL
 class Shader
@@ -34,7 +40,7 @@ private:
 
 public:
     // constructor will read and build the shader
-    Shader();
+    Shader(){};
     Shader(const char *vertexPath, const char *fragmentPath);
     // function to use/activate this shader
     void use();
@@ -45,6 +51,54 @@ public:
     void setVec2(const std::string &uniformName, glm::vec2 value) const;
     void setVec4(const std::string &uniformName, glm::vec4 value) const;
     void Delete() const;
+};
+
+class Mesh
+{
+private:
+    unsigned int m_vao;
+    unsigned int m_vbo;
+    unsigned int m_ebo;
+    unsigned int m_nvertex;
+    unsigned int m_nindices;
+
+    std::vector<Vertex> m_vertexData;
+    std::vector<unsigned int> m_vetexIndex;
+
+public:
+    Mesh(); // Cube place holder
+    ~Mesh(){};
+
+    void genBuffer();
+    void bindBuffer();
+
+    unsigned int getNVertex();
+    unsigned int getNIndices();
+};
+
+class Material
+{
+private:
+    unsigned int m_tex_diffuse; // ! Not implemented !
+    glm::vec4 m_color;
+
+public:
+    Material(); // Flat color
+    ~Material(){};
+
+    void setUniforms(Shader &shader);
+};
+
+// A class that stores all the Meshes and Materials that the application will use
+// The "0" position is defined to have the default objects
+class Resources
+{
+public:
+    std::vector<Mesh> meshes;
+    std::vector<Material> materials;
+
+    Resources();
+    ~Resources(){};
 };
 
 class comp_Transform
@@ -67,34 +121,55 @@ public:
     glm::mat4 getTransformMatrix();
 };
 
-class comp_Camera
-{
-};
-
 class comp_UserControl
 {
-};
-
-class comp_Mesh
-{
-    std::vector<Vertex> m_vertexData;
-};
-
-class comp_Material
-{
-    unsigned int tex_diffuse;
-    Shader m_shader;
 };
 
 class Object
 {
 private:
     comp_Transform m_transform;
-    comp_Camera m_camera;
-    comp_Mesh m_mesh;
-    comp_Material m_material;
+    unsigned int m_mesh;
+    unsigned int m_material;
 
 public:
-    Object(){};
-    ~Object();
+    Object();
+    ~Object(){};
+
+    unsigned int getMeshId();
+    unsigned int getMaterialId();
 };
+
+class Camera
+{
+private:
+    comp_Transform m_transform;
+
+public:
+    Camera();
+    ~Camera(){};
+};
+
+class Renderer
+{
+private:
+public:
+    Shader m_shader;
+    Renderer();
+    ~Renderer(){};
+
+    void draw(Object obj); // Later it will be a scene
+};
+
+/*
+class Scene
+{
+private:
+    Camera cam1; // Must have 3 cams later on
+    std::vector<Object> m_objects;
+
+public:
+    Scene();
+    ~Scene(){};
+};
+*/
