@@ -4,7 +4,7 @@
 Mesh::Mesh()
 {
 
-    glm::vec4 cubeColor(1.0f, 1.0f, 1.0f, 1.0f);
+    glm::vec4 cubeColor(0.8f, 0.8f, 0.8f, 1.0f);
 
     // Cube centered at Origin
     float half = 0.5f;
@@ -23,15 +23,15 @@ Mesh::Mesh()
         {
             // Pos, color;
             // Front face
-            {glm::vec3(-half, -half, half), cubeColor},
-            {glm::vec3(-half, -half, -half), cubeColor},
-            {glm::vec3(half, -half, -half), cubeColor},
-            {glm::vec3(half, -half, half), cubeColor},
+            {glm::vec3(-half, -half, half), glm::vec4(0.3f, 0.5f, 0.7f, 1.0f)},
+            {glm::vec3(-half, -half, -half), glm::vec4(0.7f, 0.3f, 0.5f, 1.0f)},
+            {glm::vec3(half, -half, -half), glm::vec4(0.5f, 0.7f, 0.3f, 1.0f)},
+            {glm::vec3(half, -half, half), glm::vec4(0.3f, 0.5f, 0.7f, 1.0f)},
             // Back face
-            {glm::vec3(-half, half, half), cubeColor},
-            {glm::vec3(-half, half, -half), cubeColor},
-            {glm::vec3(half, half, -half), cubeColor},
-            {glm::vec3(half, half, half), cubeColor}};
+            {glm::vec3(-half, half, half), glm::vec4(0.7f, 0.3f, 0.5f, 1.0f)},
+            {glm::vec3(-half, half, -half), glm::vec4(0.5f, 0.7f, 0.3f, 1.0f)},
+            {glm::vec3(half, half, -half), glm::vec4(0.3f, 0.5f, 0.7f, 1.0f)},
+            {glm::vec3(half, half, half), glm::vec4(0.7f, 0.3f, 0.5f, 1.0f)}};
 
     m_vetexIndex =
         {

@@ -37,7 +37,7 @@ int main()
         return -1;
     }
     glfwSwapInterval(1);
-
+    glEnable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -47,19 +47,29 @@ int main()
     Resources res_aux;
     assets = &res_aux;
 
+    Clock clock;
     Renderer renderer;
     Object test;
+    Camera camera;
 
     while (!glfwWindowShouldClose(window))
     {
         // Real loop ------------------------------------------------------------------------------------------
 
         // Define a cor de fundo da janela
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         // Limpa algum buffer específico
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        renderer.draw(test);
+        if (clock.tick())
+        {
+            test.m_transform.setRotation(glm::vec3(test.m_transform.getRotation().x + 1.0f, test.m_transform.getRotation().y + 0.5f, test.m_transform.getRotation().z));
+
+            test.reactToInput(window);
+            camera.reactToInput(window);
+        }
+
+        renderer.draw(test, camera);
 
         // Faz a troca do framebuffer antigo para o novo (double buffer)
         glfwSwapBuffers(window);

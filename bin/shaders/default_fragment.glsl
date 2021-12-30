@@ -7,5 +7,5 @@ uniform vec4 uColor;
 
 void main()
 {
-    FragColor = uColor ; //RGBA
+    FragColor = vertexColor ; //RGBA
 } 
