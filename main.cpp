@@ -18,6 +18,8 @@ int main()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+    // MSAA
+    glfwWindowHint(GLFW_SAMPLES, 4);
     // criação da janela e verificação de erros
     GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, "Jellyfish 3D", NULL, NULL);
     if (window == NULL)
@@ -37,7 +39,9 @@ int main()
         return -1;
     }
     glfwSwapInterval(1);
+    glEnable(GL_MULTISAMPLE);
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -47,9 +51,30 @@ int main()
     Resources res_aux;
     assets = &res_aux;
 
+    assets->loadMesh("resources/caesar.obj");
+    assets->loadMesh("resources/suzanne.obj");
+    assets->loadMesh("resources/ship.obj");
+
+    assets->loadMaterial("resources/caesar.png");
+
     Clock clock;
     Renderer renderer;
-    Object test;
+
+    Object std_cube;
+    Object obj_caesar(1, 1);
+    Object obj_suzanne;
+    Object obj_ship;
+
+    //obj_caesar.setMeshId(1);
+    obj_suzanne.setMeshId(2);
+    obj_ship.setMeshId(3);
+
+    obj_caesar.m_transform.setPosition({2.0f, 0.0f, 0.0f});
+    obj_suzanne.m_transform.setPosition({-2.0f, 0.0f, 0.0f});
+
+    obj_ship.m_transform.setPosition({4.0f, 0.0f, 0.0f});
+    obj_ship.m_transform.setScale(0.5f);
+
     Camera camera;
 
     while (!glfwWindowShouldClose(window))
@@ -57,19 +82,22 @@ int main()
         // Real loop ------------------------------------------------------------------------------------------
 
         // Define a cor de fundo da janela
-        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+        glClearColor(0.08f, 0.08f, 0.08f, 1.0f);
         // Limpa algum buffer específico
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         if (clock.tick())
         {
-            test.m_transform.setRotation(glm::vec3(test.m_transform.getRotation().x + 1.0f, test.m_transform.getRotation().y + 0.5f, test.m_transform.getRotation().z));
+            std_cube.m_transform.setRotation(glm::vec3(std_cube.m_transform.getRotation().x + 1.0f, std_cube.m_transform.getRotation().y + 0.5f, std_cube.m_transform.getRotation().z));
 
-            test.reactToInput(window);
+            std_cube.reactToInput(window);
             camera.reactToInput(window);
         }
 
-        renderer.draw(test, camera);
+        renderer.draw(std_cube, camera);
+        renderer.draw(obj_caesar, camera);
+        renderer.draw(obj_ship, camera);
+        renderer.draw(obj_suzanne, camera);
 
         // Faz a troca do framebuffer antigo para o novo (double buffer)
         glfwSwapBuffers(window);

@@ -6,7 +6,15 @@ Object::Object()
     m_material = 0;
 }
 
-glm::mat4 Object::getTransformMatrix() { return m_transform.getTransformMatrix(); }
+Object::Object(unsigned int mesh, unsigned int material)
+{
+    m_mesh = mesh;
+    m_material = material;
+}
+
+glm::mat4 Object::getScaleMatrix() { return m_transform.getScaleMatrix(); }
+glm::mat4 Object::getRotateMatrix() { return m_transform.getRotateMatrix(); }
+glm::mat4 Object::getTranslateMatrix() { return m_transform.getTranslateMatrix(); }
 
 void Object::reactToInput(GLFWwindow *window)
 {

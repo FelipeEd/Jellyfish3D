@@ -24,7 +24,9 @@ using namespace std::chrono;
 struct Vertex
 {
     glm::vec3 position;
-    glm::vec4 color;
+    glm::vec3 color;
+    glm::vec2 texCoord;
+    glm::vec3 normal;
 };
 
 class Shader;
@@ -38,6 +40,10 @@ extern unsigned int WIDTH;
 extern unsigned int HEIGHT;
 extern Resources *assets;
 
+std::vector<Vertex> loadOBJ(const char *file_name);
+unsigned int createTexture(const char *textureName);
+
+// Should be used when limiting function calls by framerate
 class Clock
 {
 private:
@@ -51,6 +57,21 @@ public:
     ~Clock(){};
 
     bool tick();
+};
+
+// Must be used inside a function that runs inside the clock
+class Timer
+{
+private:
+    unsigned int m_alarm;
+    unsigned int m_framesLeft;
+
+public:
+    // After this many frames it will wake up
+    Timer(unsigned int alarm);
+    bool isUp();
+    void tick();
+    void reset();
 };
 
 // Classe basica para compilar os shaders do openGL
@@ -90,6 +111,7 @@ private:
 
 public:
     Mesh(); // Cube place holder
+    Mesh(const char *objName);
     ~Mesh(){};
 
     void genBuffer();
@@ -102,14 +124,17 @@ public:
 class Material
 {
 private:
-    unsigned int m_tex_diffuse; // ! Not implemented !
+    unsigned int m_texDiffuse;
+
     glm::vec4 m_color;
 
 public:
     Material(); // Flat color
+    Material(const char *textureFile);
     ~Material(){};
 
-    void setUniforms(Shader &shader, Object obj);
+    void setColor(glm::vec4 color) { m_color = color; }
+    void setUniforms(Shader &shader);
 };
 
 // A class that stores all the Meshes and Materials that the application will use
@@ -119,6 +144,12 @@ class Resources
 public:
     std::vector<Mesh> meshes;
     std::vector<Material> materials;
+
+    // Loads a Mesh from a obj file into the resources
+    void loadMesh(const char *fileName);
+
+    // Loads a texture and sets the material
+    void loadMaterial(const char *fileName); //TODO: More atributes to the material
 
     Resources();
     ~Resources(){};
@@ -131,17 +162,23 @@ private:
     glm::vec3 m_Rotation;
     glm::vec3 m_Scale;
 
+    glm::mat4 id = glm::mat4(1.0f);
+
 public:
     comp_Transform();
 
     void setPosition(glm::vec3 newPos);
     void setRotation(glm::vec3 newRot);
     void setScale(glm::vec3 newScale);
+    void setScale(float newScale);
 
     glm::vec3 getPosition();
     glm::vec3 getRotation();
     glm::vec3 getScale();
-    glm::mat4 getTransformMatrix();
+
+    glm::mat4 getScaleMatrix();
+    glm::mat4 getRotateMatrix();
+    glm::mat4 getTranslateMatrix();
 };
 
 class comp_UserControl
@@ -174,13 +211,19 @@ private:
 public:
     comp_Transform m_transform;
     Object();
+    Object(unsigned int mesh, unsigned int material);
     ~Object(){};
 
     void reactToInput(GLFWwindow *window);
-    glm::mat4 getTransformMatrix();
+
+    glm::mat4 getScaleMatrix();
+    glm::mat4 getRotateMatrix();
+    glm::mat4 getTranslateMatrix();
 
     unsigned int getMeshId();
     unsigned int getMaterialId();
+
+    void setMeshId(unsigned int id) { m_mesh = id; }
 };
 
 class Camera
@@ -189,6 +232,7 @@ private:
     comp_Transform m_transform;
     comp_UserControl m_userControl;
 
+    Timer m_rotatingCooldown = Timer(10);
     bool isRotating = false;
 
     float m_FOV = 60.0f;

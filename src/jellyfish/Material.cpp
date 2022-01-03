@@ -2,11 +2,20 @@
 
 Material::Material()
 {
-    m_color = glm::vec4(0.8f, 0.8f, 0.8f, 1.0f);
+    m_color = glm::vec4(0.4f, 0.2f, 0.4f, 1.0f);
+    m_texDiffuse = createTexture("resources/whitepixel.png");
 }
 
-void Material::setUniforms(Shader &shader, Object obj)
+Material::Material(const char *textureFile)
 {
-    shader.setMat4("uTransform", obj.getTransformMatrix());
+    m_color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+    m_texDiffuse = createTexture(textureFile);
+}
+
+void Material::setUniforms(Shader &shader)
+{
+
+    glBindTexture(GL_TEXTURE_2D, m_texDiffuse);
+
     shader.setVec4("uColor", m_color);
 }

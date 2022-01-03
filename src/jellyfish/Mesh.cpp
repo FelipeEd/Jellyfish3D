@@ -9,56 +9,100 @@ Mesh::Mesh()
     // Cube centered at Origin
     float half = 0.5f;
 
-    // m_vertexData =
-    //     {
-    //         // Pos, color;
-    //         // Front face
-    //         {glm::vec3(half, half, 0.0f), cubeColor},
-    //         {glm::vec3(-half, half, 0.0f), cubeColor},
-    //         {glm::vec3(-half, -half, 0.0f), cubeColor},
-    //     };
-    // m_vetexIndex = {0, 1, 2};
+    std::vector<Vertex> fake_vertexData =
+        {
+            // Pos, color texCoord normal;
+            // Front face
+            {glm::vec3(half, half, half), glm::vec3(0.3f, 0.5f, 0.7f), glm::vec2(1.f, 1.f), glm::vec3(0.f, 0.f, 1.f)},   // 0
+            {glm::vec3(-half, half, half), glm::vec3(0.7f, 0.3f, 0.5f), glm::vec2(0.f, 1.f), glm::vec3(0.f, 0.f, 1.f)},  // 1
+            {glm::vec3(-half, -half, half), glm::vec3(0.5f, 0.7f, 0.3f), glm::vec2(0.f, 0.f), glm::vec3(0.f, 0.f, 1.f)}, // 2
+            {glm::vec3(half, -half, half), glm::vec3(0.3f, 0.5f, 0.7f), glm::vec2(1.f, 0.f), glm::vec3(0.f, 0.f, 1.f)},  // 3
+            // Back face
+            {glm::vec3(half, half, -half), glm::vec3(0.7f, 0.3f, 0.5f), glm::vec2(0.f, 1.f), glm::vec3(0.f, 0.f, -1.f)},   // 4
+            {glm::vec3(-half, half, -half), glm::vec3(0.5f, 0.7f, 0.3f), glm::vec2(1.f, 1.f), glm::vec3(0.f, 0.f, -1.f)},  // 5
+            {glm::vec3(-half, -half, -half), glm::vec3(0.3f, 0.5f, 0.7f), glm::vec2(1.f, 0.f), glm::vec3(0.f, 0.f, -1.f)}, // 6
+            {glm::vec3(half, -half, -half), glm::vec3(0.7f, 0.3f, 0.5f), glm::vec2(0.f, 0.f), glm::vec3(0.f, 0.f, -1.f)}}; // 7
+
+    std::vector<unsigned int> fake_index =
+        {
+            // Down face
+            3, 2, 6,
+            3, 6, 7,
+
+            //Top face
+            4, 5, 1,
+            4, 1, 0,
+
+            //Right face
+            4, 0, 3,
+            4, 3, 7,
+
+            //left face
+            1, 5, 6,
+            1, 6, 2,
+
+            //back face
+            5, 4, 7,
+            5, 7, 6,
+
+            //front face
+            0, 1, 2,
+            0, 2, 3};
 
     m_vertexData =
         {
-            // Pos, color;
-            // Front face
-            {glm::vec3(-half, -half, half), glm::vec4(0.3f, 0.5f, 0.7f, 1.0f)},
-            {glm::vec3(-half, -half, -half), glm::vec4(0.7f, 0.3f, 0.5f, 1.0f)},
-            {glm::vec3(half, -half, -half), glm::vec4(0.5f, 0.7f, 0.3f, 1.0f)},
-            {glm::vec3(half, -half, half), glm::vec4(0.3f, 0.5f, 0.7f, 1.0f)},
-            // Back face
-            {glm::vec3(-half, half, half), glm::vec4(0.7f, 0.3f, 0.5f, 1.0f)},
-            {glm::vec3(-half, half, -half), glm::vec4(0.5f, 0.7f, 0.3f, 1.0f)},
-            {glm::vec3(half, half, -half), glm::vec4(0.3f, 0.5f, 0.7f, 1.0f)},
-            {glm::vec3(half, half, half), glm::vec4(0.7f, 0.3f, 0.5f, 1.0f)}};
-
-    m_vetexIndex =
-        {
             // Down face
-            0, 1, 2,
-            0, 2, 3,
+            {glm::vec3(half, -half, half), glm::vec3(0.3f, 0.5f, 0.7f), glm::vec2(1.f, 0.f), glm::vec3(0.f, -1.f, 0.0f)},
+            {glm::vec3(-half, -half, half), glm::vec3(0.5f, 0.7f, 0.3f), glm::vec2(0.f, 0.f), glm::vec3(0.f, -1.f, 0.0f)},
+            {glm::vec3(-half, -half, -half), glm::vec3(0.3f, 0.5f, 0.7f), glm::vec2(1.f, 0.f), glm::vec3(0.f, -1.f, 0.0f)},
+            {glm::vec3(half, -half, half), glm::vec3(0.3f, 0.5f, 0.7f), glm::vec2(1.f, 0.f), glm::vec3(0.f, -1.f, 0.0f)},
+            {glm::vec3(-half, -half, -half), glm::vec3(0.3f, 0.5f, 0.7f), glm::vec2(1.f, 0.f), glm::vec3(0.f, -1.f, 0.0f)},
+            {glm::vec3(half, -half, -half), glm::vec3(0.7f, 0.3f, 0.5f), glm::vec2(0.f, 0.f), glm::vec3(0.f, -1.f, 0.0f)},
+            // Top face
+            {glm::vec3(half, half, -half), glm::vec3(0.7f, 0.3f, 0.5f), glm::vec2(0.f, 1.f), glm::vec3(0.f, 1.f, 0.0f)},
+            {glm::vec3(-half, half, -half), glm::vec3(0.5f, 0.7f, 0.3f), glm::vec2(1.f, 1.f), glm::vec3(0.f, 1.f, 0.0f)},
+            {glm::vec3(-half, half, half), glm::vec3(0.7f, 0.3f, 0.5f), glm::vec2(0.f, 1.f), glm::vec3(0.f, 1.f, 0.0f)},
+            {glm::vec3(half, half, -half), glm::vec3(0.7f, 0.3f, 0.5f), glm::vec2(0.f, 1.f), glm::vec3(0.f, 1.f, 0.0f)},
+            {glm::vec3(-half, half, half), glm::vec3(0.7f, 0.3f, 0.5f), glm::vec2(0.f, 1.f), glm::vec3(0.f, 1.f, 0.0f)},
+            {glm::vec3(half, half, half), glm::vec3(0.3f, 0.5f, 0.7f), glm::vec2(1.f, 1.f), glm::vec3(0.f, 1.f, 0.0f)},
+            // Right face
+            {glm::vec3(half, half, -half), glm::vec3(0.7f, 0.3f, 0.5f), glm::vec2(0.f, 1.f), glm::vec3(1.f, 0.f, 0.0f)},
+            {glm::vec3(half, half, half), glm::vec3(0.3f, 0.5f, 0.7f), glm::vec2(1.f, 1.f), glm::vec3(1.f, 0.f, 0.0f)},
+            {glm::vec3(half, -half, half), glm::vec3(0.3f, 0.5f, 0.7f), glm::vec2(1.f, 0.f), glm::vec3(1.f, 0.f, 0.0f)},
+            {glm::vec3(half, half, -half), glm::vec3(0.7f, 0.3f, 0.5f), glm::vec2(0.f, 1.f), glm::vec3(1.f, 0.f, 0.0f)},
+            {glm::vec3(half, -half, half), glm::vec3(0.3f, 0.5f, 0.7f), glm::vec2(1.f, 0.f), glm::vec3(1.f, 0.f, 0.0f)},
+            {glm::vec3(half, -half, -half), glm::vec3(0.7f, 0.3f, 0.5f), glm::vec2(0.f, 0.f), glm::vec3(1.f, 0.f, 0.0f)},
+            // Left face
+            {glm::vec3(-half, half, half), glm::vec3(0.7f, 0.3f, 0.5f), glm::vec2(0.f, 1.f), glm::vec3(-1.f, 0.f, 0.0f)},
+            {glm::vec3(-half, half, -half), glm::vec3(0.5f, 0.7f, 0.3f), glm::vec2(1.f, 1.f), glm::vec3(-1.f, 0.f, 0.0f)},
+            {glm::vec3(-half, -half, -half), glm::vec3(0.3f, 0.5f, 0.7f), glm::vec2(1.f, 0.f), glm::vec3(-1.f, 0.f, 0.0f)}, // 6
+            {glm::vec3(-half, half, half), glm::vec3(0.7f, 0.3f, 0.5f), glm::vec2(0.f, 1.f), glm::vec3(-1.f, 0.f, 0.0f)},   // 1
+            {glm::vec3(-half, -half, -half), glm::vec3(0.3f, 0.5f, 0.7f), glm::vec2(1.f, 0.f), glm::vec3(-1.f, 0.f, 0.0f)}, // 6
+            {glm::vec3(-half, -half, half), glm::vec3(0.5f, 0.7f, 0.3f), glm::vec2(0.f, 0.f), glm::vec3(-1.f, 0.f, 0.0f)},  // 2
+            // Back face
+            {glm::vec3(-half, half, -half), glm::vec3(0.5f, 0.7f, 0.3f), glm::vec2(1.f, 1.f), glm::vec3(0.f, 0.f, -1.f)},  // 5
+            {glm::vec3(half, half, -half), glm::vec3(0.7f, 0.3f, 0.5f), glm::vec2(0.f, 1.f), glm::vec3(0.f, 0.f, -1.f)},   // 4
+            {glm::vec3(half, -half, -half), glm::vec3(0.7f, 0.3f, 0.5f), glm::vec2(0.f, 0.f), glm::vec3(0.f, 0.f, -1.f)},  // 7
+            {glm::vec3(-half, half, -half), glm::vec3(0.5f, 0.7f, 0.3f), glm::vec2(1.f, 1.f), glm::vec3(0.f, 0.f, -1.f)},  // 5
+            {glm::vec3(half, -half, -half), glm::vec3(0.7f, 0.3f, 0.5f), glm::vec2(0.f, 0.f), glm::vec3(0.f, 0.f, -1.f)},  // 7
+            {glm::vec3(-half, -half, -half), glm::vec3(0.3f, 0.5f, 0.7f), glm::vec2(1.f, 0.f), glm::vec3(0.f, 0.f, -1.f)}, // 6
+            // Front face
+            {glm::vec3(half, half, half), glm::vec3(0.3f, 0.5f, 0.7f), glm::vec2(1.f, 1.f), glm::vec3(0.f, 0.f, 1.f)},   // 0
+            {glm::vec3(-half, half, half), glm::vec3(0.7f, 0.3f, 0.5f), glm::vec2(0.f, 1.f), glm::vec3(0.f, 0.f, 1.f)},  // 1
+            {glm::vec3(-half, -half, half), glm::vec3(0.5f, 0.7f, 0.3f), glm::vec2(0.f, 0.f), glm::vec3(0.f, 0.f, 1.f)}, // 2
+            {glm::vec3(half, half, half), glm::vec3(0.3f, 0.5f, 0.7f), glm::vec2(1.f, 1.f), glm::vec3(0.f, 0.f, 1.f)},   // 0
+            {glm::vec3(-half, -half, half), glm::vec3(0.5f, 0.7f, 0.3f), glm::vec2(0.f, 0.f), glm::vec3(0.f, 0.f, 1.f)}, // 2
+            {glm::vec3(half, -half, half), glm::vec3(0.3f, 0.5f, 0.7f), glm::vec2(1.f, 0.f), glm::vec3(0.f, 0.f, 1.f)},  // 3
+        };
 
-            //Up face
-            4, 5, 6,
-            4, 6, 7,
+    this->genBuffer();
+    m_nvertex = m_vertexData.size();
+    m_nindices = m_vetexIndex.size();
+}
 
-            //Right face
-            0, 3, 7,
-            0, 4, 7,
-
-            //left face
-            1, 2, 6,
-            1, 6, 5,
-
-            //back face
-            0, 5, 4,
-            0, 1, 5,
-
-            //front face
-            3, 2, 6,
-            3, 6, 7};
-
+Mesh::Mesh(const char *objName)
+{
+    m_vertexData = loadOBJ(objName);
     this->genBuffer();
     m_nvertex = m_vertexData.size();
     m_nindices = m_vetexIndex.size();
@@ -89,8 +133,17 @@ void Mesh::genBuffer()
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)offsetof(Vertex, position));
     glEnableVertexAttribArray(0);
 
-    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)offsetof(Vertex, color));
+    // Color
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)offsetof(Vertex, color));
     glEnableVertexAttribArray(1);
+
+    // TexCoord
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)offsetof(Vertex, texCoord));
+    glEnableVertexAttribArray(2);
+
+    // Normal
+    glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)offsetof(Vertex, normal));
+    glEnableVertexAttribArray(3);
 }
 
 void Mesh::bindBuffer()
