@@ -40,6 +40,7 @@ extern unsigned int WIDTH;
 extern unsigned int HEIGHT;
 extern Resources *assets;
 
+void initOpengl();
 std::vector<Vertex> loadOBJ(const char *file_name);
 unsigned int createTexture(const char *textureName);
 
@@ -207,11 +208,12 @@ private:
     comp_UserControl m_userControl;
     unsigned int m_mesh;
     unsigned int m_material;
+    std::string m_name;
 
 public:
     comp_Transform m_transform;
     Object();
-    Object(unsigned int mesh, unsigned int material);
+    Object(std::string name, unsigned int mesh, unsigned int material);
     ~Object(){};
 
     void reactToInput(GLFWwindow *window);
@@ -222,6 +224,7 @@ public:
 
     unsigned int getMeshId();
     unsigned int getMaterialId();
+    std::string getName();
 
     void setMeshId(unsigned int id) { m_mesh = id; }
 };
@@ -251,6 +254,33 @@ public:
     glm::mat4 getProjectionMatrix();
 };
 
+class Scene
+{
+private:
+    Camera m_cam1; // Must have 3 cams later on
+public:
+    std::vector<Object> m_object; // TODO: Use a better container, such as a dict
+
+    Scene();
+    ~Scene(){};
+
+    // Create a object with especified mesh and material
+    void addObject(std::string name, unsigned int meshID, unsigned int materialId);
+    // Adds a object onto the scene objects list
+    void addObject(Object obj);
+
+    Camera *getActiveCam() { return &m_cam1; };
+
+    void setPosition(std::string name, glm::vec3 newPos);
+    void setRotation(std::string name, glm::vec3 newPos);
+    void setScale(std::string name, glm::vec3 newPos);
+    void setScale(std::string name, float newPos);
+
+    glm::vec3 getPosition(std::string name);
+    glm::vec3 getRotation(std::string name);
+    glm::vec3 getScale(std::string name);
+};
+
 class Renderer
 {
 private:
@@ -259,18 +289,5 @@ public:
     Renderer();
     ~Renderer(){};
 
-    void draw(Object obj, Camera camera); // ! Later it will be a scene!
+    void draw(Scene);
 };
-
-/*
-class Scene
-{
-private:
-    Camera cam1; // Must have 3 cams later on
-    std::vector<Object> m_objects;
-
-public:
-    Scene();
-    ~Scene(){};
-};
-*/

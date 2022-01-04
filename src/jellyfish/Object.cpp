@@ -6,8 +6,9 @@ Object::Object()
     m_material = 0;
 }
 
-Object::Object(unsigned int mesh, unsigned int material)
+Object::Object(std::string name, unsigned int mesh, unsigned int material)
 {
+    m_name = name;
     m_mesh = mesh;
     m_material = material;
 }
@@ -43,3 +44,4 @@ void Object::reactToInput(GLFWwindow *window)
 
 unsigned int Object::getMeshId() { return m_mesh; }
 unsigned int Object::getMaterialId() { return m_material; }
+std::string Object::getName() { return m_name; }

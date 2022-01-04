@@ -59,23 +59,19 @@ int main()
 
     Clock clock;
     Renderer renderer;
+    Scene scene;
 
-    Object std_cube;
-    Object obj_caesar(1, 1);
-    Object obj_suzanne;
-    Object obj_ship;
+    // Name, Mesh ID, Material ID
+    scene.addObject("cube", 0, 0);
+    scene.addObject("caesar", 1, 1);
+    scene.addObject("suzanne", 2, 0);
+    scene.addObject("ship", 3, 0);
 
-    //obj_caesar.setMeshId(1);
-    obj_suzanne.setMeshId(2);
-    obj_ship.setMeshId(3);
+    scene.setPosition("caesar", {2.0f, 0.0f, 0.0f});
+    scene.setPosition("suzanne", {-2.0f, 0.0f, 0.0f});
+    scene.setPosition("ship", {4.0f, 0.0f, 0.0f});
 
-    obj_caesar.m_transform.setPosition({2.0f, 0.0f, 0.0f});
-    obj_suzanne.m_transform.setPosition({-2.0f, 0.0f, 0.0f});
-
-    obj_ship.m_transform.setPosition({4.0f, 0.0f, 0.0f});
-    obj_ship.m_transform.setScale(0.5f);
-
-    Camera camera;
+    scene.setScale("ship", 0.5f);
 
     while (!glfwWindowShouldClose(window))
     {
@@ -88,16 +84,19 @@ int main()
 
         if (clock.tick())
         {
-            std_cube.m_transform.setRotation(glm::vec3(std_cube.m_transform.getRotation().x + 1.0f, std_cube.m_transform.getRotation().y + 0.5f, std_cube.m_transform.getRotation().z));
+            // testing transforms
+            scene.setRotation("cube", glm::vec3(scene.getRotation("cube").x + 1.0f, scene.getRotation("cube").y + 0.5f, scene.getRotation("cube").z));
+            scene.setScale("suzanne", fabs(glm::cos(glfwGetTime())));
+            scene.setPosition("ship", {4 * glm::sin(glfwGetTime()), 4 * glm::cos(glfwGetTime()), 0.0f});
 
-            std_cube.reactToInput(window);
-            camera.reactToInput(window);
+            // TODO Find a better way to do this
+            scene.m_object[0]
+                .reactToInput(window);
+
+            scene.getActiveCam()->reactToInput(window);
         }
 
-        renderer.draw(std_cube, camera);
-        renderer.draw(obj_caesar, camera);
-        renderer.draw(obj_ship, camera);
-        renderer.draw(obj_suzanne, camera);
+        renderer.draw(scene);
 
         // Faz a troca do framebuffer antigo para o novo (double buffer)
         glfwSwapBuffers(window);
