@@ -17,6 +17,7 @@ comp_UserControl::comp_UserControl()
     m_inputs["camup"] = false;
     m_inputs["camdown"] = false;
     m_inputs["camrot"] = false;
+    m_inputs["camaccel"] = false;
 }
 
 void comp_UserControl::observeInputs(GLFWwindow *window)
@@ -77,6 +78,11 @@ void comp_UserControl::observeInputs(GLFWwindow *window)
     if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
     {
         m_inputs["camdown"] = true;
+    }
+
+    if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+    {
+        m_inputs["camaccel"] = true;
     }
 }
 

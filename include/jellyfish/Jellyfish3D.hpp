@@ -29,6 +29,7 @@ struct Vertex
     glm::vec3 normal;
 };
 
+class Display;
 class Shader;
 class Mesh;
 class Material;
@@ -73,6 +74,20 @@ public:
     bool isUp();
     void tick();
     void reset();
+};
+
+// For now handles opengl init stuff
+class Display
+{
+private:
+    GLFWwindow *m_window;
+    void processInput(GLFWwindow *window);
+
+public:
+    GLFWwindow *getWindow() { return m_window; }
+
+    Display();
+    ~Display() { glfwTerminate(); }
 };
 
 // Classe basica para compilar os shaders do openGL
@@ -227,6 +242,21 @@ public:
     std::string getName();
 
     void setMeshId(unsigned int id) { m_mesh = id; }
+};
+
+// Light types
+enum ltype
+{
+    directional,
+    point
+};
+
+class Light
+{
+private:
+    ltype type;
+
+public:
 };
 
 class Camera

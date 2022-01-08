@@ -4,6 +4,8 @@ void Camera::reactToInput(GLFWwindow *window)
 {
     m_userControl.observeInputs(window);
     float walkSpeed = 0.05;
+    if (m_userControl.m_inputs["camaccel"])
+        walkSpeed = 0.5;
 
     if (m_userControl.m_inputs["camright"])
     {
