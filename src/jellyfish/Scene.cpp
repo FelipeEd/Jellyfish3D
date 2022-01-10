@@ -11,9 +11,10 @@ void Scene::addObject(std::string name, unsigned int meshID, unsigned int materi
     m_object.push_back(newObj);
 }
 
-void Scene::addObject(Object obj)
+void Scene::addLight(std::string name, glm::vec3 color, glm::vec3 pos)
 {
-    this->m_object.push_back(obj);
+    Light light(name, color, pos);
+    this->m_lights.push_back(light);
 }
 
 void Scene::setPosition(std::string name, glm::vec3 newPos) //! Bad implementation O(n) is not necessary to see every element

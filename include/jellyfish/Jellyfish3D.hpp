@@ -41,9 +41,11 @@ extern unsigned int WIDTH;
 extern unsigned int HEIGHT;
 extern Resources *assets;
 
+extern bool pbr;
+
 void initOpengl();
 std::vector<Vertex> loadOBJ(const char *file_name);
-unsigned int createTexture(const char *textureName);
+unsigned int createTexture(const std::string &textureName);
 
 // Should be used when limiting function calls by framerate
 class Clock
@@ -102,12 +104,13 @@ public:
     Shader(){};
     Shader(const char *vertexPath, const char *fragmentPath);
     // Function to use/activate this shader
-    void use();
+    void use() const;
     // Utility functions to set values to uniforms in the shader program
     void setBool(const std::string &uniformName, bool value) const;
     void setInt(const std::string &uniformName, int value) const;
     void setFloat(const std::string &uniformName, float value) const;
     void setVec2(const std::string &uniformName, glm::vec2 value) const;
+    void setVec3(const std::string &uniformName, glm::vec3 value) const;
     void setVec4(const std::string &uniformName, glm::vec4 value) const;
     void setMat4(const std::string &uniformName, glm::mat4 value) const;
     void Delete() const;
@@ -127,7 +130,7 @@ private:
 
 public:
     Mesh(); // Cube place holder
-    Mesh(const char *objName);
+    Mesh(const std::string &objName);
     ~Mesh(){};
 
     void genBuffer();
@@ -140,13 +143,21 @@ public:
 class Material
 {
 private:
-    unsigned int m_texDiffuse;
+    unsigned int m_texAlbedo;
+
+    // TODO    change to textures
+    unsigned int m_texMetallic;
+    unsigned int m_texNormal;
+    unsigned int m_texRoughness;
+    unsigned int m_texAo;
 
     glm::vec4 m_color;
 
+    bool useNormalmap;
+
 public:
     Material(); // Flat color
-    Material(const char *textureFile);
+    Material(const std::string &textureFile, const std::string &size);
     ~Material(){};
 
     void setColor(glm::vec4 color) { m_color = color; }
@@ -162,10 +173,10 @@ public:
     std::vector<Material> materials;
 
     // Loads a Mesh from a obj file into the resources
-    void loadMesh(const char *fileName);
+    void loadMesh(const std::string &fileName);
 
     // Loads a texture and sets the material
-    void loadMaterial(const char *fileName); //TODO: More atributes to the material
+    void loadMaterial(const std::string &fileName, const std::string &size); //TODO: More atributes to the material
 
     Resources();
     ~Resources(){};
@@ -219,7 +230,7 @@ public:
 
 class Object
 {
-private:
+protected:
     comp_UserControl m_userControl;
     unsigned int m_mesh;
     unsigned int m_material;
@@ -245,24 +256,26 @@ public:
 };
 
 // Light types
-enum ltype
-{
-    directional,
-    point
-};
+// enum ltype
+// {
+//     directional,
+//     point
+// };
 
-class Light
+class Light : public Object
 {
 private:
-    ltype type;
+    //ltype type;
+    glm::vec3 m_color;
 
 public:
+    Light(std::string name, glm::vec3 color, glm::vec3 pos);
+    glm::vec3 getColor() { return m_color; }
 };
 
 class Camera
 {
 private:
-    comp_Transform m_transform;
     comp_UserControl m_userControl;
 
     Timer m_rotatingCooldown = Timer(10);
@@ -276,6 +289,8 @@ private:
     glm::vec3 Up = glm::vec3(0.0f, 1.0f, 0.0f);
 
 public:
+    comp_Transform m_transform;
+
     Camera(){};
     ~Camera(){};
 
@@ -290,14 +305,12 @@ private:
     Camera m_cam1; // Must have 3 cams later on
 public:
     std::vector<Object> m_object; // TODO: Use a better container, such as a dict
-
+    std::vector<Light> m_lights;
     Scene();
     ~Scene(){};
 
-    // Create a object with especified mesh and material
     void addObject(std::string name, unsigned int meshID, unsigned int materialId);
-    // Adds a object onto the scene objects list
-    void addObject(Object obj);
+    void addLight(std::string name, glm::vec3 color, glm::vec3 pos);
 
     Camera *getActiveCam() { return &m_cam1; };
 
@@ -316,8 +329,21 @@ class Renderer
 private:
 public:
     Shader m_shader;
+    Shader m_lightShader;
     Renderer();
     ~Renderer(){};
 
     void draw(Scene);
+};
+
+class App
+{
+private:
+public:
+    // Runs once
+    void OnStart();
+    // locked by the framerate
+    void PerFrame();
+    // Run as fast as possible
+    void PerLoop();
 };

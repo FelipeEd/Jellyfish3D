@@ -1,8 +1,14 @@
 #Used compiler
 CC = g++
 
+# APP name
+APP_NAME = Boids
+APP_FNAME = /$(APP_NAME).cpp
+
 # Directories
 SRC_DIR := ./src
+APP_DIR := ./App
+APP_SRC_DIR := ./App/classes
 ENGINE_SRCS_DIR := $(SRC_DIR)/jellyfish
 #GAME_SRCS_DIR := /
 GLAD_SRCS_DIR := $(SRC_DIR)/glad
@@ -16,12 +22,16 @@ GLAD_SRCS = $(wildcard $(GLAD_SRCS_DIR)/*.c)
 #GLM_SRCS = $(wildcard $(GLM_SRCS_DIR)/*.c)
 STBI_SRCS = $(wildcard $(STBI_SRCS_DIR)/*.cpp)
 
+# App
+APP_SRCS = $(wildcard $(APP_SRC_DIR)/*.cpp)
+
 # Object files
 ENGINE_OBJS = $(ENGINE_SRCS:.cpp=.o)
 #GAME_OBJS = $(GAME_SRCS:.cpp=.o)
 GLAD_OBJS = $(GLAD_SRCS:.c=.o)
 #GLM_OBJS = $(GLM_SRCS:.c=.o)
 STBI_OBJS = $(STBI_SRCS:.cpp=.o)
+APP_OBJS = $(APP_SRCS:.cpp=.o)
 
 #Path to aditional files needed to compile
 INCLUDE_PATHS = -Iinclude
@@ -36,12 +46,12 @@ COMPILER_FLAGS = -g
 LINKER_FLAGS = -lglfw3 -lOpenGL32
 
 #Executable name
-EXE_NAME = bin/demo
+EXE_NAME = App/$(APP_NAME).exe
 
 all : main 
 
-main:  $(GLAD_OBJS) $(STBI_OBJS)  $(ENGINE_OBJS)
-	$(CC) $(STBI_OBJS) $(GLM_OBJS) $(GLAD_OBJS) $(ENGINE_OBJS) main.cpp $(INCLUDE_PATHS) $(LIBRARY_PATHS) $(COMPILER_FLAGS) $(LINKER_FLAGS) -o $(EXE_NAME)
+main:  $(GLAD_OBJS) $(STBI_OBJS) $(APP_OBJS) $(ENGINE_OBJS)
+	$(CC) $(STBI_OBJS) $(GLM_OBJS) $(GLAD_OBJS) $(APP_OBJS) $(ENGINE_OBJS) $(APP_DIR)$(APP_FNAME) $(INCLUDE_PATHS) $(LIBRARY_PATHS) $(COMPILER_FLAGS) $(LINKER_FLAGS) -o $(EXE_NAME)
 
 %.o: %.cpp
 	$(CC) -c $(INCLUDE_PATHS) $(LIBRARY_PATHS) $< -o $@

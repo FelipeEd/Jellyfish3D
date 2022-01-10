@@ -100,9 +100,9 @@ Mesh::Mesh()
     m_nindices = m_vetexIndex.size();
 }
 
-Mesh::Mesh(const char *objName)
+Mesh::Mesh(const std::string &objName)
 {
-    m_vertexData = loadOBJ(objName);
+    m_vertexData = loadOBJ(objName.c_str());
     this->genBuffer();
     m_nvertex = m_vertexData.size();
     m_nindices = m_vetexIndex.size();

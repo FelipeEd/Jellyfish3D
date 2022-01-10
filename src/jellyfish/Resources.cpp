@@ -9,14 +9,14 @@ Resources::Resources()
     meshes.push_back(default_mesh);
 }
 
-void Resources::loadMesh(const char *fileName)
+void Resources::loadMesh(const std::string &fileName)
 {
     Mesh newMesh(fileName);
     this->meshes.push_back(newMesh);
 }
 
-void Resources::loadMaterial(const char *fileName)
+void Resources::loadMaterial(const std::string &fileName, const std::string &size)
 {
-    Material newMaterial(fileName);
+    Material newMaterial(fileName, size);
     this->materials.push_back(newMaterial);
 }

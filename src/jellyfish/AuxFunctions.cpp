@@ -121,7 +121,7 @@ std::vector<Vertex> loadOBJ(const char *file_name)
 }
 
 // Retorna o int da textura que foi alocada
-unsigned int createTexture(const char *textureName)
+unsigned int createTexture(const std::string &textureName)
 {
     unsigned int texture;
     // Textura-----------------------------------------------------------------
@@ -137,16 +137,23 @@ unsigned int createTexture(const char *textureName)
     // load and generate the texture
     int tex_width, tex_height, nrChannels;
     stbi_set_flip_vertically_on_load(true);
-    unsigned char *data = stbi_load(textureName, &tex_width, &tex_height, &nrChannels, 0);
-    if (data && nrChannels == 3)
+    unsigned char *data = stbi_load(textureName.c_str(), &tex_width, &tex_height, &nrChannels, 0);
+
+    if (data)
     {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, tex_width, tex_height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-        //glGenerateMipmap(GL_TEXTURE_2D);
-    }
-    else if (data && nrChannels == 4)
-    {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, tex_width, tex_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-        //glGenerateMipmap(GL_TEXTURE_2D);
+        GLenum format;
+        if (nrChannels == 1)
+            format = GL_RED;
+        else if (nrChannels == 3)
+            format = GL_RGB;
+        else if (nrChannels == 4)
+            format = GL_SRGB; //GL_RGBA;
+
+        if (data && nrChannels == 3)
+        {
+            glTexImage2D(GL_TEXTURE_2D, 0, format, tex_width, tex_height, 0, format, GL_UNSIGNED_BYTE, data);
+            glGenerateMipmap(GL_TEXTURE_2D);
+        }
     }
     else
     {
