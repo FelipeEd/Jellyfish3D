@@ -147,9 +147,9 @@ unsigned int createTexture(const std::string &textureName)
         else if (nrChannels == 3)
             format = GL_RGB;
         else if (nrChannels == 4)
-            format = GL_SRGB; //GL_RGBA;
+            format = GL_RGBA; //GL_RGBA;
 
-        if (data && nrChannels == 3)
+        if (data)
         {
             glTexImage2D(GL_TEXTURE_2D, 0, format, tex_width, tex_height, 0, format, GL_UNSIGNED_BYTE, data);
             glGenerateMipmap(GL_TEXTURE_2D);

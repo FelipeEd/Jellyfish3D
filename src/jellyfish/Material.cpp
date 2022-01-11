@@ -17,9 +17,10 @@ Material::Material()
 Material::Material(const std::string &textureFile, const std::string &size)
 {
     useNormalmap = false;
-    m_color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+    m_color = glm::vec4(3.0f, 1.0f, 1.0f, 1.0f);
     m_texAlbedo = createTexture(textureFile + "_diff" + size + ".png");
     m_texNormal = createTexture(textureFile + "_nor_gl" + size + ".png");
+    //m_texARM = createTexture(textureFile + "_arm" + size + ".png");
     m_texMetallic = createTexture(textureFile + "_arm" + size + ".png");
     m_texRoughness = createTexture(textureFile + "_rough" + size + ".png");
     m_texAo = createTexture(textureFile + "_ao" + size + ".png");
@@ -36,6 +37,8 @@ void Material::setUniforms(Shader &shader)
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, m_texNormal);
         glActiveTexture(GL_TEXTURE2);
+        // glBindTexture(GL_TEXTURE_2D, m_texARM);
+        // glActiveTexture(GL_TEXTURE2);
         glBindTexture(GL_TEXTURE_2D, m_texMetallic);
         glActiveTexture(GL_TEXTURE3);
         glBindTexture(GL_TEXTURE_2D, m_texRoughness);

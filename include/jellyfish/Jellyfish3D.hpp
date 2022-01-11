@@ -10,8 +10,10 @@
 #include <sstream>
 #include <math.h>
 #include <vector>
+#include <list>
 #include <chrono>
 #include <thread>
+#include <future>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -54,7 +56,7 @@ private:
     double prevTime = 0.0;
     double crntTime = 0.0;
     double timeDiff;
-    double tickSpeed = 1 / 30; // ! 30 times per second !
+    double tickSpeed = 1 / 60; // ! 30 times per second !
 
 public:
     Clock();
@@ -150,6 +152,8 @@ private:
     unsigned int m_texNormal;
     unsigned int m_texRoughness;
     unsigned int m_texAo;
+    // Load Ao Roughness and Metallic on one texture
+    unsigned int m_texARM;
 
     glm::vec4 m_color;
 
@@ -206,6 +210,7 @@ public:
     glm::mat4 getScaleMatrix();
     glm::mat4 getRotateMatrix();
     glm::mat4 getTranslateMatrix();
+    glm::mat4 getModelMatrix();
 };
 
 class comp_UserControl
@@ -247,6 +252,7 @@ public:
     glm::mat4 getScaleMatrix();
     glm::mat4 getRotateMatrix();
     glm::mat4 getTranslateMatrix();
+    glm::mat4 getModelMatrix();
 
     unsigned int getMeshId();
     unsigned int getMaterialId();
@@ -283,7 +289,7 @@ private:
 
     float m_FOV = 60.0f;
     float m_nearPlane = 0.1f;
-    float m_farPlane = 1000.0f;
+    float m_farPlane = 300.0f;
     glm::vec3 m_orientation = glm::vec3(0.0f, 0.0f, -1.0f);
     glm::vec3 m_cameraRight = glm::vec3(1.0f, 0.0f, 0.0f);
     glm::vec3 Up = glm::vec3(0.0f, 1.0f, 0.0f);
@@ -304,7 +310,7 @@ class Scene
 private:
     Camera m_cam1; // Must have 3 cams later on
 public:
-    std::vector<Object> m_object; // TODO: Use a better container, such as a dict
+    std::vector<Object> m_object; // TODO: Use a better container
     std::vector<Light> m_lights;
     Scene();
     ~Scene(){};

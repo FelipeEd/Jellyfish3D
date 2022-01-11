@@ -30,13 +30,13 @@ void Renderer::draw(Scene scene)
         Mesh mesh = assets->meshes[scene.m_object[i].getMeshId()];
         Material material = assets->materials[scene.m_object[i].getMaterialId()];
 
-        ;
         material.setUniforms(m_shader);
 
         // Setting the object transformations
-        m_shader.setMat4("uScale", scene.m_object[i].getScaleMatrix());
-        m_shader.setMat4("uRotate", scene.m_object[i].getRotateMatrix());
-        m_shader.setMat4("uTranslate", scene.m_object[i].getTranslateMatrix());
+        //m_shader.setMat4("uScale", scene.m_object[i].getScaleMatrix());
+        //m_shader.setMat4("uRotate", scene.m_object[i].getRotateMatrix());
+        //m_shader.setMat4("uTranslate", scene.m_object[i].getTranslateMatrix());
+        m_shader.setMat4("uModel", scene.m_object[i].getModelMatrix());
 
         // Set camera pos
         if (pbr)
@@ -75,9 +75,10 @@ void Renderer::draw(Scene scene)
         //material.setUniforms(m_lightShader);
         m_lightShader.setVec4("uColor", glm::vec4(scene.m_lights[i].getColor(), 1.0f));
         // Setting the object transformations
-        m_lightShader.setMat4("uScale", scene.m_lights[i].getScaleMatrix());
-        m_lightShader.setMat4("uRotate", scene.m_lights[i].getRotateMatrix());
-        m_lightShader.setMat4("uTranslate", scene.m_lights[i].getTranslateMatrix());
+        //m_lightShader.setMat4("uScale", scene.m_lights[i].getScaleMatrix());
+        //m_lightShader.setMat4("uRotate", scene.m_lights[i].getRotateMatrix());
+        //m_lightShader.setMat4("uTranslate", scene.m_lights[i].getTranslateMatrix());
+        m_lightShader.setMat4("uModel", scene.m_lights[i].getModelMatrix());
 
         mesh.bindBuffer();
         if (mesh.getNIndices() > 0)

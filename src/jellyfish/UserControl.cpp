@@ -2,7 +2,7 @@
 
 comp_UserControl::comp_UserControl()
 {
-    // TODO: implement all possible inputs
+    // ! bad bad ...
     // Test inputs "b" stads for box
     m_inputs["bleft"] = false;
     m_inputs["bright"] = false;
@@ -18,6 +18,8 @@ comp_UserControl::comp_UserControl()
     m_inputs["camdown"] = false;
     m_inputs["camrot"] = false;
     m_inputs["camaccel"] = false;
+
+    m_inputs["pause"] = false;
 }
 
 void comp_UserControl::observeInputs(GLFWwindow *window)
@@ -83,6 +85,11 @@ void comp_UserControl::observeInputs(GLFWwindow *window)
     if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
     {
         m_inputs["camaccel"] = true;
+    }
+
+    if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS)
+    {
+        m_inputs["pause"] = true;
     }
 }
 

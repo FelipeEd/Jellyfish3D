@@ -2,7 +2,7 @@
 CC = g++
 
 # APP name
-APP_NAME = Boids
+APP_NAME = AppBoids
 APP_FNAME = /$(APP_NAME).cpp
 
 # Directories
@@ -40,7 +40,7 @@ INCLUDE_PATHS = -Iinclude
 LIBRARY_PATHS = -Llibs
 
 #Aditional compile options
-COMPILER_FLAGS = -g
+COMPILER_FLAGS = -g -O3
 
 #Specifies which libraries we're linking
 LINKER_FLAGS = -lglfw3 -lOpenGL32

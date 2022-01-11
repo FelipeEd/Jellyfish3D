@@ -15,6 +15,7 @@ in mat3 f_TBN;
 // // material parameters
 uniform sampler2D uTexAlbedo;
 uniform sampler2D uTexNormalMap;
+//uniform sampler2D uTexARM;
 uniform sampler2D uTexMetallic;
 uniform sampler2D uTexRoughness;
 uniform sampler2D uTexAo;
@@ -43,16 +44,21 @@ void main()
 
     //lightColors[0] *= 100; 
 
-    vec3 albedo     = pow(texture(uTexAlbedo, f_texCoord).rgb , vec3(2.2))* uColor.rgb;
+    vec3 albedo     =  pow(texture(uTexAlbedo, f_texCoord).rgb , vec3(2.2))* uColor.rgb;//texture(uTexAlbedo, f_texCoord).rgb * uColor.rgb;//
     vec3 tangentNormal = texture(uTexNormalMap, f_texCoord).xyz* 2.0 - vec3(1.0);
+
+    // vec3 ARM = texture(uTexARM, f_texCoord).rgb;
+    // float roughness = ARM.r;
+    // float metallic  = ARM.b;
+    // float ao        = ARM.g;
     float metallic  = texture(uTexMetallic, f_texCoord).b;
     float roughness = texture(uTexRoughness, f_texCoord).r;
     float ao        = texture(uTexAo, f_texCoord).r;
     vec3 N;
 
-    if(uUseNormalmap)
-       N = normalize(f_TBN * tangentNormal); //getNormalFromMap();
-    else
+    // if(uUseNormalmap)
+    //    N = normalize(f_TBN * tangentNormal); //getNormalFromMap();
+    // else
        N = normalize(f_normal);
 
     vec3 V = normalize(uCamPos - f_worldPos);

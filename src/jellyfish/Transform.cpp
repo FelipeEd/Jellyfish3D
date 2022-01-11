@@ -10,6 +10,15 @@ comp_Transform::comp_Transform()
 glm::mat4 comp_Transform::getScaleMatrix() { return glm::scale(id, m_Scale); }
 glm::mat4 comp_Transform::getRotateMatrix() { return glm::rotate(glm::rotate(glm::rotate(id, glm::radians(m_Rotation.x), glm::vec3(1.0, 0.0, 0.0)), glm::radians(m_Rotation.y), glm::vec3(0.0, 1.0, 0.0)), glm::radians(m_Rotation.z), glm::vec3(0.0, 0.0, 1.0)); }
 glm::mat4 comp_Transform::getTranslateMatrix() { return glm::translate(id, m_Position); }
+glm::mat4 comp_Transform::getModelMatrix()
+{
+    glm::mat4 model(1.0f);
+    model = glm::translate(model, m_Position);
+    model = glm::scale(model, m_Scale);
+    model = glm::rotate(glm::rotate(glm::rotate(model, glm::radians(m_Rotation.x), glm::vec3(1.0, 0.0, 0.0)), glm::radians(m_Rotation.y), glm::vec3(0.0, 1.0, 0.0)), glm::radians(m_Rotation.z), glm::vec3(0.0, 0.0, 1.0));
+
+    return model;
+}
 
 void comp_Transform::setPosition(glm::vec3 newPos) { m_Position = newPos; }
 void comp_Transform::setRotation(glm::vec3 newRot) { m_Rotation = newRot; }

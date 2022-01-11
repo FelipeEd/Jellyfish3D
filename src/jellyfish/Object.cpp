@@ -16,6 +16,7 @@ Object::Object(std::string name, unsigned int mesh, unsigned int material)
 glm::mat4 Object::getScaleMatrix() { return m_transform.getScaleMatrix(); }
 glm::mat4 Object::getRotateMatrix() { return m_transform.getRotateMatrix(); }
 glm::mat4 Object::getTranslateMatrix() { return m_transform.getTranslateMatrix(); }
+glm::mat4 Object::getModelMatrix() { return m_transform.getModelMatrix(); }
 
 void Object::reactToInput(GLFWwindow *window)
 {
