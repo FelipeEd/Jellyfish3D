@@ -3,7 +3,6 @@
 // Called everytime the window is resized
 void framebuffer_size_callback(GLFWwindow *window, int width, int height)
 {
-
     glViewport(0, 0, width, height);
 }
 
@@ -39,7 +38,14 @@ Display::Display()
     glEnable(GL_CULL_FACE);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glEnable(GL_FRAMEBUFFER_SRGB);
+    //glEnable(GL_FRAMEBUFFER_SRGB);
+}
+
+Display::~Display()
+{
+    printf("Destroing Display");
+    glfwDestroyWindow(m_window);
+    glfwTerminate();
 }
 
 // process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly

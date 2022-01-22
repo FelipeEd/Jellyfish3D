@@ -26,6 +26,15 @@ Material::Material(const std::string &textureFile, const std::string &size)
     m_texAo = createTexture(textureFile + "_ao" + size + ".png");
 }
 
+void Material::deleteTextures()
+{
+    glDeleteTextures(1, &m_texAlbedo);
+    glDeleteTextures(1, &m_texNormal);
+    glDeleteTextures(1, &m_texMetallic);
+    glDeleteTextures(1, &m_texRoughness);
+    glDeleteTextures(1, &m_texAo);
+}
+
 void Material::setUniforms(Shader &shader)
 {
 

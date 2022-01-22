@@ -14,7 +14,7 @@ Renderer::Renderer()
     m_lightShader = Shader("bin/shaders/light_vertex.glsl", "bin/shaders/light_fragment.glsl");
 }
 
-void Renderer::draw(Scene scene)
+void Renderer::draw(Scene &scene, App &app)
 {
     Camera *cam = scene.getActiveCam();
 
@@ -26,9 +26,8 @@ void Renderer::draw(Scene scene)
     // For all objects in the scene
     for (int i = 0; i < scene.m_object.size(); i++)
     {
-        // Retrieving the mesh from global resources
-        Mesh mesh = assets->meshes[scene.m_object[i].getMeshId()];
-        Material material = assets->materials[scene.m_object[i].getMaterialId()];
+        Mesh mesh = app.assets.meshes[scene.m_object[i].getMeshId()];
+        Material material = app.assets.materials[scene.m_object[i].getMaterialId()];
 
         material.setUniforms(m_shader);
 
@@ -41,11 +40,11 @@ void Renderer::draw(Scene scene)
         // Set camera pos
         if (pbr)
         {
-            m_shader.setVec3("uCamPos", cam->m_transform.getPosition());
+            m_shader.setVec3("uCamPos", cam->transform.position);
 
             for (int j = 0; j < scene.m_lights.size(); j++)
             {
-                m_shader.setVec3("lightPositions[" + std::to_string(j) + "]", scene.m_lights[j].m_transform.getPosition());
+                m_shader.setVec3("lightPositions[" + std::to_string(j) + "]", scene.m_lights[j].transform.position);
                 m_shader.setVec3("lightColors[" + std::to_string(j) + "]", scene.m_lights[j].getColor());
             }
         }
@@ -68,7 +67,7 @@ void Renderer::draw(Scene scene)
     {
 
         // Retrieving the mesh from global resources
-        Mesh mesh = assets->meshes[scene.m_lights[i].getMeshId()];
+        Mesh mesh = app.assets.meshes[scene.m_lights[i].getMeshId()];
         //Material material = assets->materials[scene.m_lights[i].getMaterialId()];
 
         m_lightShader.use();

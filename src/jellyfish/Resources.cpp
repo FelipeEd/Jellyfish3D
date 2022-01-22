@@ -9,6 +9,20 @@ Resources::Resources()
     meshes.push_back(default_mesh);
 }
 
+Resources::~Resources()
+{
+    for (auto var : meshes)
+    {
+        printf("Destroing Mesh\n");
+        var.deleteBuffers();
+    }
+    for (auto var : materials)
+    {
+        printf("Destroing Textures\n");
+        var.deleteTextures();
+    }
+}
+
 void Resources::loadMesh(const std::string &fileName)
 {
     Mesh newMesh(fileName);

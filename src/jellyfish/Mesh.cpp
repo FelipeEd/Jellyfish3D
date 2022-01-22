@@ -95,7 +95,7 @@ Mesh::Mesh()
             {glm::vec3(half, -half, half), glm::vec3(0.3f, 0.5f, 0.7f), glm::vec2(1.f, 0.f), glm::vec3(0.f, 0.f, 1.f)},  // 3
         };
 
-    this->genBuffer();
+    this->genBuffers();
     m_nvertex = m_vertexData.size();
     m_nindices = m_vetexIndex.size();
 }
@@ -103,12 +103,16 @@ Mesh::Mesh()
 Mesh::Mesh(const std::string &objName)
 {
     m_vertexData = loadOBJ(objName.c_str());
-    this->genBuffer();
+    this->genBuffers();
     m_nvertex = m_vertexData.size();
     m_nindices = m_vetexIndex.size();
 }
 
-void Mesh::genBuffer()
+Mesh::~Mesh()
+{
+}
+
+void Mesh::genBuffers()
 {
 
     // Generating the vertex array which the element and vertex buffers will be binded
@@ -144,6 +148,13 @@ void Mesh::genBuffer()
     // Normal
     glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)offsetof(Vertex, normal));
     glEnableVertexAttribArray(3);
+}
+
+void Mesh::deleteBuffers()
+{
+    glDeleteVertexArrays(1, &m_vao);
+    glDeleteBuffers(1, &m_vbo);
+    glDeleteBuffers(1, &m_ebo);
 }
 
 void Mesh::bindBuffer()

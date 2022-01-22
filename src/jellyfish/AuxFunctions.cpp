@@ -1,4 +1,8 @@
 #include <jellyfish\Jellyfish3D.hpp>
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <stbi/stb_image.h>
 
 std::vector<Vertex> loadOBJ(const char *file_name)
 {

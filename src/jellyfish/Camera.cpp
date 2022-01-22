@@ -9,29 +9,29 @@ void Camera::reactToInput(GLFWwindow *window)
 
     if (m_userControl.m_inputs["camright"])
     {
-        m_transform.setPosition(m_transform.getPosition() + walkSpeed * glm::normalize(glm::cross(m_orientation, Up)));
+        transform.position = transform.position + walkSpeed * glm::normalize(glm::cross(m_orientation, Up));
     }
     if (m_userControl.m_inputs["camleft"])
     {
-        m_transform.setPosition(m_transform.getPosition() - walkSpeed * glm::normalize(glm::cross(m_orientation, Up))); //glm::vec3(-walkSpeed, 0.0f, 0.0f));
+        transform.position = transform.position - walkSpeed * glm::normalize(glm::cross(m_orientation, Up)); //glm::vec3(-walkSpeed, 0.0f, 0.0f));
     }
 
     if (m_userControl.m_inputs["camfront"])
     {
-        m_transform.setPosition(m_transform.getPosition() + walkSpeed * m_orientation);
+        transform.position = transform.position + walkSpeed * m_orientation;
     }
     if (m_userControl.m_inputs["camback"])
     {
-        m_transform.setPosition(m_transform.getPosition() - walkSpeed * m_orientation);
+        transform.position = transform.position - walkSpeed * m_orientation;
     }
 
     if (m_userControl.m_inputs["camup"])
     {
-        m_transform.setPosition(m_transform.getPosition() + walkSpeed * glm::vec3(0.0f, 1.0f, 0.0f));
+        transform.position = transform.position + walkSpeed * glm::vec3(0.0f, 1.0f, 0.0f);
     }
     if (m_userControl.m_inputs["camdown"])
     {
-        m_transform.setPosition(m_transform.getPosition() - walkSpeed * glm::vec3(0.0f, 1.0f, 0.0f));
+        transform.position = transform.position - walkSpeed * glm::vec3(0.0f, 1.0f, 0.0f);
     }
 
     m_rotatingCooldown.tick();
@@ -97,12 +97,12 @@ glm::mat4 Camera::getViewMatrix()
     // Initializes matrices since otherwise they will be the null matrix
     glm::vec3 orientation = m_orientation;
 
-    orientation = glm::rotateX(orientation, glm::radians(m_transform.getRotation().x));
-    orientation = glm::rotateY(orientation, glm::radians(m_transform.getRotation().y));
-    orientation = glm::rotateZ(orientation, glm::radians(m_transform.getRotation().z));
+    orientation = glm::rotateX(orientation, glm::radians(transform.rotation.x));
+    orientation = glm::rotateY(orientation, glm::radians(transform.rotation.y));
+    orientation = glm::rotateZ(orientation, glm::radians(transform.rotation.z));
 
     // Makes camera look in the right direction from the right position
-    return glm::lookAt(m_transform.getPosition(), m_transform.getPosition() + m_orientation, glm::vec3(0.0f, 1.0f, 0.0f));
+    return glm::lookAt(transform.position, transform.position + m_orientation, glm::vec3(0.0f, 1.0f, 0.0f));
 }
 
 glm::mat4 Camera::getProjectionMatrix()

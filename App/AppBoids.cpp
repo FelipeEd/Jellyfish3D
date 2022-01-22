@@ -6,35 +6,33 @@
 unsigned int WIDTH = 1280; //1280;
 unsigned int HEIGHT = 720; //720;
 bool pbr = true;
-
-Resources *assets;
+bool debug = false; //if(debug)
 
 // -----------------------------------------------------------------------------------
 int main()
 {
-    Display display;
-    comp_UserControl inputControl;
+    App app;
 
-    Clock clock;
-    Timer pauseCooldown(10);
-    // Resources
-    Resources res_aux;
-    assets = &res_aux;
     // When using opengl
-    GLFWwindow *window = display.getWindow();
+    GLFWwindow *window = app.display.getWindow();
+    Timer pauseCooldown(10);
+    GUI gui;
+    gui.init(window);
+
     Renderer renderer;
     Scene scene;
+
     bool pause = false;
 
     // light model
-    assets->loadMesh("resources/simplesphere.obj");
-    assets->loadMesh("resources/uvsphere.obj");
-    assets->loadMesh("resources/plane.obj");
-    assets->loadMesh("resources/test_ship.obj");
+    app.assets.loadMesh("resources/simplesphere.obj");
+    app.assets.loadMesh("resources/uvsphere.obj");
+    app.assets.loadMesh("resources/plane.obj");
+    app.assets.loadMesh("resources/test_ship.obj");
 
-    assets->loadMaterial("resources/textures/test_ship", "_1k");
+    app.assets.loadMaterial("resources/textures/test_ship", "_1k");
     //assets->loadMaterial("resources/textures/denmin_fabric_02", "_1k");
-    assets->loadMaterial("resources/textures/blue_painted_planks", "_1k");
+    app.assets.loadMaterial("resources/textures/blue_painted_planks", "_1k");
     //assets->loadMaterial("resources/textures/concrete_floor_02", "_1k");
     //assets->loadMaterial("resources/textures/square_floor", "_1k");
 
@@ -64,78 +62,78 @@ int main()
         scene.setPosition("sphere" + std::to_string(i), {x * halfBox, y * halfBox, z * halfBox});
     }
 
-    Boids boids = Boids(scene.m_object.size(), 10000, scene);
+    Boids boids = Boids(scene.m_object.size(), 1000, scene);
 
-    Instrumentor::Get().BeginSession("Main Loop"); // Begin session
+    if (debug)
+        Instrumentor::Get().BeginSession("Main Loop"); // Begin session
     {
 
         while (!glfwWindowShouldClose(window))
         {
-            InstrumentationTimer timer("Whole loop");
-            // Real loop ------------------------------------------------------------------------------------------
-            auto start = high_resolution_clock::now();
-            // Define a cor de fundo da janela
+            if (debug)
+                InstrumentationTimer timer("Whole loop");
 
-            glClearColor(0.005f, 0.005f, 0.009f, 1.0f);
+            // Define a cor de fundo da janela
+            glClearColor(0.05f, 0.05f, 0.09f, 1.0f);
             // Limpa algum buffer específico
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+            gui.startFrame("Boid Parameters");
+
             {
-                InstrumentationTimer timer("Clock tick");
-                if (clock.tick())
+                if (debug)
+                    InstrumentationTimer timer("Clock tick");
+
+                if (app.clock.tick())
                 {
 
                     scene.getActiveCam()->reactToInput(window);
 
-                    inputControl.observeInputs(window);
+                    app.inputs.observeInputs(window);
                     pauseCooldown.tick();
-                    if (inputControl.m_inputs["pause"] && pauseCooldown.isUp())
+                    if (app.inputs.m_inputs["pause"] && pauseCooldown.isUp())
                     {
                         pause = !pause;
                         pauseCooldown.reset();
                     }
-                    inputControl.m_inputs["pause"] = false;
+                    app.inputs.m_inputs["pause"] = false;
+
+                    //gui.sliderFloat()
 
                     {
-                        InstrumentationTimer timer("Update Boids");
-                        auto startboid = high_resolution_clock::now();
+                        if (debug)
+                            InstrumentationTimer timer("Update Boids");
+
                         if (!pause)
                         {
                             boids.updateAll();
                         }
-                        auto stopboid = high_resolution_clock::now();
-
-                        auto duration = duration_cast<microseconds>(stopboid - startboid);
-                        std::cout << "Times:\n Boid: "
-                                  << duration.count() / 1000000.0 << " s ";
                     }
                 }
             }
+
             {
-                InstrumentationTimer timer("Draw calls");
-                auto startdraw = high_resolution_clock::now();
-                renderer.draw(scene);
-                auto stopdraw = high_resolution_clock::now();
-                auto drawduration = duration_cast<microseconds>(stopdraw - startdraw);
-                std::cout << "Draw: "
-                          << drawduration.count() / 1000000.0 << " s ";
+                if (debug)
+                    InstrumentationTimer timer("Draw calls");
+
+                renderer.draw(scene, app);
             }
             {
-                InstrumentationTimer timer("Swap Buffers");
+                if (debug)
+                    InstrumentationTimer timer("Swap Buffers");
+
+                gui.endFrame();
                 // Faz a troca do framebuffer antigo para o novo (double buffer)
                 glfwSwapBuffers(window);
+                glFlush();
             }
+
             // Captura eventos de IO (movimento de mouse, teclas pressionadas, etc)
-
             glfwPollEvents();
-
-            auto stop = high_resolution_clock::now();
-            auto duration = duration_cast<microseconds>(stop - start);
-
-            std::cout << "Total: "
-                      << duration.count() / 1000000.0 << " s " << std::endl;
         }
     }
-    Instrumentor::Get().EndSession();
+    if (debug)
+        Instrumentor::Get().EndSession();
+
     return 0;
 }
