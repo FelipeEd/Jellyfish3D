@@ -28,8 +28,6 @@ void GUI::startFrame(const std::string &windowName)
 
 void GUI::endFrame()
 {
-    // Text of the window
-    ImGui::Text("Basic Renderer app for 3d visualization");
     ImGui::End();
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -38,4 +36,14 @@ void GUI::endFrame()
 void GUI::sliderFloat(const std::string &variableName, float &a, float min, float max)
 {
     ImGui::SliderFloat(variableName.c_str(), &a, min, max);
+}
+
+bool GUI::button(const std::string &buttonName)
+{
+    return ImGui::Button(buttonName.c_str());
+}
+
+void GUI::text(const std::string &text)
+{
+    ImGui::Text(text.c_str());
 }

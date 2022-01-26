@@ -10,11 +10,8 @@ layout (location = 3) in vec3 aNormal;
 out vec3 f_normal;
 out vec2 f_texCoord;
 out vec3 f_worldPos;
-out mat3 f_TBN;
+//out mat3 f_TBN;
 
-// uniform mat4 uScale;
-// uniform mat4 uRotate;
-// uniform mat4 uTranslate;uModel
 uniform mat4 uModel;
 
 uniform mat4 uView;
@@ -27,8 +24,9 @@ void main()
     mat3 TBN = mat3(transpose(inverse(uModel)));
     //mat3 TBN =mat3(uModel);
 
-    f_TBN = TBN;
-    f_normal = TBN * aNormal;// mat3(model) * aNormal;
+    //f_TBN = TBN;
+    f_normal = TBN * aNormal;
+    // f_normal =  mat3(uModel) * aNormal; 
     f_texCoord = aTexCoord;
     
     f_worldPos = vec3(uModel * vec4(aPos, 1.0));

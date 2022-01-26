@@ -6,7 +6,7 @@ Object::Object()
     m_material = 0;
 }
 
-Object::Object(std::string name, unsigned int mesh, unsigned int material)
+Object::Object(const std::string &name, unsigned int mesh, unsigned int material)
 {
     m_name = name;
     m_mesh = mesh;

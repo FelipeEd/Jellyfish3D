@@ -5,19 +5,19 @@ Scene::Scene()
     //m_cam1 = Camera();
 }
 
-void Scene::addObject(std::string name, unsigned int meshID, unsigned int materialId)
+void Scene::addObject(const std::string &name, unsigned int meshID, unsigned int materialId)
 {
     Object newObj = Object(name, meshID, materialId);
     m_object.push_back(newObj);
 }
 
-void Scene::addLight(std::string name, glm::vec3 color, glm::vec3 pos)
+void Scene::addLight(const std::string &name, glm::vec3 color, glm::vec3 pos)
 {
     Light light(name, color, pos);
     this->m_lights.push_back(light);
 }
 
-void Scene::setPosition(std::string name, glm::vec3 newPos) //! Bad implementation O(n) is not necessary to see every element
+void Scene::setPosition(const std::string &name, glm::vec3 newPos) //! Bad implementation O(n) its not necessary to see every element
 {
     for (int i = 0; i < m_object.size(); i++)
     {
@@ -26,7 +26,7 @@ void Scene::setPosition(std::string name, glm::vec3 newPos) //! Bad implementati
     }
 }
 
-void Scene::setRotation(std::string name, glm::vec3 newRot)
+void Scene::setRotation(const std::string &name, glm::vec3 newRot)
 {
     for (int i = 0; i < m_object.size(); i++)
     {
@@ -35,7 +35,7 @@ void Scene::setRotation(std::string name, glm::vec3 newRot)
     }
 }
 
-void Scene::setScale(std::string name, glm::vec3 newScale)
+void Scene::setScale(const std::string &name, glm::vec3 newScale)
 {
     for (int i = 0; i < m_object.size(); i++)
     {
@@ -44,7 +44,7 @@ void Scene::setScale(std::string name, glm::vec3 newScale)
     }
 }
 
-void Scene::setScale(std::string name, float newScale)
+void Scene::setScale(const std::string &name, float newScale)
 {
     for (int i = 0; i < m_object.size(); i++)
     {
@@ -53,7 +53,18 @@ void Scene::setScale(std::string name, float newScale)
     }
 }
 
-glm::vec3 Scene::getPosition(std::string name)
+void Scene::setActiveCam(unsigned int i)
+{
+    if (i < 2)
+        activeCam = i;
+}
+
+Camera *Scene::getActiveCam()
+{
+    return &m_cams[activeCam];
+}
+
+glm::vec3 Scene::getPosition(const std::string &name)
 {
     for (int i = 0; i < m_object.size(); i++)
     {
@@ -63,7 +74,7 @@ glm::vec3 Scene::getPosition(std::string name)
     return glm::vec3(0);
 }
 
-glm::vec3 Scene::getRotation(std::string name)
+glm::vec3 Scene::getRotation(const std::string &name)
 {
     for (int i = 0; i < m_object.size(); i++)
     {
@@ -73,7 +84,7 @@ glm::vec3 Scene::getRotation(std::string name)
     return glm::vec3(0);
 }
 
-glm::vec3 Scene::getScale(std::string name)
+glm::vec3 Scene::getScale(const std::string &name)
 {
     for (int i = 0; i < m_object.size(); i++)
     {
