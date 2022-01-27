@@ -33,7 +33,7 @@ int main()
     app.assets.loadMaterial("resources/textures/denmin_fabric_02", "_1k");
     //app.assets->loadMaterial("resources/textures/denmin_fabric_02", "_2k");
 
-    scene.addLight("light1", {1000, 200, 200}, {5, 2, -1});
+    scene.addLight("light1", {500, 200, 200}, {5, 2, -1});
     scene.addLight("light3", {1000, 1000, 1000}, {0, 10, 0});
 
     scene.addObject("ground", 3, 1);
