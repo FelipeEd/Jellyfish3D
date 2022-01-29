@@ -6,6 +6,16 @@ float rf()
     return ((rand() % 10) - 5) / 5.0;
 }
 
+float dist(glm::vec3 a, glm::vec3 b)
+{
+    return glm::sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y) + (a.z - b.z) * (a.z - b.z));
+}
+
+float len(glm::vec3 a)
+{
+    return glm::sqrt(a.x * a.x + a.y * a.y + a.z * a.z);
+}
+
 Boids::Boids(int startIndex, int nBoids, Scene &scene)
 {
     m_scene = &scene;
@@ -15,7 +25,7 @@ Boids::Boids(int startIndex, int nBoids, Scene &scene)
 
     m_nBoids = nBoids;
 
-    m_speeds.resize(m_nBoids);
+    m_speeds.reserve(m_nBoids);
     //m_accels.resize(m_nBoids);
 
     for (int i = 0; i < m_nBoids; i++)
@@ -90,10 +100,11 @@ void Boids::updateSpeed(int i)
 
     unsigned int countClose = 0;
 
+    // Calculating avg stuff from the flock
     for (int j = 0; j < m_nBoids; j++)
     {
         glm::vec3 otherPos = m_scene->m_object[j + m_startIndex].transform.position;
-        float cdist = glm::distance(thisPos, otherPos);
+        float cdist = dist(thisPos, otherPos);
 
         if (i != j && cdist < m_viewRad)
         {
@@ -104,7 +115,14 @@ void Boids::updateSpeed(int i)
             countClose++;
         }
     }
+    // Updates the flock avg pos, and velocity
+    if (i == 0)
+    {
+        boidsAvgPos = (avgPos + thisPos) / (float)m_nBoids;
+        boidsAvgVelocity = (avgSpeed + m_speeds[0]) / (float)m_nBoids;
+    }
 
+    // If the boid is not alone
     if (countClose != 0)
     {
         avgPos /= countClose;
@@ -142,6 +160,7 @@ void Boids::updateAll()
             updateSpeed(i);
         }
     }
+
     {
         TIME_IT("Update Positions")
         for (int i = 0; i < m_nBoids; i++)

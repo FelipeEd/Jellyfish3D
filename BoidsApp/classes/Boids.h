@@ -10,6 +10,7 @@ public:
     int m_startIndex;
     int m_nBoids;
     int targetIndex;
+    Scene *m_scene;
 
     float m_maxSpeed = 0.2f;
     float m_maxAccel = 0.01f;
@@ -24,7 +25,8 @@ public:
 
     float m_viewRad = 5.0f;
 
-    Scene *m_scene;
+    glm::vec3 boidsAvgPos = glm::vec3(0.0);
+    glm::vec3 boidsAvgVelocity = glm::vec3(1.0, 0, 0);
 
     std::vector<glm::vec3> m_speeds;
     //std::vector<glm::vec3> m_accels;
@@ -37,4 +39,7 @@ public:
     // Based on the laws
     void updateSpeed(int i);
     void updateAll();
+
+    glm::vec3 getAvgPos() { return boidsAvgPos; };
+    glm::vec3 getAvgVelocity() { return boidsAvgVelocity; };
 };

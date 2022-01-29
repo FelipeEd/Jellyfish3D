@@ -15,29 +15,25 @@ Object::Object(const std::string &name, unsigned int mesh, unsigned int material
 
 glm::mat4 Object::getModelMatrix() { return transform.getModelMatrix(); }
 
-void Object::reactToInput(GLFWwindow *window)
+void Object::reactToInput(GLFWwindow *window, KeyStates input)
 {
 
-    m_userControl.observeInputs(window);
-
-    if (m_userControl.m_inputs["bleft"])
+    if (input.keys["bleft"])
     {
         transform.position += glm::vec3(-0.01f, 0.0f, 0.0f);
     }
-    if (m_userControl.m_inputs["bright"])
+    if (input.keys["bright"])
     {
         transform.position += glm::vec3(0.01f, 0.0f, 0.0f);
     }
-    if (m_userControl.m_inputs["bup"])
+    if (input.keys["bup"])
     {
         transform.position += glm::vec3(0.0f, 0.01f, 0.0f);
     }
-    if (m_userControl.m_inputs["bdown"])
+    if (input.keys["bdown"])
     {
         transform.position += glm::vec3(0.00f, -0.01f, 0.0f);
     }
-
-    m_userControl.resetState();
 }
 
 unsigned int Object::getMeshId() { return m_mesh; }

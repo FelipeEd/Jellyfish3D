@@ -12,8 +12,6 @@ extern unsigned int HEIGHT;
 class Camera
 {
 private:
-    comp_UserControl m_userControl;
-
     Timer m_rotatingCooldown = Timer(10);
     bool isRotating = false;
 
@@ -30,7 +28,8 @@ public:
     Camera(){};
     ~Camera(){};
 
-    void reactToInput(GLFWwindow *window);
+    void pointTo(glm::vec3 pos);
+    void reactToInput(GLFWwindow *window, KeyStates input);
     glm::mat4 getViewMatrix();
     glm::mat4 getProjectionMatrix();
 };

@@ -7,7 +7,7 @@ public:
     Display display;
     Resources assets;
     Clock clock;
-    comp_UserControl inputs;
+    KeyStates inputs;
 
     // Runs once
     void OnStart() {}

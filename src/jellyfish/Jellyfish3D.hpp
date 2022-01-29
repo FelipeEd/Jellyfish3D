@@ -28,6 +28,7 @@
 #include <jellyfish\Mesh.hpp>
 #include <jellyfish\Material.hpp>
 #include <jellyfish\Components.hpp>
+#include <jellyfish\KeyStates.hpp>
 #include <jellyfish\Objects.hpp>
 #include <jellyfish\Light.hpp>
 #include <jellyfish\Skybox.hpp>

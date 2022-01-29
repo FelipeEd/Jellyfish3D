@@ -2,7 +2,7 @@
 CC = g++
 
 # APP name
-NAME := Sandbox
+NAME := Boids
 APP_NAME := $(NAME)App
 APP_FNAME := /$(APP_NAME).cpp
 

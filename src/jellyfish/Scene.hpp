@@ -5,8 +5,8 @@
 class Scene
 {
 private:
-    Camera m_cams[3];
     unsigned int activeCam = 0;
+    Camera m_cams[4];
 
 public:
     std::vector<Object> m_object; // TODO: Use a better container

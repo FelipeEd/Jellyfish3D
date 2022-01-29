@@ -1,41 +1,40 @@
 #include <jellyfish/Jellyfish3D.hpp>
 
-void Camera::reactToInput(GLFWwindow *window)
+void Camera::reactToInput(GLFWwindow *window, KeyStates input)
 {
-    m_userControl.observeInputs(window);
     float walkSpeed = 0.15;
-    if (m_userControl.m_inputs["camaccel"])
+    if (input.keys["camaccel"])
         walkSpeed = 0.7;
 
-    if (m_userControl.m_inputs["camright"])
+    if (input.keys["camright"])
     {
         transform.position = transform.position + walkSpeed * glm::normalize(glm::cross(m_orientation, Up));
     }
-    if (m_userControl.m_inputs["camleft"])
+    if (input.keys["camleft"])
     {
         transform.position = transform.position - walkSpeed * glm::normalize(glm::cross(m_orientation, Up)); //glm::vec3(-walkSpeed, 0.0f, 0.0f));
     }
 
-    if (m_userControl.m_inputs["camfront"])
+    if (input.keys["camfront"])
     {
         transform.position = transform.position + walkSpeed * m_orientation;
     }
-    if (m_userControl.m_inputs["camback"])
+    if (input.keys["camback"])
     {
         transform.position = transform.position - walkSpeed * m_orientation;
     }
 
-    if (m_userControl.m_inputs["camup"])
+    if (input.keys["camup"])
     {
         transform.position = transform.position + walkSpeed * glm::vec3(0.0f, 1.0f, 0.0f);
     }
-    if (m_userControl.m_inputs["camdown"])
+    if (input.keys["camdown"])
     {
         transform.position = transform.position - walkSpeed * glm::vec3(0.0f, 1.0f, 0.0f);
     }
 
     m_rotatingCooldown.tick();
-    if (m_userControl.m_inputs["camrot"] && m_rotatingCooldown.isUp())
+    if (input.keys["camrot"] && m_rotatingCooldown.isUp())
     {
         isRotating = !isRotating;
         m_rotatingCooldown.reset();
@@ -47,8 +46,8 @@ void Camera::reactToInput(GLFWwindow *window)
         // Normalizes and shifts the coordinates of the cursor such that they begin in the middle of the screen
         // and then "transforms" them into degrees
         float sensitivity = 100.0f;
-        double mouseX = m_userControl.m_mouseX;
-        double mouseY = m_userControl.m_mouseY;
+        double mouseX = input.m_mouseX;
+        double mouseY = input.m_mouseY;
 
         float rotX = sensitivity * (float)(mouseY - (HEIGHT / 2)) / HEIGHT;
         float rotY = sensitivity * (float)(mouseX - (WIDTH / 2)) / WIDTH;
@@ -88,8 +87,6 @@ void Camera::reactToInput(GLFWwindow *window)
     {
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
     }
-
-    m_userControl.resetState();
 }
 
 glm::mat4 Camera::getViewMatrix()
@@ -108,4 +105,9 @@ glm::mat4 Camera::getViewMatrix()
 glm::mat4 Camera::getProjectionMatrix()
 {
     return glm::perspective(glm::radians(m_FOV), (float)WIDTH / HEIGHT, m_nearPlane, m_farPlane);
+}
+
+void Camera::pointTo(glm::vec3 pos)
+{
+    m_orientation = glm::normalize(pos - this->transform.position);
 }

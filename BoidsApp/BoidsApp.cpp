@@ -33,9 +33,9 @@ int main()
         app.assets.loadMesh("resources/simplesphere.obj");
         app.assets.loadMesh("resources/uvsphere.obj");
         app.assets.loadMesh("resources/plane.obj");
-        app.assets.loadMesh("resources/test_ship.obj");
+        app.assets.loadMesh("resources/newship.obj");
 
-        app.assets.loadMaterial("resources/textures/test_ship", "_1k");
+        app.assets.loadMaterial("resources/textures/Silver_Worn", "_2k");
         //assets->loadMaterial("resources/textures/denmin_fabric_02", "_1k");
         app.assets.loadMaterial("resources/textures/blue_painted_planks", "_1k");
         //assets->loadMaterial("resources/textures/concrete_floor_02", "_1k");
@@ -94,18 +94,20 @@ int main()
 
             if (app.clock.tick())
             {
-
-                scene.getActiveCam()->reactToInput(window);
-
+                // Inputs
                 app.inputs.observeInputs(window);
+                //app.inputs.printInputs();
+                scene.getActiveCam()->reactToInput(window, app.inputs);
+
                 pauseCooldown.tick();
-                if (app.inputs.m_inputs["pause"] && pauseCooldown.isUp())
+                if (app.inputs.keys["pause"] && pauseCooldown.isUp())
                 {
                     pause = !pause;
                     pauseCooldown.reset();
                 }
-                app.inputs.m_inputs["pause"] = false;
+                app.inputs.keys["pause"] = false;
 
+                // User interface
                 gui.text("Limits : ");
                 gui.sliderFloat("View Radius", boids.m_viewRad, 0.5, 25.0);
                 gui.sliderFloat("Max Speed", boids.m_maxSpeed, 0.001, 2.0);
@@ -127,18 +129,29 @@ int main()
                 }
                 if (gui.button("Skybox"))
                     renderer.switchSkybox();
+
                 float radius = 10.0f;
                 float freq = 0.5f;
-                {
-                    TIME_IT("Find Target")
-                    scene.setPosition("Target", {radius * glm::cos(glfwGetTime() * freq), 0.0f, radius * glm::sin(glfwGetTime() * freq)});
-                }
-                {
-                    TIME_IT("Update Boids")
 
-                    if (!pause)
+                if (!pause)
+                {
                     {
+                        TIME_IT("Find Target")
+                        scene.setPosition("Target", {radius * glm::cos(glfwGetTime() * freq), -20.0f, radius * glm::sin(glfwGetTime() * freq)});
+                    }
+
+                    {
+                        TIME_IT("Update Boids")
                         boids.updateAll();
+
+                        // Camera management
+                        // Camera 0
+                        scene.getActiveCam()->transform.position = glm::vec3(0.0, 0.0, 0.0);
+
+                        // Camera 1
+                        //scene.getActiveCam()->transform.position =
+
+                        scene.getActiveCam()->pointTo(boids.getAvgPos());
                     }
                 }
             }
@@ -153,6 +166,7 @@ int main()
         {
             TIME_IT("Swap Buffers");
 
+            app.inputs.resetState();
             gui.endFrame();
             // Faz a troca do framebuffer antigo para o novo (double buffer)
             glfwSwapBuffers(window);

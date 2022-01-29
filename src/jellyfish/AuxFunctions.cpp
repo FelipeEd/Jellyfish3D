@@ -167,7 +167,7 @@ unsigned int createTexture(const std::string &textureName)
     }
     else
     {
-        std::cout << "Failed to load texture" << std::endl;
+        std::cout << "Failed to load texture" << textureName << std::endl;
     }
     stbi_image_free(data);
 

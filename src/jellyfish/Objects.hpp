@@ -3,7 +3,6 @@
 class Object
 {
 protected:
-    comp_UserControl m_userControl;
     unsigned int m_mesh;
     unsigned int m_material;
     std::string m_name;
@@ -14,7 +13,7 @@ public:
     Object(const std::string &name, unsigned int mesh, unsigned int material);
     ~Object(){};
 
-    void reactToInput(GLFWwindow *window);
+    void reactToInput(GLFWwindow *window, KeyStates input);
 
     glm::mat4 getScaleMatrix();
     glm::mat4 getRotateMatrix();
