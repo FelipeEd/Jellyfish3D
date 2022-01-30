@@ -11,6 +11,11 @@ void Scene::addObject(const std::string &name, unsigned int meshID, unsigned int
     m_object.push_back(newObj);
 }
 
+void Scene::removeLastObject()
+{
+    m_object.pop_back();
+}
+
 void Scene::addLight(const std::string &name, glm::vec3 color, glm::vec3 pos)
 {
     Light light(name, color, pos);

@@ -18,6 +18,9 @@ KeyStates::KeyStates()
     keys["camdown"] = false;
     keys["camrot"] = false;
     keys["camaccel"] = false;
+    keys["addboid"] = false;
+    keys["removeboid"] = false;
+
     keys["selectcam0"] = false;
     keys["selectcam1"] = false;
     keys["selectcam2"] = false;
@@ -68,6 +71,11 @@ void KeyStates::observeInputs(GLFWwindow *window)
     // Control App stte
     if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS)
         keys["pause"] = true;
+    // Boids control
+    if (glfwGetKey(window, GLFW_KEY_KP_ADD) == GLFW_PRESS)
+        keys["addboid"] = true;
+    if (glfwGetKey(window, GLFW_KEY_KP_SUBTRACT) == GLFW_PRESS)
+        keys["removeboid"] = true;
 
     //Select current camera
     if (glfwGetKey(window, GLFW_KEY_0) == GLFW_PRESS)

@@ -8,7 +8,7 @@ unsigned int WIDTH = 1280; //1280;
 unsigned int HEIGHT = 720; //720;
 bool pbr = true;
 
-#define NUM_BOIDS 600
+#define NUM_BOIDS 1
 
 // -----------------------------------------------------------------------------------
 int main()
@@ -20,6 +20,8 @@ int main()
     // When using opengl
     GLFWwindow *window = app.display.getWindow();
     Timer pauseCooldown(10);
+    Timer addsubBoidsCooldown(10);
+
     GUI gui;
     gui.init(window);
 
@@ -94,7 +96,7 @@ int main()
 
             if (app.clock.tick())
             {
-                // Inputs
+                // Inputs---------------------------------------------------------------------------------------------------
                 app.inputs.observeInputs(window);
                 //app.inputs.printInputs();
                 scene.reactToInput(window, app.inputs);
@@ -105,8 +107,36 @@ int main()
                     pause = !pause;
                     pauseCooldown.reset();
                 }
-                app.inputs.keys["pause"] = false;
+                // Camera management
+                // Camera 0
 
+                // Camera 1
+                scene.m_cams[1].transform.position = glm::vec3(0.0, 0.0, 0.0);
+                scene.m_cams[1].pointTo(boids.getAvgPos());
+
+                // Camaera 2
+                scene.m_cams[2].transform.position = boids.getAvgPos() - 50.0f * boids.getAvgVelocity();
+                scene.m_cams[2].pointTo(boids.getAvgPos());
+
+                // Camaera 2
+                scene.m_cams[3].transform.position = boids.getAvgPos() + 50.0f * glm::vec3(-boids.getAvgVelocity().z, 0.0f, boids.getAvgVelocity().x);
+                scene.m_cams[3].pointTo(boids.getAvgPos());
+
+                // Boid control
+                addsubBoidsCooldown.tick();
+                if (app.inputs.keys["addboid"] && addsubBoidsCooldown.isUp())
+                {
+                    boids.addBoid();
+                    addsubBoidsCooldown.reset();
+                }
+
+                if (app.inputs.keys["removeboid"] && addsubBoidsCooldown.isUp())
+                {
+                    boids.removeBoid();
+                    addsubBoidsCooldown.reset();
+                }
+
+                //----------------------------------------------------------------------------------------------------------
                 // User interface
                 gui.text("Limits : ");
                 gui.sliderFloat("View Radius", boids.m_viewRad, 0.5, 25.0);
@@ -144,21 +174,6 @@ int main()
                     {
                         TIME_IT("Update Boids")
                         boids.updateAll();
-
-                        // Camera management
-                        // Camera 0
-
-                        // Camera 1
-                        scene.m_cams[1].transform.position = glm::vec3(0.0, 0.0, 0.0);
-                        scene.m_cams[1].pointTo(boids.getAvgPos());
-
-                        // Camaera 2
-                        scene.m_cams[2].transform.position = boids.getAvgPos() - 50.0f * boids.getAvgVelocity();
-                        scene.m_cams[2].pointTo(boids.getAvgPos());
-
-                        // Camaera 2
-                        scene.m_cams[3].transform.position = boids.getAvgPos() + 50.0f * glm::vec3(-boids.getAvgVelocity().z, 0.0f, boids.getAvgVelocity().x);
-                        scene.m_cams[3].pointTo(boids.getAvgPos());
                     }
                 }
             }

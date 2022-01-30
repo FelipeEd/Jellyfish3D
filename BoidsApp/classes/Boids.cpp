@@ -25,14 +25,14 @@ Boids::Boids(int startIndex, int nBoids, Scene &scene)
 
     m_nBoids = nBoids;
 
-    m_speeds.reserve(m_nBoids);
+    m_speeds.reserve(m_nBoids + 20);
     //m_accels.resize(m_nBoids);
 
     for (int i = 0; i < m_nBoids; i++)
     {
         m_scene->addObject("boid" + std::to_string(i), 4, 1);
         m_scene->setPosition("boid" + std::to_string(i), glm::sphericalRand(20.0f));
-        m_scene->setScale("boid" + std::to_string(i), 0.4);
+        m_scene->setScale("boid" + std::to_string(i), m_boidScale);
 
         m_speeds[i] = glm::sphericalRand(m_maxSpeed);
         //m_accels[i] = glm::vec3(0.0f);
@@ -44,7 +44,7 @@ void Boids::reset()
     for (int i = 0; i < m_nBoids; i++)
     {
         m_scene->setPosition("boid" + std::to_string(i), glm::sphericalRand(20.0f));
-        m_scene->setScale("boid" + std::to_string(i), 0.4);
+        m_scene->setScale("boid" + std::to_string(i), m_boidScale);
 
         m_speeds[i] = glm::sphericalRand(m_maxSpeed);
         //m_accels[i] = glm::vec3(0.0f);
@@ -167,5 +167,26 @@ void Boids::updateAll()
         {
             updatePosition(i);
         }
+    }
+}
+
+void Boids::addBoid()
+{
+    int i = m_nBoids;
+    m_scene->addObject("boid" + std::to_string(i), 4, 1);
+    m_scene->setPosition("boid" + std::to_string(i), glm::sphericalRand(20.0f));
+    m_scene->setScale("boid" + std::to_string(i), m_boidScale);
+    m_speeds.push_back(glm::sphericalRand(1.0));
+
+    m_nBoids++;
+}
+
+void Boids::removeBoid()
+{
+    if (m_nBoids > 0)
+    {
+        m_scene->removeLastObject();
+        m_speeds.pop_back();
+        m_nBoids--;
     }
 }

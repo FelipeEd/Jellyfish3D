@@ -16,6 +16,7 @@ public:
 
     void addObject(const std::string &name, unsigned int meshID, unsigned int materialId);
     void addLight(const std::string &name, glm::vec3 color, glm::vec3 pos);
+    void removeLastObject();
 
     void reactToInput(GLFWwindow *window, KeyStates input);
 

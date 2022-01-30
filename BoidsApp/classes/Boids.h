@@ -7,6 +7,7 @@
 class Boids
 {
 public:
+    float m_boidScale = 0.4;
     int m_startIndex;
     int m_nBoids;
     int targetIndex;
@@ -40,6 +41,8 @@ public:
     // Based on the laws
     void updateSpeed(int i);
     void updateAll();
+    void addBoid();
+    void removeBoid();
 
     glm::vec3 getAvgPos() { return boidsAvgPos; };
     glm::vec3 getAvgVelocity() { return boidsAvgVelocity; };
