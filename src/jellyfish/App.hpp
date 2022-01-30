@@ -1,5 +1,8 @@
 #pragma once
 
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+
 class App
 {
 private:
@@ -8,6 +11,11 @@ public:
     Resources assets;
     Clock clock;
     KeyStates inputs;
+
+    double getTime()
+    {
+        return glfwGetTime();
+    }
 
     // Runs once
     void OnStart() {}

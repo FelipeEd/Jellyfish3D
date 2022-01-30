@@ -27,6 +27,8 @@ void Renderer::drawObjects(Scene &scene, App &app)
     Camera *cam = scene.getActiveCam();
 
     m_objectShader.use();
+    m_objectShader.setFloat("uTime", app.getTime());
+
     // Seting camera transforms unifomrs
     m_objectShader.setMat4("uView", cam->getViewMatrix());
     m_objectShader.setMat4("uProjection", cam->getProjectionMatrix());
@@ -39,6 +41,8 @@ void Renderer::drawObjects(Scene &scene, App &app)
 
         skybox.setUniforms(m_objectShader);
         material.setUniforms(m_objectShader);
+
+        m_objectShader.setBool("uIsBoid", scene.m_object[i].isBoids);
 
         // Setting the object transformations
         m_objectShader.setMat4("uModel", scene.m_object[i].getModelMatrix());

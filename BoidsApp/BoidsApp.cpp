@@ -8,7 +8,7 @@ unsigned int WIDTH = 1280; //1280;
 unsigned int HEIGHT = 720; //720;
 bool pbr = true;
 
-#define NUM_BOIDS 1
+#define NUM_BOIDS 500
 
 // -----------------------------------------------------------------------------------
 int main()
@@ -36,12 +36,14 @@ int main()
         app.assets.loadMesh("resources/uvsphere.obj");
         app.assets.loadMesh("resources/plane.obj");
         app.assets.loadMesh("resources/newship.obj");
+        app.assets.loadMesh("resources/tower.obj");
 
         app.assets.loadMaterial("resources/textures/Silver_Worn", "_2k");
         //assets->loadMaterial("resources/textures/denmin_fabric_02", "_1k");
         app.assets.loadMaterial("resources/textures/blue_painted_planks", "_1k");
         //assets->loadMaterial("resources/textures/concrete_floor_02", "_1k");
         //assets->loadMaterial("resources/textures/square_floor", "_1k");
+        app.assets.loadMaterial("resources/textures/Gold_Worn", "_2k");
     }
 
     {
@@ -58,6 +60,9 @@ int main()
         scene.addObject("ground", 3, 2);
         scene.setPosition("ground", {0.0, -halfBox, 0.0});
         scene.setScale("ground", halfBox);
+
+        scene.addObject("tower", 5, 3);
+        scene.setScale("tower", halfBox / 1.8);
 
         for (int i = 0; i < 8; i++)
         {
@@ -109,17 +114,17 @@ int main()
                 }
                 // Camera management
                 // Camera 0
-
+                glm::vec3 avgVeldirection = glm::normalize(boids.getAvgVelocity());
                 // Camera 1
                 scene.m_cams[1].transform.position = glm::vec3(0.0, 0.0, 0.0);
                 scene.m_cams[1].pointTo(boids.getAvgPos());
 
                 // Camaera 2
-                scene.m_cams[2].transform.position = boids.getAvgPos() - 50.0f * boids.getAvgVelocity();
+                scene.m_cams[2].transform.position = boids.getAvgPos() - 20.0f * avgVeldirection;
                 scene.m_cams[2].pointTo(boids.getAvgPos());
 
                 // Camaera 2
-                scene.m_cams[3].transform.position = boids.getAvgPos() + 50.0f * glm::vec3(-boids.getAvgVelocity().z, 0.0f, boids.getAvgVelocity().x);
+                scene.m_cams[3].transform.position = boids.getAvgPos() + 20.0f * glm::vec3(-avgVeldirection.z, 0.0f, avgVeldirection.x);
                 scene.m_cams[3].pointTo(boids.getAvgPos());
 
                 // Boid control

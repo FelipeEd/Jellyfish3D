@@ -14,7 +14,7 @@ public:
     Scene *m_scene;
 
     float m_maxSpeed = 0.3f;
-    float m_maxAccel = m_maxSpeed / 60;
+    float m_maxAccel = m_maxSpeed / 30;
 
     float m_speedMultiplier = 1.0f;
     float m_accelMultiplier = 1.0f;

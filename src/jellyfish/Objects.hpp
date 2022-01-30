@@ -8,6 +8,7 @@ protected:
     std::string m_name;
 
 public:
+    bool isBoids = false; //! REMOVE THIS AAAAAAA
     comp_Transform transform;
     Object();
     Object(const std::string &name, unsigned int mesh, unsigned int material);
