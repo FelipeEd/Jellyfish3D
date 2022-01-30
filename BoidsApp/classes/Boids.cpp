@@ -32,7 +32,7 @@ Boids::Boids(int startIndex, int nBoids, Scene &scene)
     {
         m_scene->addObject("boid" + std::to_string(i), 4, 1);
         m_scene->setPosition("boid" + std::to_string(i), glm::sphericalRand(20.0f));
-        m_scene->setScale("boid" + std::to_string(i), 0.2);
+        m_scene->setScale("boid" + std::to_string(i), 0.4);
 
         m_speeds[i] = glm::sphericalRand(m_maxSpeed);
         //m_accels[i] = glm::vec3(0.0f);
@@ -44,7 +44,7 @@ void Boids::reset()
     for (int i = 0; i < m_nBoids; i++)
     {
         m_scene->setPosition("boid" + std::to_string(i), glm::sphericalRand(20.0f));
-        m_scene->setScale("boid" + std::to_string(i), 0.2);
+        m_scene->setScale("boid" + std::to_string(i), 0.4);
 
         m_speeds[i] = glm::sphericalRand(m_maxSpeed);
         //m_accels[i] = glm::vec3(0.0f);
@@ -56,8 +56,8 @@ void Boids::updatePosition(int i)
 {
     comp_Transform *transf = &m_scene->m_object[i + m_startIndex].transform;
 
-    glm::vec3 trueSpeed = m_speeds[i];               //glm::vec3(m_speeds[i].x, m_speeds[i].y, 0.0f); // ! DEBUG
-    glm::vec3 newpos = transf->position + trueSpeed; //glm::vec3(0.0f, m_speeds[i].y, m_speeds[i].z);
+    glm::vec3 trueSpeed = m_speeds[i];
+    glm::vec3 newpos = transf->position + trueSpeed;
 
     // teleport 1 or inviWall -1
     float a = 1;
@@ -106,7 +106,7 @@ void Boids::updateSpeed(int i)
         glm::vec3 otherPos = m_scene->m_object[j + m_startIndex].transform.position;
         float cdist = dist(thisPos, otherPos);
 
-        if (i != j && cdist < m_viewRad)
+        if (i != j && cdist < m_viewRad && glm::angle(m_speeds[i], thisPos - otherPos) < m_boidsFOV)
         {
             avgPos += otherPos;
             avgSpeed += m_speeds[j];

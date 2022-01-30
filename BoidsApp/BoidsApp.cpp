@@ -97,7 +97,7 @@ int main()
                 // Inputs
                 app.inputs.observeInputs(window);
                 //app.inputs.printInputs();
-                scene.getActiveCam()->reactToInput(window, app.inputs);
+                scene.reactToInput(window, app.inputs);
 
                 pauseCooldown.tick();
                 if (app.inputs.keys["pause"] && pauseCooldown.isUp())
@@ -110,11 +110,12 @@ int main()
                 // User interface
                 gui.text("Limits : ");
                 gui.sliderFloat("View Radius", boids.m_viewRad, 0.5, 25.0);
+                gui.sliderFloat("View FOV", boids.m_boidsFOV, 10.0f, 359.0);
                 gui.sliderFloat("Max Speed", boids.m_maxSpeed, 0.001, 2.0);
                 gui.sliderFloat("Max Accel", boids.m_maxAccel, 0.0001, 0.2);
                 gui.text("Forces : ");
                 gui.sliderFloat("Speed Multiplier", boids.m_speedMultiplier, 0.01, 3.0);
-                gui.sliderFloat("Speed Accel", boids.m_accelMultiplier, 0.01, 3.0);
+                gui.sliderFloat("Accel Multiplier", boids.m_accelMultiplier, 0.01, 3.0);
                 gui.sliderFloat("Align factor", boids.A_fac, 0.001, 2.0);
                 gui.sliderFloat("Cohesion factor", boids.C_fac, 0.001, 2.0);
                 gui.sliderFloat("Separation factor", boids.S_fac, 0.001, 10.0);
@@ -131,13 +132,13 @@ int main()
                     renderer.switchSkybox();
 
                 float radius = 10.0f;
-                float freq = 0.5f;
+                float freq = 0.05f;
 
                 if (!pause)
                 {
                     {
                         TIME_IT("Find Target")
-                        scene.setPosition("Target", {radius * glm::cos(glfwGetTime() * freq), -20.0f, radius * glm::sin(glfwGetTime() * freq)});
+                        scene.setPosition("Target", {radius * glm::cos(glfwGetTime() * freq), 0.0f, radius * glm::sin(glfwGetTime() * freq)});
                     }
 
                     {
@@ -146,12 +147,18 @@ int main()
 
                         // Camera management
                         // Camera 0
-                        scene.getActiveCam()->transform.position = glm::vec3(0.0, 0.0, 0.0);
 
                         // Camera 1
-                        //scene.getActiveCam()->transform.position =
+                        scene.m_cams[1].transform.position = glm::vec3(0.0, 0.0, 0.0);
+                        scene.m_cams[1].pointTo(boids.getAvgPos());
 
-                        scene.getActiveCam()->pointTo(boids.getAvgPos());
+                        // Camaera 2
+                        scene.m_cams[2].transform.position = boids.getAvgPos() - 50.0f * boids.getAvgVelocity();
+                        scene.m_cams[2].pointTo(boids.getAvgPos());
+
+                        // Camaera 2
+                        scene.m_cams[3].transform.position = boids.getAvgPos() + 50.0f * glm::vec3(-boids.getAvgVelocity().z, 0.0f, boids.getAvgVelocity().x);
+                        scene.m_cams[3].pointTo(boids.getAvgPos());
                     }
                 }
             }
