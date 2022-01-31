@@ -1,4 +1,5 @@
 #include <jellyfish/Jellyfish3D.hpp>
+#include <glm/gtx/euler_angles.hpp>
 
 Object::Object()
 {
@@ -6,42 +7,40 @@ Object::Object()
     m_material = 0;
 }
 
-Object::Object(std::string name, unsigned int mesh, unsigned int material)
+Object::Object(const std::string &name, unsigned int mesh, unsigned int material)
 {
     m_name = name;
     m_mesh = mesh;
     m_material = material;
 }
 
-glm::mat4 Object::getScaleMatrix() { return m_transform.getScaleMatrix(); }
-glm::mat4 Object::getRotateMatrix() { return m_transform.getRotateMatrix(); }
-glm::mat4 Object::getTranslateMatrix() { return m_transform.getTranslateMatrix(); }
-
-void Object::reactToInput(GLFWwindow *window)
+void Object::reactToInput(GLFWwindow *window, KeyStates input)
 {
 
-    m_userControl.observeInputs(window);
+    float leaderSpeed = 0.2;
+    float turnSpeed = 0.1;
 
-    if (m_userControl.m_inputs["bleft"])
+    if (input.keys["shipleft"])
     {
-        m_transform.setPosition(m_transform.getPosition() + glm::vec3(-0.01f, 0.0f, 0.0f));
+        transform.rotation += glm::vec3(0.0f, turnSpeed, 0.0f);
     }
-    if (m_userControl.m_inputs["bright"])
+    if (input.keys["shipright"])
     {
-        m_transform.setPosition(m_transform.getPosition() + glm::vec3(0.01f, 0.0f, 0.0f));
+        transform.rotation += -glm::vec3(0.0f, turnSpeed, 0.0f);
     }
-    if (m_userControl.m_inputs["bup"])
+    if (input.keys["shipup"])
     {
-        m_transform.setPosition(m_transform.getPosition() + glm::vec3(0.0f, 0.01f, 0.0f));
+        transform.rotation += -glm::vec3(turnSpeed, 0.00f, 0.0f);
     }
-    if (m_userControl.m_inputs["bdown"])
+    if (input.keys["shipdown"])
     {
-        m_transform.setPosition(m_transform.getPosition() + glm::vec3(0.00f, -0.01f, 0.0f));
+        transform.rotation += +glm::vec3(turnSpeed, 0.00f, 0.0f);
     }
 
-    m_userControl.resetState();
+    transform.position += glm::vec3(leaderSpeed * glm::mat4(glm::quat(transform.rotation)) * glm::vec4(0.0, 0.0, 1.0, 1.0)); //glm::vec3(leaderSpeed * glm::eulerAngleXY(transform.rotation.x, transform.rotation.y) * glm::vec4(0.0, 0.0, 1.0, 1.0));
 }
 
+glm::mat4 Object::getModelMatrix() { return transform.getModelMatrix(); }
 unsigned int Object::getMeshId() { return m_mesh; }
 unsigned int Object::getMaterialId() { return m_material; }
 std::string Object::getName() { return m_name; }

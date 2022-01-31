@@ -1,4 +1,8 @@
 #include <jellyfish\Jellyfish3D.hpp>
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <stbi/stb_image.h>
 
 std::vector<Vertex> loadOBJ(const char *file_name)
 {
@@ -108,7 +112,7 @@ std::vector<Vertex> loadOBJ(const char *file_name)
         vertices[i].position = vertex_positions[vertex_position_indicies[i] - 1];
         vertices[i].texCoord = vertex_texcoords[vertex_texcoord_indicies[i] - 1];
         vertices[i].normal = vertex_normals[vertex_normal_indicies[i] - 1];
-        vertices[i].color = glm::vec4(1.f, 1.f, 1.f, 1.f);
+        vertices[i].color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
     }
 
     //DEBUG
@@ -121,7 +125,7 @@ std::vector<Vertex> loadOBJ(const char *file_name)
 }
 
 // Retorna o int da textura que foi alocada
-unsigned int createTexture(const char *textureName)
+unsigned int createTexture(const std::string &textureName)
 {
     unsigned int texture;
     // Textura-----------------------------------------------------------------
@@ -137,22 +141,38 @@ unsigned int createTexture(const char *textureName)
     // load and generate the texture
     int tex_width, tex_height, nrChannels;
     stbi_set_flip_vertically_on_load(true);
-    unsigned char *data = stbi_load(textureName, &tex_width, &tex_height, &nrChannels, 0);
-    if (data && nrChannels == 3)
+    unsigned char *data = stbi_load(textureName.c_str(), &tex_width, &tex_height, &nrChannels, 0);
+
+    if (data)
     {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, tex_width, tex_height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-        //glGenerateMipmap(GL_TEXTURE_2D);
-    }
-    else if (data && nrChannels == 4)
-    {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, tex_width, tex_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-        //glGenerateMipmap(GL_TEXTURE_2D);
+        GLenum formatin, formatout;
+        if (nrChannels == 1)
+        {
+            formatin = GL_RED;
+            formatout = GL_SRGB;
+        }
+        else if (nrChannels == 3)
+        {
+            formatin = GL_RGB;
+            formatout = GL_SRGB;
+        }
+        else if (nrChannels == 4)
+        {
+            formatin = GL_RGBA; //GL_RGBA;
+            formatout = GL_SRGB_ALPHA;
+        }
+
+        glTexImage2D(GL_TEXTURE_2D, 0, formatin, tex_width, tex_height, 0, formatin, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
     }
     else
     {
-        std::cout << "Failed to load texture" << std::endl;
+        std::cout << "Failed to load texture" << textureName << std::endl;
     }
     stbi_image_free(data);
+
+    //glBindTexture(GL_TEXTURE_2D, 0);
+
     return texture;
     //-------------------------------------------------------------------------
 }

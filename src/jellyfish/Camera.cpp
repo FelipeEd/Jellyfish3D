@@ -1,41 +1,40 @@
 #include <jellyfish/Jellyfish3D.hpp>
 
-void Camera::reactToInput(GLFWwindow *window)
+void Camera::reactToInput(GLFWwindow *window, KeyStates input)
 {
-    m_userControl.observeInputs(window);
-    float walkSpeed = 0.05;
-    if (m_userControl.m_inputs["camaccel"])
-        walkSpeed = 0.5;
+    float walkSpeed = 0.15;
+    if (input.keys["camaccel"])
+        walkSpeed = 0.7;
 
-    if (m_userControl.m_inputs["camright"])
+    if (input.keys["camright"])
     {
-        m_transform.setPosition(m_transform.getPosition() + walkSpeed * glm::normalize(glm::cross(m_orientation, Up)));
+        transform.position = transform.position + walkSpeed * glm::normalize(glm::cross(m_orientation, Up));
     }
-    if (m_userControl.m_inputs["camleft"])
+    if (input.keys["camleft"])
     {
-        m_transform.setPosition(m_transform.getPosition() - walkSpeed * glm::normalize(glm::cross(m_orientation, Up))); //glm::vec3(-walkSpeed, 0.0f, 0.0f));
-    }
-
-    if (m_userControl.m_inputs["camfront"])
-    {
-        m_transform.setPosition(m_transform.getPosition() + walkSpeed * m_orientation);
-    }
-    if (m_userControl.m_inputs["camback"])
-    {
-        m_transform.setPosition(m_transform.getPosition() - walkSpeed * m_orientation);
+        transform.position = transform.position - walkSpeed * glm::normalize(glm::cross(m_orientation, Up)); //glm::vec3(-walkSpeed, 0.0f, 0.0f));
     }
 
-    if (m_userControl.m_inputs["camup"])
+    if (input.keys["camfront"])
     {
-        m_transform.setPosition(m_transform.getPosition() + walkSpeed * glm::vec3(0.0f, 1.0f, 0.0f));
+        transform.position = transform.position + walkSpeed * m_orientation;
     }
-    if (m_userControl.m_inputs["camdown"])
+    if (input.keys["camback"])
     {
-        m_transform.setPosition(m_transform.getPosition() - walkSpeed * glm::vec3(0.0f, 1.0f, 0.0f));
+        transform.position = transform.position - walkSpeed * m_orientation;
+    }
+
+    if (input.keys["camup"])
+    {
+        transform.position = transform.position + walkSpeed * glm::vec3(0.0f, 1.0f, 0.0f);
+    }
+    if (input.keys["camdown"])
+    {
+        transform.position = transform.position - walkSpeed * glm::vec3(0.0f, 1.0f, 0.0f);
     }
 
     m_rotatingCooldown.tick();
-    if (m_userControl.m_inputs["camrot"] && m_rotatingCooldown.isUp())
+    if (input.keys["camrot"] && m_rotatingCooldown.isUp())
     {
         isRotating = !isRotating;
         m_rotatingCooldown.reset();
@@ -47,8 +46,8 @@ void Camera::reactToInput(GLFWwindow *window)
         // Normalizes and shifts the coordinates of the cursor such that they begin in the middle of the screen
         // and then "transforms" them into degrees
         float sensitivity = 100.0f;
-        double mouseX = m_userControl.m_mouseX;
-        double mouseY = m_userControl.m_mouseY;
+        double mouseX = input.m_mouseX;
+        double mouseY = input.m_mouseY;
 
         float rotX = sensitivity * (float)(mouseY - (HEIGHT / 2)) / HEIGHT;
         float rotY = sensitivity * (float)(mouseX - (WIDTH / 2)) / WIDTH;
@@ -88,8 +87,6 @@ void Camera::reactToInput(GLFWwindow *window)
     {
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
     }
-
-    m_userControl.resetState();
 }
 
 glm::mat4 Camera::getViewMatrix()
@@ -97,15 +94,20 @@ glm::mat4 Camera::getViewMatrix()
     // Initializes matrices since otherwise they will be the null matrix
     glm::vec3 orientation = m_orientation;
 
-    orientation = glm::rotateX(orientation, glm::radians(m_transform.getRotation().x));
-    orientation = glm::rotateY(orientation, glm::radians(m_transform.getRotation().y));
-    orientation = glm::rotateZ(orientation, glm::radians(m_transform.getRotation().z));
+    orientation = glm::rotateX(orientation, glm::radians(transform.rotation.x));
+    orientation = glm::rotateY(orientation, glm::radians(transform.rotation.y));
+    orientation = glm::rotateZ(orientation, glm::radians(transform.rotation.z));
 
     // Makes camera look in the right direction from the right position
-    return glm::lookAt(m_transform.getPosition(), m_transform.getPosition() + m_orientation, glm::vec3(0.0f, 1.0f, 0.0f));
+    return glm::lookAt(transform.position, transform.position + m_orientation, glm::vec3(0.0f, 1.0f, 0.0f));
 }
 
 glm::mat4 Camera::getProjectionMatrix()
 {
     return glm::perspective(glm::radians(m_FOV), (float)WIDTH / HEIGHT, m_nearPlane, m_farPlane);
+}
+
+void Camera::pointTo(glm::vec3 pos)
+{
+    m_orientation = glm::normalize(pos - this->transform.position);
 }

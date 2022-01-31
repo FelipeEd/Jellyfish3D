@@ -95,20 +95,24 @@ Mesh::Mesh()
             {glm::vec3(half, -half, half), glm::vec3(0.3f, 0.5f, 0.7f), glm::vec2(1.f, 0.f), glm::vec3(0.f, 0.f, 1.f)},  // 3
         };
 
-    this->genBuffer();
+    this->genBuffers();
     m_nvertex = m_vertexData.size();
-    m_nindices = m_vetexIndex.size();
+    //m_nindices = m_vetexIndex.size();
 }
 
-Mesh::Mesh(const char *objName)
+Mesh::Mesh(const std::string &objName)
 {
-    m_vertexData = loadOBJ(objName);
-    this->genBuffer();
+    m_vertexData = loadOBJ(objName.c_str());
+    this->genBuffers();
     m_nvertex = m_vertexData.size();
-    m_nindices = m_vetexIndex.size();
+    //m_nindices = m_vetexIndex.size();
 }
 
-void Mesh::genBuffer()
+Mesh::~Mesh()
+{
+}
+
+void Mesh::genBuffers()
 {
 
     // Generating the vertex array which the element and vertex buffers will be binded
@@ -117,7 +121,7 @@ void Mesh::genBuffer()
 
     // The buffers
     glGenBuffers(1, &m_vbo);
-    glGenBuffers(1, &m_ebo);
+    //glGenBuffers(1, &m_ebo);
 
     // Vertex buffer Object
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
@@ -125,8 +129,8 @@ void Mesh::genBuffer()
 
     // Element Buffer Object
 
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_vetexIndex.size() * sizeof(unsigned int), &m_vetexIndex[0], GL_STATIC_DRAW);
+    // glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
+    // glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_vetexIndex.size() * sizeof(unsigned int), &m_vetexIndex[0], GL_STATIC_DRAW);
 
     // Layout of VAO
     // (location, size, GL_datatype, normalize, stride, pointer_to_start)
@@ -146,10 +150,21 @@ void Mesh::genBuffer()
     glEnableVertexAttribArray(3);
 }
 
+void Mesh::deleteBuffers()
+{
+    glDeleteVertexArrays(1, &m_vao);
+    glDeleteBuffers(1, &m_vbo);
+    //glDeleteBuffers(1, &m_ebo);
+}
+
 void Mesh::bindBuffer()
 {
     glBindVertexArray(m_vao);
 }
+void Mesh::unbindBuffer()
+{
+    glBindVertexArray(0);
+}
 
 unsigned int Mesh::getNVertex() { return m_nvertex; };
-unsigned int Mesh::getNIndices() { return m_nindices; };
+//unsigned int Mesh::getNIndices() { return m_nindices; };
