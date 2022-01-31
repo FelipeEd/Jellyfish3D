@@ -16,7 +16,7 @@ public:
     float m_maxSpeed = 0.4f;
     float m_maxAccel = m_maxSpeed / 30;
 
-    float m_speedMultiplier = 1.2f;
+    float m_speedMultiplier = 1.1f;
     float m_accelMultiplier = 1.0f;
 
     float A_fac = 0.2f;

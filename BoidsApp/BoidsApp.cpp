@@ -4,8 +4,8 @@
 
 // Global
 // Window size
-unsigned int WIDTH = 1280; //1280;
-unsigned int HEIGHT = 720; //720;
+unsigned int WIDTH = 1980;  //1280;
+unsigned int HEIGHT = 1080; //720;
 bool pbr = true;
 
 #define NUM_BOIDS 500
@@ -126,7 +126,7 @@ int main()
                 }
                 // Camera management
                 // Camera 0
-                glm::vec3 avgVeldirection = glm::normalize(boids.getAvgVelocity());
+                glm::vec3 avgVeldirection = glm::normalize(boids.getAvgVelocity() + glm::vec3(0.000001f, 0.000001f, 0.000001f));
                 // Camera 1
                 scene.m_cams[1].transform.position = glm::vec3(0.0, 0.0, 0.0);
                 scene.m_cams[1].pointTo(boids.getAvgPos());
@@ -169,7 +169,10 @@ int main()
                 gui.sliderFloat("Follow factor", boids.F_fac, 0.000, 10.0);
 
                 if (gui.button("Reset"))
+                {
                     boids.reset();
+                    scene.m_object[leaderBoidIndex].transform.position = glm::vec3(0.0f);
+                }
 
                 if (gui.button("Wireframe"))
                 {

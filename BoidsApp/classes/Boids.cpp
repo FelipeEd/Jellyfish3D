@@ -62,27 +62,27 @@ void Boids::updatePosition(int i)
     glm::vec3 newpos = transf->position + trueSpeed;
 
     // teleport 1 or inviWall -1
-    float a = 1;
+    // float a = 1;
 
-    if (newpos.x > 25)
-        newpos.x = -a * 25;
-    if (newpos.x < -25)
-        newpos.x = a * 25;
+    // if (newpos.x > 25)
+    //     newpos.x = -a * 25;
+    // if (newpos.x < -25)
+    //     newpos.x = a * 25;
 
-    if (newpos.y > 12.5)
-        newpos.y = -a * 12.5;
-    if (newpos.y < -12.5)
-        newpos.y = a * 12.5;
+    // if (newpos.y > 12.5)
+    //     newpos.y = -a * 12.5;
+    // if (newpos.y < -12.5)
+    //     newpos.y = a * 12.5;
 
-    if (newpos.z < -25)
-        newpos.z = a * 25;
-    if (newpos.z > 25)
-        newpos.z = -a * 25;
+    // if (newpos.z < -25)
+    //     newpos.z = a * 25;
+    // if (newpos.z > 25)
+    //     newpos.z = -a * 25;
 
     //newpos.z = 0; //! force 2d
     transf->position = newpos;
 
-    transf->lookAt(glm::normalize(trueSpeed));
+    transf->lookAt(glm::normalize(trueSpeed + glm::sphericalRand(0.0001f)));
 }
 
 // Based on the laws
