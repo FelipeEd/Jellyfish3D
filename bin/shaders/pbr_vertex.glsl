@@ -31,7 +31,6 @@ void main()
         float wingRange = radians(40.0);
         float theta = sin(uTime*5) * wingRange;
         
-
         if(animPos.x > 0){
             animPos.x = (cos(theta)* aPos.x + sin(theta)* aPos.y) ;
             animPos.y = (-sin(theta)* aPos.x + cos(theta)* aPos.y) ;

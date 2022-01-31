@@ -19,8 +19,8 @@ int main()
 
     // When using opengl
     GLFWwindow *window = app.display.getWindow();
-    Timer pauseCooldown(10);
-    Timer addsubBoidsCooldown(10);
+    Timer pauseCooldown(5);
+    Timer addsubBoidsCooldown(5);
 
     GUI gui;
     gui.init(window);
@@ -37,13 +37,15 @@ int main()
         app.assets.loadMesh("resources/plane.obj");
         app.assets.loadMesh("resources/newship.obj");
         app.assets.loadMesh("resources/tower.obj");
+        app.assets.loadMesh("resources/leadership.obj");
 
         app.assets.loadMaterial("resources/textures/Silver_Worn", "_2k");
         //assets->loadMaterial("resources/textures/denmin_fabric_02", "_1k");
         app.assets.loadMaterial("resources/textures/blue_painted_planks", "_1k");
         //assets->loadMaterial("resources/textures/concrete_floor_02", "_1k");
-        //assets->loadMaterial("resources/textures/square_floor", "_1k");
         app.assets.loadMaterial("resources/textures/Gold_Worn", "_2k");
+        app.assets.loadMaterial("resources/textures/floor_tiles_06", "_1k");
+        app.assets.loadMaterial("resources/textures/Plastic_Glossy_red", "_2k");
     }
 
     {
@@ -51,18 +53,27 @@ int main()
         // Box size
         float BoxSize = 50;
         float halfBox = BoxSize / 2.0;
+        float halfBoxH = BoxSize / 4.0;
 
-        scene.addLight("light1", glm::vec3(5000), {0, halfBox, 0});
-        scene.addLight("light2", {1000, 1000, 100}, {10, 0, 10});
-        scene.addLight("light3", {1000, 1000, 100}, {-10, 0, 10});
-        scene.addLight("light4", {1000, 1000, 1000}, {0, 0, -10});
+        scene.addLight("light1", glm::vec3(5000), {0, halfBoxH, 0});
+        scene.addLight("light2", {1000, 1000, 100}, {10, -5, 10});
+        scene.addLight("light3", {1000, 1000, 100}, {-10, -5, 10});
+        scene.addLight("light4", {1000, 1000, 1000}, {0, -5, -10});
 
-        scene.addObject("ground", 3, 2);
-        scene.setPosition("ground", {0.0, -halfBox, 0.0});
+        scene.addObject("ground", 3, 4);
+        scene.setPosition("ground", {0.0, -halfBoxH, 0.0});
         scene.setScale("ground", halfBox);
 
         scene.addObject("tower", 5, 3);
-        scene.setScale("tower", halfBox / 1.8);
+        scene.setScale("tower", halfBoxH / 1.8);
+
+        scene.addObject("tower2", 5, 3);
+        scene.setScale("tower2", halfBoxH / 1.8);
+        scene.setPosition("tower2", glm::vec3(BoxSize / 3.0, 0.0, 0.0));
+
+        scene.addObject("tower3", 5, 3);
+        scene.setScale("tower3", halfBoxH / 1.8);
+        scene.setPosition("tower3", glm::vec3(-BoxSize / 3.0, 0.0, 0.0));
 
         for (int i = 0; i < 8; i++)
         {
@@ -70,14 +81,15 @@ int main()
             float y = 1;
             float z = 1;
 
-            scene.addObject("sphere" + std::to_string(i), 2, 0);
+            scene.addObject("sphere" + std::to_string(i), 1, 0);
             x = pow(-1, i % 2);
             y = pow(-1, (i / 2) % 2);
             z = pow(-1, (i / 4) % 2);
-            scene.setPosition("sphere" + std::to_string(i), {x * halfBox, y * halfBox, z * halfBox});
+            scene.setPosition("sphere" + std::to_string(i), {x * halfBox, y * halfBoxH, z * halfBox});
         }
     }
 
+    int leaderBoidIndex = scene.m_object.size();
     Boids boids = Boids(scene.m_object.size(), NUM_BOIDS, scene);
 
     while (!glfwWindowShouldClose(window))
@@ -168,17 +180,17 @@ int main()
 
                 float radius = 10.0f;
                 float freq = 0.05f;
-
                 if (!pause)
                 {
                     {
-                        TIME_IT("Find Target")
-                        scene.setPosition("Target", {radius * glm::cos(glfwGetTime() * freq), 0.0f, radius * glm::sin(glfwGetTime() * freq)});
-                    }
+                        //TIME_IT("Find Target")
+                        //scene.setPosition("Target", {radius * glm::cos(glfwGetTime() * freq), 0.0f, radius * glm::sin(glfwGetTime() * freq)});
+                        scene.m_object[leaderBoidIndex].reactToInput(window, app.inputs);
 
-                    {
-                        TIME_IT("Update Boids")
-                        boids.updateAll();
+                        {
+                            TIME_IT("Update Boids")
+                            boids.updateAll();
+                        }
                     }
                 }
             }

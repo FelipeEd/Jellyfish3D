@@ -1,4 +1,5 @@
 #include <jellyfish\Jellyfish3D.hpp>
+#include <glm/gtx/euler_angles.hpp>
 
 void comp_Transform::lookAt(glm::vec3 target)
 {
@@ -11,7 +12,7 @@ glm::mat4 comp_Transform::getModelMatrix()
 
     if (speed == glm::vec3(0.0))
     {
-        rotationM = glm::toMat4(glm::quat(rotation));
+        rotationM = glm::mat4(glm::quat(rotation)); //glm::eulerAngleXYZ(rotation.x, rotation.y, rotation.z);
     }
     else
     {

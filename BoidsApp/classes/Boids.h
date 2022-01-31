@@ -13,15 +13,15 @@ public:
     int targetIndex;
     Scene *m_scene;
 
-    float m_maxSpeed = 0.3f;
+    float m_maxSpeed = 0.4f;
     float m_maxAccel = m_maxSpeed / 30;
 
-    float m_speedMultiplier = 1.0f;
+    float m_speedMultiplier = 1.2f;
     float m_accelMultiplier = 1.0f;
 
     float A_fac = 0.2f;
     float C_fac = 0.2f;
-    float S_fac = 0.6f;
+    float S_fac = 1.3f;
     float F_fac = 0.1f;
 
     float m_viewRad = 5.0f;
@@ -43,6 +43,7 @@ public:
     void updateAll();
     void addBoid();
     void removeBoid();
+    void calcAvgs();
 
     glm::vec3 getAvgPos() { return boidsAvgPos; };
     glm::vec3 getAvgVelocity() { return boidsAvgVelocity; };

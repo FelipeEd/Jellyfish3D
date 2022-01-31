@@ -1,4 +1,5 @@
 #include <jellyfish/Jellyfish3D.hpp>
+#include <glm/gtx/euler_angles.hpp>
 
 Object::Object()
 {
@@ -13,29 +14,33 @@ Object::Object(const std::string &name, unsigned int mesh, unsigned int material
     m_material = material;
 }
 
-glm::mat4 Object::getModelMatrix() { return transform.getModelMatrix(); }
-
 void Object::reactToInput(GLFWwindow *window, KeyStates input)
 {
 
-    if (input.keys["bleft"])
+    float leaderSpeed = 0.2;
+    float turnSpeed = 0.1;
+
+    if (input.keys["shipleft"])
     {
-        transform.position += glm::vec3(-0.01f, 0.0f, 0.0f);
+        transform.rotation += glm::vec3(0.0f, turnSpeed, 0.0f);
     }
-    if (input.keys["bright"])
+    if (input.keys["shipright"])
     {
-        transform.position += glm::vec3(0.01f, 0.0f, 0.0f);
+        transform.rotation += -glm::vec3(0.0f, turnSpeed, 0.0f);
     }
-    if (input.keys["bup"])
+    if (input.keys["shipup"])
     {
-        transform.position += glm::vec3(0.0f, 0.01f, 0.0f);
+        transform.rotation += -glm::vec3(turnSpeed, 0.00f, 0.0f);
     }
-    if (input.keys["bdown"])
+    if (input.keys["shipdown"])
     {
-        transform.position += glm::vec3(0.00f, -0.01f, 0.0f);
+        transform.rotation += +glm::vec3(turnSpeed, 0.00f, 0.0f);
     }
+
+    transform.position += glm::vec3(leaderSpeed * glm::mat4(glm::quat(transform.rotation)) * glm::vec4(0.0, 0.0, 1.0, 1.0)); //glm::vec3(leaderSpeed * glm::eulerAngleXY(transform.rotation.x, transform.rotation.y) * glm::vec4(0.0, 0.0, 1.0, 1.0));
 }
 
+glm::mat4 Object::getModelMatrix() { return transform.getModelMatrix(); }
 unsigned int Object::getMeshId() { return m_mesh; }
 unsigned int Object::getMaterialId() { return m_material; }
 std::string Object::getName() { return m_name; }

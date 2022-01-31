@@ -4,10 +4,10 @@ KeyStates::KeyStates()
 {
     // ! bad bad ...
     // Test inputs "b" stads for box
-    keys["bleft"] = false;
-    keys["bright"] = false;
-    keys["bup"] = false;
-    keys["bdown"] = false;
+    keys["shipleft"] = false;
+    keys["shipright"] = false;
+    keys["shipup"] = false;
+    keys["shipdown"] = false;
 
     // Test camera imputs
     keys["camleft"] = false;
@@ -38,16 +38,6 @@ void KeyStates::observeInputs(GLFWwindow *window)
 
     if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
         keys["camrot"] = true;
-
-    // Test cube
-    if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
-        keys["bleft"] = true;
-    if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
-        keys["bright"] = true;
-    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
-        keys["bup"] = true;
-    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
-        keys["bdown"] = true;
 
     // Cam
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
@@ -86,6 +76,15 @@ void KeyStates::observeInputs(GLFWwindow *window)
         keys["selectcam2"] = true;
     if (glfwGetKey(window, GLFW_KEY_3) == GLFW_PRESS)
         keys["selectcam3"] = true;
+
+    if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
+        keys["shipleft"] = true;
+    if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
+        keys["shipright"] = true;
+    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+        keys["shipup"] = true;
+    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+        keys["shipdown"] = true;
 }
 
 void KeyStates::resetState()
