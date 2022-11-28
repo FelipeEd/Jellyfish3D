@@ -1,0 +1,1 @@
+Separar os projetos e começar a refatorar o código
