@@ -11,50 +11,50 @@ workspace "Jellyfish3D"
 outputbindir = "bin/%{cfg.system}-%{cfg.architecture}-%{cfg.buildcfg}/%{prj.name}"
 outputobjdir = "bin-int/%{cfg.system}-%{cfg.architecture}-%{cfg.buildcfg}/%{prj.name}"
 
-group "Tests"
-	project "glfwtest"
-	location "dumb"
-	kind "ConsoleApp"
-	language "C++"
-	cppdialect "C++17"
-	staticruntime "on"
-	systemversion "latest"
+-- group "Tests"
+-- 	project "glfwtest"
+-- 	location "testingGLFWandGlad"
+-- 	kind "ConsoleApp"
+-- 	language "C++"
+-- 	cppdialect "C++17"
+-- 	staticruntime "on"
+-- 	systemversion "latest"
 
-	targetdir (outputbindir)
-		objdir (outputobjdir)
+-- 	targetdir (outputbindir)
+-- 		objdir (outputobjdir)
 
-		files
-		{
-			"%{prj.location}/*.cpp",
-			"%{prj.location}/*.hpp"
-		}
+-- 		files
+-- 		{
+-- 			"%{prj.location}/*.cpp",
+-- 			"%{prj.location}/*.hpp"
+-- 		}
 
-		includedirs
-		{
-			"%{wks.location}/Jellyfish3D/vendor/glfw/include",
-			"%{wks.location}/Jellyfish3D/vendor/glad/include"
+-- 		includedirs
+-- 		{
+-- 			"%{wks.location}/Jellyfish3D/vendor/glfw/include",
+-- 			"%{wks.location}/Jellyfish3D/vendor/glad/include"
 
-		}
+-- 		}
 
-		-- defines
-		-- {
-		-- 	"GLFW_INCLUDE_NONE"
-		-- }
+-- 		-- defines
+-- 		-- {
+-- 		-- 	"GLFW_INCLUDE_NONE"
+-- 		-- }
 
-		links
-		{
-			"glfw","glad", "X11","GL"
-		}
+-- 		links
+-- 		{
+-- 			"glfw","glad", "X11","GL"
+-- 		}
 
-		filter "configurations:Debug"
-			runtime "Debug"
-			symbols "on"
+-- 		filter "configurations:Debug"
+-- 			runtime "Debug"
+-- 			symbols "on"
 
-		filter "configurations:Release"
-			runtime "Release"
-			optimize "on"
+-- 		filter "configurations:Release"
+-- 			runtime "Release"
+-- 			optimize "on"
 
-group ""
+-- group ""
 
 
 group "Core"
@@ -148,12 +148,6 @@ group ""
 -- 		{
 -- 			"Jellyfish3D"
 -- 		}
-		
--- 		defines
--- 		{
--- 			"GLFW_INCLUDE_NONE"
--- 		}
-
 
 -- 		filter "configurations:Debug"
 -- 			runtime "Debug"

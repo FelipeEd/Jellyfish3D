@@ -68,23 +68,23 @@ int main()
             // scene.setRotation("suzanne", scene.getRotation("suzanne") + glm::vec3(0.0, 0.3, 0.0));
             scene.reactToInput(window, app.inputs);
             // scene.getActiveCam()->reactToInput(window, app.inputs);
+
+            gui.sliderFloat("x", x, -360.0f, 360.0f);
+            gui.sliderFloat("y", y, -360.0f, 360.0f);
+            gui.sliderFloat("z", z, -360.0f, 360.0f);
+
+            if (gui.button("Wireframe"))
+                renderer.switchWireframeMode();
+            if (gui.button("Skybox"))
+                renderer.switchSkybox();
+
+            scene.setRotation("suzanne", glm::vec3(glm::radians(x), glm::radians(y), glm::radians(z)));
         }
-
-        gui.sliderFloat("x", x, -360.0f, 360.0f);
-        gui.sliderFloat("y", y, -360.0f, 360.0f);
-        gui.sliderFloat("z", z, -360.0f, 360.0f);
-
-        if (gui.button("Wireframe"))
-            renderer.switchWireframeMode();
-        if (gui.button("Skybox"))
-            renderer.switchSkybox();
-
-        scene.setRotation("suzanne", glm::vec3(glm::radians(x), glm::radians(y), glm::radians(z)));
 
         renderer.draw(scene, app);
 
         gui.endFrame();
-
+        app.inputs.resetState();
         // Faz a troca do framebuffer antigo para o novo (double buffer)
         glfwSwapBuffers(window);
 

@@ -1,1 +1,13 @@
-Separar os projetos e começar a refatorar o código
+run.py
+    Por enquanto apenas executa como se o projeto final fosse a biblioteca, ao arrumar o Sandbox devemos mudar e melhorar o arquivo
+
+JellyFish3D
+    * As teclas não funcionam, o sistema de input está mal implementado.
+    * Arrumar os arquivo de shader e recursos que estão nos lugares errados.
+    * Melhorias no sistema de acessar os objetos pelos nomes, trocar a lista por um map
+    * Criar classes para "esconder" a interface do Glfw e demais bibliotecas, uma aplicação que usa a Jellyfish3D deveria ser capaz de usar apenas suas classes.
+    * futuras melhorias...
+
+Premake
+    * Fazer com que os porjetos em Examples consigam ser compilados usando a JellyFish3D.
+    * Adicionar configurações e tutoriais sobre como compilar apenas o necessário.
