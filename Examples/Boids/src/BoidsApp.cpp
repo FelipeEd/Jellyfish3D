@@ -1,11 +1,11 @@
-#include <jellyfish\Jellyfish3D.hpp>
-#include "classes\Debug.h"
-#include "classes\Boids.h"
+#include <Jellyfish3D.hpp>
+#include "Debug.h"
+#include "Boids.h"
 
 // Global
 // Window size
-unsigned int WIDTH = 1980;  //1280;
-unsigned int HEIGHT = 1080; //720;
+unsigned int WIDTH = 1980;  // 1280;
+unsigned int HEIGHT = 1080; // 720;
 bool pbr = true;
 
 #define NUM_BOIDS 500
@@ -40,9 +40,9 @@ int main()
         app.assets.loadMesh("resources/leadership.obj");
 
         app.assets.loadMaterial("resources/textures/Silver_Worn", "_2k");
-        //assets->loadMaterial("resources/textures/denmin_fabric_02", "_1k");
+        // assets->loadMaterial("resources/textures/denmin_fabric_02", "_1k");
         app.assets.loadMaterial("resources/textures/blue_painted_planks", "_1k");
-        //assets->loadMaterial("resources/textures/concrete_floor_02", "_1k");
+        // assets->loadMaterial("resources/textures/concrete_floor_02", "_1k");
         app.assets.loadMaterial("resources/textures/Gold_Worn", "_2k");
         app.assets.loadMaterial("resources/textures/floor_tiles_06", "_1k");
         app.assets.loadMaterial("resources/textures/Plastic_Glossy_red", "_2k");
@@ -115,7 +115,7 @@ int main()
             {
                 // Inputs---------------------------------------------------------------------------------------------------
                 app.inputs.observeInputs(window);
-                //app.inputs.printInputs();
+                // app.inputs.printInputs();
                 scene.reactToInput(window, app.inputs);
 
                 pauseCooldown.tick();
@@ -186,8 +186,8 @@ int main()
                 if (!pause)
                 {
                     {
-                        //TIME_IT("Find Target")
-                        //scene.setPosition("Target", {radius * glm::cos(glfwGetTime() * freq), 0.0f, radius * glm::sin(glfwGetTime() * freq)});
+                        // TIME_IT("Find Target")
+                        // scene.setPosition("Target", {radius * glm::cos(glfwGetTime() * freq), 0.0f, radius * glm::sin(glfwGetTime() * freq)});
                         scene.m_object[leaderBoidIndex].reactToInput(window, app.inputs);
 
                         {

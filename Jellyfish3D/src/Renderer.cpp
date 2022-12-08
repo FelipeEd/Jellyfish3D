@@ -10,15 +10,15 @@ Renderer::Renderer()
 {
     if (pbr)
     {
-        m_objectShader = Shader("bin/shaders/pbr_vertex.glsl", "bin/shaders/pbr_fragment.glsl");
+        m_objectShader = Shader("shaders/pbr_vertex.glsl", "shaders/pbr_fragment.glsl");
     }
     else
     {
-        m_objectShader = Shader("bin/shaders/default_vertex.glsl", "bin/shaders/default_fragment.glsl");
+        m_objectShader = Shader("shaders/default_vertex.glsl", "shaders/default_fragment.glsl");
     }
 
-    m_lightShader = Shader("bin/shaders/light_vertex.glsl", "bin/shaders/light_fragment.glsl");
-    m_skyboxShader = Shader("bin/shaders/skybox_vertex.glsl", "bin/shaders/skybox_fragment.glsl");
+    m_lightShader = Shader("shaders/light_vertex.glsl", "shaders/light_fragment.glsl");
+    m_skyboxShader = Shader("shaders/skybox_vertex.glsl", "shaders/skybox_fragment.glsl");
 }
 
 Renderer::~Renderer()

@@ -1,4 +1,5 @@
 Makefile
+.vscode
 *.o
 *.d
 *.a

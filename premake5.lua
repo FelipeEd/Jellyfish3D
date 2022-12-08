@@ -11,58 +11,13 @@ workspace "Jellyfish3D"
 outputbindir = "bin/%{cfg.system}-%{cfg.architecture}-%{cfg.buildcfg}/%{prj.name}"
 outputobjdir = "bin-int/%{cfg.system}-%{cfg.architecture}-%{cfg.buildcfg}/%{prj.name}"
 
--- group "Tests"
--- 	project "glfwtest"
--- 	location "testingGLFWandGlad"
--- 	kind "ConsoleApp"
--- 	language "C++"
--- 	cppdialect "C++17"
--- 	staticruntime "on"
--- 	systemversion "latest"
-
--- 	targetdir (outputbindir)
--- 		objdir (outputobjdir)
-
--- 		files
--- 		{
--- 			"%{prj.location}/*.cpp",
--- 			"%{prj.location}/*.hpp"
--- 		}
-
--- 		includedirs
--- 		{
--- 			"%{wks.location}/Jellyfish3D/vendor/glfw/include",
--- 			"%{wks.location}/Jellyfish3D/vendor/glad/include"
-
--- 		}
-
--- 		-- defines
--- 		-- {
--- 		-- 	"GLFW_INCLUDE_NONE"
--- 		-- }
-
--- 		links
--- 		{
--- 			"glfw","glad", "X11","GL"
--- 		}
-
--- 		filter "configurations:Debug"
--- 			runtime "Debug"
--- 			symbols "on"
-
--- 		filter "configurations:Release"
--- 			runtime "Release"
--- 			optimize "on"
-
--- group ""
-
 
 group "Core"
 
 	project "Jellyfish3D"
 		location "Jellyfish3D"
-		-- kind "StaticLib"
-		kind "ConsoleApp"
+		kind "StaticLib"
+		-- kind "ConsoleApp"
 		language "C++"
 		cppdialect "C++17"
 		staticruntime "on"
@@ -99,9 +54,7 @@ group "Core"
 			"glad",
 			"glfw",
 			"imgui",
-			"stbi",
-			"X11",
-			"GL"
+			"stbi"
 		}
 
 		filter "configurations:Debug"
@@ -115,49 +68,110 @@ group "Core"
 group ""
 
 
--- group "Misc"
+group "Misc"
 
--- 	project "Sandbox"
+	project "Sandbox"
 
--- 		location "Examples/Sandbox"
--- 		kind "ConsoleApp"
--- 		language "C++"
--- 		cppdialect "C++17"
--- 		staticruntime "off"
--- 		systemversion "latest"
+		location "Examples/Sandbox"
+		kind "ConsoleApp"
+		language "C++"
+		cppdialect "C++17"
+		staticruntime "off"
+		systemversion "latest"
 
--- 		targetdir (outputbindir)
--- 		objdir (outputobjdir)
+		targetdir (outputbindir)
+		objdir (outputobjdir)
 
 
--- 		files
--- 		{
--- 			"%{prj.location}/src/*.cpp",
--- 			"%{prj.location}/src/*.hpp"
--- 		}
+		files
+		{
+			"%{prj.location}/src/*.cpp",
+			"%{prj.location}/src/*.hpp"
+		}
 
--- 		includedirs
--- 		{
--- 			"%{wks.location}/Jellyfish3D/src",
--- 			"%{wks.location}/Jellyfish3D/vendor",
--- 			"%{wks.location}/Jellyfish3D/vendor/glfw/include",
--- 			"%{wks.location}/Jellyfish3D/vendor/glad/include"
--- 		}
+		includedirs
+		{
+			"%{wks.location}/Jellyfish3D/src",
+			"%{wks.location}/Jellyfish3D/vendor",
+			"%{wks.location}/Jellyfish3D/vendor/glfw/include",
+			"%{wks.location}/Jellyfish3D/vendor/glad/include"
+		}
 
--- 		links
--- 		{
--- 			"Jellyfish3D"
--- 		}
+		defines
+		{
+			"GLFW_INCLUDE_NONE"
+		}
 
--- 		filter "configurations:Debug"
--- 			runtime "Debug"
--- 			symbols "on"
+		links
+		{
+			"Jellyfish3D",
+			"glad",
+			"glfw",
+			"imgui",
+			"stbi",
+			"X11"
+		}
 
--- 		filter "configurations:Release"
--- 			runtime "Release"
--- 			optimize "on"
+		filter "configurations:Debug"
+			runtime "Debug"
+			symbols "on"
 
--- group ""
+		filter "configurations:Release"
+			runtime "Release"
+			optimize "on"
+
+--------------------------------------------
+
+		project "Boids"
+
+		location "Examples/Boids"
+		kind "ConsoleApp"
+		language "C++"
+		cppdialect "C++17"
+		staticruntime "off"
+		systemversion "latest"
+
+		targetdir (outputbindir)
+		objdir (outputobjdir)
+
+
+		files
+		{
+			"%{prj.location}/src/*.cpp",
+			"%{prj.location}/src/*.hp"
+		}
+
+		includedirs
+		{
+			"%{wks.location}/Jellyfish3D/src",
+			"%{wks.location}/Jellyfish3D/vendor",
+			"%{wks.location}/Jellyfish3D/vendor/glfw/include",
+			"%{wks.location}/Jellyfish3D/vendor/glad/include"
+		}
+
+		defines
+		{
+			"GLFW_INCLUDE_NONE"
+		}
+
+		links
+		{
+			"Jellyfish3D",
+			"glad",
+			"glfw",
+			"imgui",
+			"stbi",
+			"X11"
+		}
+
+		filter "configurations:Debug"
+			runtime "Debug"
+			symbols "on"
+
+		filter "configurations:Release"
+			runtime "Release"
+			optimize "on"
+group ""
 
 
 

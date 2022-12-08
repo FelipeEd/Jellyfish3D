@@ -1,6 +1,6 @@
 #pragma once
 
-#include <jellyfish\Jellyfish3D.hpp>
+#include <Jellyfish3D.hpp>
 #include <glm/gtx/rotate_vector.hpp>
 #include "Debug.h"
 
@@ -31,7 +31,7 @@ public:
     glm::vec3 boidsAvgVelocity = glm::vec3(1.0, 0, 0);
 
     std::vector<glm::vec3> m_speeds;
-    //std::vector<glm::vec3> m_accels;
+    // std::vector<glm::vec3> m_accels;
 
     Boids(int startIndex, int nBoids, Scene &scene);
 
