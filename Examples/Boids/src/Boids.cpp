@@ -27,7 +27,7 @@ Boids::Boids(int startIndex, int nBoids, Scene &scene)
     m_nBoids = nBoids;
 
     m_speeds.reserve(m_nBoids + 20);
-    //m_accels.resize(m_nBoids);
+    // m_accels.resize(m_nBoids);
 
     for (int i = 0; i < m_nBoids; i++)
     {
@@ -36,7 +36,7 @@ Boids::Boids(int startIndex, int nBoids, Scene &scene)
         m_scene->setScale("boid" + std::to_string(i), m_boidScale);
         m_scene->m_object[i + m_startIndex].isBoids = true;
         m_speeds[i] = glm::sphericalRand(m_maxSpeed);
-        //m_accels[i] = glm::vec3(0.0f);
+        // m_accels[i] = glm::vec3(0.0f);
     }
 }
 
@@ -48,7 +48,7 @@ void Boids::reset()
         m_scene->setScale("boid" + std::to_string(i), m_boidScale);
         m_scene->m_object[i + m_startIndex].isBoids = true;
         m_speeds[i] = glm::sphericalRand(m_maxSpeed);
-        //m_accels[i] = glm::vec3(0.0f);
+        // m_accels[i] = glm::vec3(0.0f);
     }
     m_scene->setPosition("target", glm::vec3(0.0f));
 }
@@ -79,7 +79,7 @@ void Boids::updatePosition(int i)
     // if (newpos.z > 25)
     //     newpos.z = -a * 25;
 
-    //newpos.z = 0; //! force 2d
+    // newpos.z = 0; //! force 2d
     transf->position = newpos;
 
     transf->lookAt(glm::normalize(trueSpeed + glm::sphericalRand(0.0001f)));

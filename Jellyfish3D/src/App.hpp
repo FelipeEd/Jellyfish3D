@@ -10,11 +10,19 @@
 class App
 {
 private:
+    std::string m_name;
+
 public:
     Display display;
     Resources assets;
     Clock clock;
     KeyStates inputs;
+
+    App(const std::string name)
+    {
+        m_name = name;
+        assets.set_path(name);
+    }
 
     double getTime()
     {

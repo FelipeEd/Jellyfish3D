@@ -323,10 +323,10 @@ group "Dependencies"
 			"%{wks.location}/Jellyfish3D/vendor/glad/include"
 		}
 
-		links
-		{
-			"GL","X11"
-		}
+		-- links
+		-- {
+		-- 	"GL","X11"
+		-- }
 		
 		filter "configurations:Debug"
 			runtime "Debug"

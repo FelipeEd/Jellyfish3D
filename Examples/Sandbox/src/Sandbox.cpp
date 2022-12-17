@@ -10,7 +10,7 @@ bool pbr = true;
 int main()
 {
 
-    App app;
+    App app("Examples/Sandbox/");
     // When using opengl
     GLFWwindow *window = app.display.getWindow();
     Timer pauseCooldown(10);

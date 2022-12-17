@@ -23,12 +23,13 @@ Resources::~Resources()
 
 void Resources::loadMesh(const std::string &fileName)
 {
-    Mesh newMesh(fileName);
+    // std::cout << "teste: " << m_path + fileName << std::endl;
+    Mesh newMesh(m_path + fileName);
     this->meshes.push_back(newMesh);
 }
 
 void Resources::loadMaterial(const std::string &fileName, const std::string &size)
 {
-    Material newMaterial(fileName, size);
+    Material newMaterial(m_path + fileName, size);
     this->materials.push_back(newMaterial);
 }

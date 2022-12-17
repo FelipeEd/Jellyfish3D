@@ -43,12 +43,12 @@ unsigned int loadCubemap(std::vector<std::string> faces)
 std::vector<std::string> faceNames(const std::string &name)
 {
     std::vector<std::string> faces{
-        "resources/textures/skybox/" + name + "_posx.hdr",
-        "resources/textures/skybox/" + name + "_negx.hdr",
-        "resources/textures/skybox/" + name + "_posy.hdr",
-        "resources/textures/skybox/" + name + "_negy.hdr",
-        "resources/textures/skybox/" + name + "_posz.hdr",
-        "resources/textures/skybox/" + name + "_negz.hdr",
+        "Jellyfish3D/resources/textures/skybox/" + name + "_posx.hdr",
+        "Jellyfish3D/resources/textures/skybox/" + name + "_negx.hdr",
+        "Jellyfish3D/resources/textures/skybox/" + name + "_posy.hdr",
+        "Jellyfish3D/resources/textures/skybox/" + name + "_negy.hdr",
+        "Jellyfish3D/resources/textures/skybox/" + name + "_posz.hdr",
+        "Jellyfish3D/resources/textures/skybox/" + name + "_negz.hdr",
     };
     return faces;
 }

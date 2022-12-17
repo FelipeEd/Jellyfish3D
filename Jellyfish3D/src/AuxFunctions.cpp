@@ -26,7 +26,7 @@ std::vector<Vertex> loadOBJ(const char *file_name)
     // File open error check
     if (!in_file.is_open())
     {
-        throw "ERROR::OBJLOADER::Could not open file.";
+        std::cout << "ERROR::OBJLOADER::Could not open file." << std::endl;
     }
 
     // Read one line at a time
@@ -112,11 +112,10 @@ std::vector<Vertex> loadOBJ(const char *file_name)
     }
 
     // DEBUG
-    std::cout << "Nr of vertices: " << vertices.size() << "\n";
+    std::cout << "Number of vertices: " << vertices.size() << "\n";
 
     // Loaded success
-    std::cout << "OBJ file loaded!"
-              << "\n";
+    std::cout << "OBJ file loaded!" << std::endl;
     return vertices;
 }
 
@@ -219,87 +218,3 @@ void print(const char *msg)
 {
     std::cout << msg << std::endl;
 }
-
-/*
-Sprite::Sprite() {}
-
-Sprite::Sprite(float w, float h, unsigned int intexture, int nframes)
-{
-
-    //Shader shaderProgram("bin/shaders/vertex.glsl", "bin/shaders/fragment.glsl");
-    this->shader = shaderProgram;
-    this->scale.x = w;
-    this->scale.y = h;
-
-    this->nFrames = nframes;
-    this->shader = shaderProgram;
-    this->texture = intexture;
-}
-
-void Sprite::draw(Point position)
-{
-    // Desenhar o triangulo
-    // 1- ativar shader
-    // 2- vincular VAO (pode ser feito uma vez fora do loop, caso exista apenas 1 VAO)
-    // 3- usar glDrawArrays para desenhar conteudo do VAO
-    this->shader.use();
-    glBindTexture(GL_TEXTURE_2D, this->texture);
-    glBindVertexArray(vao);
-
-    this->shader.setVec2("uTranslate", position);
-    this->shader.setVec2("uScale", this->scale);
-    this->shader.setVec4("uColor", this->color);
-    this->shader.setFloat("uAspectRatio", (float)HEIGHT / WIDTH);
-
-    this->shader.setFloat("uNFrames", this->nFrames);
-    this->shader.setFloat("uCurrentFrame", this->currentFrame);
-
-    glDrawArrays(GL_TRIANGLES, 0, 6); // (primitiva, location, numero de vertices)
-}
-
-void Sprite::setCurrentFrame(int n)
-{
-    this->currentFrame = n;
-}
-
-void Sprite::setColor(float newcolor[4])
-{
-    this->color[0] = newcolor[0];
-    this->color[1] = newcolor[1];
-    this->color[2] = newcolor[2];
-    this->color[3] = newcolor[3];
-}
-
-*/
-
-// Coisas dependentes de tempo roda uma vez por frame
-/*
-        if (timeDiff >= 1.0 / 120.0)
-        {
-
-            std::string FPS = std::to_string((1.0 / timeDiff) * counter);
-            std::string ms = std::to_string((timeDiff / counter) * 1000);
-            std::string newTitle = "N A V - " + FPS + "FPS /" + ms + "ms";
-            glfwSetWindowTitle(window, newTitle.c_str());
-            prevTime = crntTime;
-            counter = 0;
-
-            if (mouseRightIsPressed && pauseCooldown == 0)
-            {
-                gameIsPaused = !gameIsPaused;
-                pauseCooldown = 20;
-            }
-
-            if (rIsPressed && pauseCooldown == 0)
-            {
-                Reset = true;
-                pauseCooldown = 20;
-            }
-
-            if (pauseCooldown > 0)
-                pauseCooldown--;
-
-            mouseRightIsPressed = false;
-
-        }
-        */
