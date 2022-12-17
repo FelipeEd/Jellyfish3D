@@ -7,11 +7,11 @@ Material::Material()
 
     useNormalmap = false;
     m_color = glm::vec4(0.4f, 0.2f, 0.4f, 1.0f);
-    m_texAlbedo = createTexture("resources/textures/whitepixel.png");
+    m_texAlbedo = createTexture("Jellyfish3D/resources/textures/whitepixel.png");
 
     m_texNormal = m_texAlbedo;
     // from 0 to 1
-    m_texMetallic = createTexture("resources/textures/blackpixel.png");
+    m_texMetallic = createTexture("Jellyfish3D/resources/textures/blackpixel.png");
     m_texRoughness = m_texMetallic;
     m_texAo = m_texAlbedo;
 }

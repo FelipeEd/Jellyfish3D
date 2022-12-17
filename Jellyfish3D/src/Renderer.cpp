@@ -10,15 +10,15 @@ Renderer::Renderer()
 {
     if (pbr)
     {
-        m_objectShader = Shader("shaders/pbr_vertex.glsl", "shaders/pbr_fragment.glsl");
+        m_objectShader = Shader("Jellyfish3D/shaders/pbr_vertex.glsl", "Jellyfish3D/shaders/pbr_fragment.glsl");
     }
     else
     {
-        m_objectShader = Shader("shaders/default_vertex.glsl", "shaders/default_fragment.glsl");
+        m_objectShader = Shader("Jellyfish3D/shaders/default_vertex.glsl", "Jellyfish3D/shaders/default_fragment.glsl");
     }
 
-    m_lightShader = Shader("shaders/light_vertex.glsl", "shaders/light_fragment.glsl");
-    m_skyboxShader = Shader("shaders/skybox_vertex.glsl", "shaders/skybox_fragment.glsl");
+    m_lightShader = Shader("Jellyfish3D/shaders/light_vertex.glsl", "Jellyfish3D/shaders/light_fragment.glsl");
+    m_skyboxShader = Shader("Jellyfish3D/shaders/skybox_vertex.glsl", "Jellyfish3D/shaders/skybox_fragment.glsl");
 }
 
 Renderer::~Renderer()
