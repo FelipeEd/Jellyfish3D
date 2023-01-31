@@ -15,7 +15,7 @@ int main()
 {
     INIT_TIMER("Boids")
 
-    App app("Boids");
+    App app("Examples/Boids/");
 
     // When using opengl
     GLFWwindow *window = app.display.getWindow();
