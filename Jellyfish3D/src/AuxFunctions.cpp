@@ -140,21 +140,18 @@ unsigned int createTexture(const std::string &textureName)
 
     if (data)
     {
-        GLenum formatin, formatout;
+        GLenum formatin;
         if (nrChannels == 1)
         {
             formatin = GL_RED;
-            formatout = GL_SRGB;
         }
         else if (nrChannels == 3)
         {
             formatin = GL_RGB;
-            formatout = GL_SRGB;
         }
         else if (nrChannels == 4)
         {
-            formatin = GL_RGBA; // GL_RGBA;
-            formatout = GL_SRGB_ALPHA;
+            formatin = GL_RGBA;
         }
 
         glTexImage2D(GL_TEXTURE_2D, 0, formatin, tex_width, tex_height, 0, formatin, GL_UNSIGNED_BYTE, data);

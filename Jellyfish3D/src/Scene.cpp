@@ -38,7 +38,7 @@ void Scene::reactToInput(GLFWwindow *window, KeyStates input)
 
 void Scene::setPosition(const std::string &name, glm::vec3 newPos) //! Bad implementation O(n) its not necessary to see every element
 {
-    for (int i = 0; i < m_object.size(); i++)
+    for (size_t i = 0; i < m_object.size(); i++)
     {
         if (m_object[i].getName() == name)
             m_object[i].transform.position = newPos;
@@ -47,7 +47,7 @@ void Scene::setPosition(const std::string &name, glm::vec3 newPos) //! Bad imple
 
 void Scene::setRotation(const std::string &name, glm::vec3 newRot)
 {
-    for (int i = 0; i < m_object.size(); i++)
+    for (size_t i = 0; i < m_object.size(); i++)
     {
         if (m_object[i].getName() == name)
             m_object[i].transform.rotation = newRot;
@@ -56,7 +56,7 @@ void Scene::setRotation(const std::string &name, glm::vec3 newRot)
 
 void Scene::setScale(const std::string &name, glm::vec3 newScale)
 {
-    for (int i = 0; i < m_object.size(); i++)
+    for (size_t i = 0; i < m_object.size(); i++)
     {
         if (m_object[i].getName() == name)
             m_object[i].transform.scale = newScale;
@@ -65,7 +65,7 @@ void Scene::setScale(const std::string &name, glm::vec3 newScale)
 
 void Scene::setScale(const std::string &name, float newScale)
 {
-    for (int i = 0; i < m_object.size(); i++)
+    for (size_t i = 0; i < m_object.size(); i++)
     {
         if (m_object[i].getName() == name)
             m_object[i].transform.scale = glm::vec3(newScale);
@@ -85,7 +85,7 @@ Camera *Scene::getActiveCam()
 
 glm::vec3 Scene::getPosition(const std::string &name)
 {
-    for (int i = 0; i < m_object.size(); i++)
+    for (size_t i = 0; i < m_object.size(); i++)
     {
         if (m_object[i].getName() == name)
             return m_object[i].transform.position;
@@ -95,7 +95,7 @@ glm::vec3 Scene::getPosition(const std::string &name)
 
 glm::vec3 Scene::getRotation(const std::string &name)
 {
-    for (int i = 0; i < m_object.size(); i++)
+    for (size_t i = 0; i < m_object.size(); i++)
     {
         if (m_object[i].getName() == name)
             return m_object[i].transform.rotation;
@@ -105,7 +105,7 @@ glm::vec3 Scene::getRotation(const std::string &name)
 
 glm::vec3 Scene::getScale(const std::string &name)
 {
-    for (int i = 0; i < m_object.size(); i++)
+    for (size_t i = 0; i < m_object.size(); i++)
     {
         if (m_object[i].getName() == name)
             return m_object[i].transform.scale;

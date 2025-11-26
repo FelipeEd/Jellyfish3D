@@ -25,7 +25,7 @@ target_link_libraries(Jellyfish3D PUBLIC
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     target_compile_options(Jellyfish3D PRIVATE -g -Wall -Wextra)
 elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
-    target_compile_options(Jellyfish3D PRIVATE -O3 -DNDEBUG)
+    target_compile_options(Jellyfish3D PRIVATE -O3)
 endif()
 
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/resources DESTINATION ${CMAKE_BINARY_DIR})

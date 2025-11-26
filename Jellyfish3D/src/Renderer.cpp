@@ -39,7 +39,7 @@ void Renderer::drawObjects(Scene &scene, App &app)
     m_objectShader.setMat4("uProjection", cam->getProjectionMatrix());
 
     // For all objects in the scene
-    for (int i = 0; i < scene.m_object.size(); i++)
+    for (size_t i = 0; i < scene.m_object.size(); i++)
     {
         Mesh mesh = app.assets.meshes[scene.m_object[i].getMeshId()];
         Material material = app.assets.materials[scene.m_object[i].getMaterialId()];
@@ -58,7 +58,7 @@ void Renderer::drawObjects(Scene &scene, App &app)
         {
             m_objectShader.setVec3("uCamPos", cam->transform.position);
 
-            for (int j = 0; j < scene.m_lights.size(); j++)
+            for (size_t j = 0; j < scene.m_lights.size(); j++)
             {
                 m_objectShader.setVec3("lightPositions[" + std::to_string(j) + "]", scene.m_lights[j].transform.position);
                 m_objectShader.setVec3("lightColors[" + std::to_string(j) + "]", scene.m_lights[j].getColor());
@@ -83,7 +83,7 @@ void Renderer::drawLights(Scene &scene, App &app)
     m_lightShader.setMat4("uProjection", cam->getProjectionMatrix());
 
     // For all lights in the scene
-    for (int i = 0; i < scene.m_lights.size(); i++)
+    for (size_t i = 0; i < scene.m_lights.size(); i++)
     {
 
         // Retrieving the mesh from global resources
@@ -101,7 +101,7 @@ void Renderer::drawLights(Scene &scene, App &app)
     }
 }
 
-void Renderer::drawSkybox(Scene &scene, App &app)
+void Renderer::drawSkybox(Scene &scene, App&)
 {
     Camera *cam = scene.getActiveCam();
 

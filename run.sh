@@ -3,14 +3,18 @@
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
-BUILD_DIR="build/bin"
+for preset in release debug lib-only; do
+    if [ -d "build/$preset/bin" ]; then
+        BUILD_DIR="build/$preset/bin"
+        break
+    fi
+done
 
-if [ ! -d "$BUILD_DIR" ]; then
+if [ -z "$BUILD_DIR" ]; then
     echo "Build not found. Run: ./build.sh"
     exit 1
 fi
 
-# Menu interativo
 echo "================================"
 echo "   Jellyfish3D - Exemplos"
 echo "================================"

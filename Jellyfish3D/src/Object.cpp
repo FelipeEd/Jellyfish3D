@@ -13,7 +13,7 @@ Object::Object(const std::string &name, unsigned int mesh, unsigned int material
     m_material = material;
 }
 
-void Object::reactToInput(GLFWwindow *window, KeyStates input)
+void Object::reactToInput(GLFWwindow*, KeyStates input)
 {
 
     float leaderSpeed = 0.2;

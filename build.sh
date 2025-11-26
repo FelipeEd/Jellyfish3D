@@ -12,26 +12,32 @@ print_help() {
     echo "  release     Build optimized release"
     echo "  lib-only    Build library only"
     echo "  clean       Remove build directories"
+    echo "  deep-clean  Remove all build artifacts and dependencies"
     echo "  help        Show this message"
 }
 
 build_project() {
-    cmake -S . -B "build/$1" --preset "$1"
+    cmake --preset "$1"
     cmake --build "build/$1" -j$(nproc)
 }
 
-case "${1:-debug}" in
+preset="${1:-debug}"
+
+case "$preset" in
     debug|release|lib-only)
-        build_project "$1"
+        build_project "$preset"
         ;;
     clean)
         rm -rf build/
+        ;;
+    deep-clean)
+        rm -rf build/ _deps/ CMakeFiles/ CMakeCache.txt cmake_install.cmake compile_commands.json
         ;;
     help|--help|-h)
         print_help
         ;;
     *)
-        echo "Unknown option: $1"
+        echo "Unknown option: $preset"
         print_help
         exit 1
         ;;
