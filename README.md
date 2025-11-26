@@ -1,11 +1,42 @@
 # Jellyfish3D
-Durante a disciplina de Computação Gráfica na UFMG, desenvolvi a engine gráfica Jellyfish3D. 
 
-Ela é capaz de carregar objetos 3D e renderizá-los usando PBR, além de permitir ao usuário controlar o programa através de inputs de teclado e mouse. 
+Engine gráfica 3D desenvolvida para a disciplina de Computação Gráfica na UFMG. Implementa renderização PBR, carregamento de modelos 3D, sistema de iluminação e skybox.
 
-Atualmente, este repositório está pouco funcional, mas em breve estará pronto. Utilizo o premake5 nesse projeto, dessa forma, se desejar se aventurar, execute "premake5 gmake2" para gerar os makefiles e utilize o comando "make" para compilar todos os projetos. Para rodar os exemplos, basta executar o arquivo "run.py". Por enquanto testei só em ambiente Linux, e nesse caso é necessário instalar devtoolkits para X11 e outras coisas requeridas pelo GLFW (dê uma olhada no site deles).
+## Build & Run
 
-Imagens mostrado do que ela é capaz:
+**Linux (com scripts auxiliares):**
+```bash
+./build.sh          # Compila (debug)
+./run.sh            # Menu interativo para executar exemplos
+```
+
+**Manual (Linux/Windows/Mac):**
+```bash
+cmake --preset debug
+cmake --build build/debug
+
+# Executar
+./build/debug/bin/Sandbox    # Linux/Mac
+build\debug\bin\Sandbox.exe  # Windows
+```
+
+## Dependências do Sistema
+
+**Arch Linux:**
+```bash
+sudo pacman -S base-devel cmake libx11 libxrandr libxinerama libxcursor libxi
+```
+
+**Ubuntu/Debian:**
+```bash
+sudo apt install build-essential cmake libx11-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev
+```
+
+**Windows:** Visual Studio com CMake support ou MinGW
+
+**Bibliotecas:** GLFW, GLM, GLAD, ImGui, STB (baixadas automaticamente pelo CMake)
+
+## Imagens
 
 ![Alt text](Prints/Sandbox.png?raw=true "Sandbox")
 ![Alt text](Prints/Boids.png?raw=true "Boids")

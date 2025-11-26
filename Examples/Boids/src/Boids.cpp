@@ -26,7 +26,7 @@ Boids::Boids(int startIndex, int nBoids, Scene &scene)
 
     m_nBoids = nBoids;
 
-    m_speeds.reserve(m_nBoids + 20);
+    m_speeds.resize(m_nBoids + 20);  // Mudado de reserve para resize
     // m_accels.resize(m_nBoids);
 
     for (int i = 0; i < m_nBoids; i++)

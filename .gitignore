@@ -1,6 +1,33 @@
+# Build artifacts
 Makefile
-.vscode
 *.o
 *.d
 *.a
 /bin
+
+# CMake build directories
+build/
+cmake-build-*/
+
+# CMake files
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+compile_commands.json
+
+# IDE
+.vscode/
+.idea/
+
+# User presets (allow project presets)
+CMakeUserPresets.json
+
+# ImGui config (user-specific)
+imgui.ini
+
+# Temporary files
+results.json
+
+# Jellyfish3D/vendor/glfw/
+# Jellyfish3D/vendor/glfw-old/
+# Jellyfish3D/vendor/glm/
