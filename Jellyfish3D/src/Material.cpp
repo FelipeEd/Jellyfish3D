@@ -1,6 +1,7 @@
 #include <Material.hpp>
 
 #include <AuxFunctions.hpp>
+#include <Renderer.hpp>
 
 Material::Material()
 {
@@ -37,14 +38,14 @@ void Material::deleteTextures()
     glDeleteTextures(1, &m_texAo);
 }
 
-void Material::setUniforms(Shader &shader)
+void Material::setUniforms(Shader &shader, RenderMode mode)
 {
 
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, m_texAlbedo);
     shader.setInt("uTexAlbedo", 0);
 
-    if (pbr)
+    if (mode == RenderMode::PBR)
     {
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, m_texNormal);

@@ -6,7 +6,7 @@
 
 #include <Shader.hpp>
 
-extern bool pbr;
+enum class RenderMode;
 
 class Material
 {
@@ -34,5 +34,5 @@ public:
     void deleteTextures();
 
     void setColor(glm::vec4 color) { m_color = color; }
-    void setUniforms(Shader &shader);
+    void setUniforms(Shader &shader, RenderMode mode);
 };

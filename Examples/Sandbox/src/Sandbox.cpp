@@ -5,8 +5,6 @@
 unsigned int WIDTH = 1280;
 unsigned int HEIGHT = 720;
 
-bool pbr = true;
-
 int main()
 {
 
@@ -17,7 +15,7 @@ int main()
     GUI gui;
     gui.init(window);
 
-    Renderer renderer;
+    Renderer renderer(RenderMode::PBR);
     // renderer.switchWireframeMode();
 
     Scene scene;

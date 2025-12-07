@@ -44,5 +44,3 @@ using namespace std::chrono;
 // extern unsigned int WIDTH;
 // extern unsigned int HEIGHT;
 // extern Resources *assets;
-
-// extern bool pbr;

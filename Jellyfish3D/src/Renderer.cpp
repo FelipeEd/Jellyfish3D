@@ -6,9 +6,9 @@
 #include <Material.hpp>
 #include <Object.hpp>
 
-Renderer::Renderer()
+Renderer::Renderer(RenderMode mode) : m_renderMode(mode)
 {
-    if (pbr)
+    if (m_renderMode == RenderMode::PBR)
     {
         m_objectShader = Shader("Jellyfish3D/shaders/pbr_vertex.glsl", "Jellyfish3D/shaders/pbr_fragment.glsl");
     }
@@ -46,7 +46,7 @@ void Renderer::drawObjects(Scene &scene, App &app)
 
         m_objectShader.setFloat("uTime", app.getTime() + 0.1 * i);
         skybox.setUniforms(m_objectShader);
-        material.setUniforms(m_objectShader);
+        material.setUniforms(m_objectShader, m_renderMode);
 
         m_objectShader.setBool("uIsBoid", scene.m_object[i].isBoids);
 
@@ -54,7 +54,7 @@ void Renderer::drawObjects(Scene &scene, App &app)
         m_objectShader.setMat4("uModel", scene.m_object[i].getModelMatrix());
 
         // Set camera pos
-        if (pbr)
+        if (m_renderMode == RenderMode::PBR)
         {
             m_objectShader.setVec3("uCamPos", cam->transform.position);
 

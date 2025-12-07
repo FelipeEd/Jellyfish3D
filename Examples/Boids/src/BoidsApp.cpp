@@ -6,7 +6,6 @@
 // Window size
 unsigned int WIDTH = 1980;  // 1280;
 unsigned int HEIGHT = 1080; // 720;
-bool pbr = true;
 
 #define NUM_BOIDS 500
 
@@ -25,7 +24,7 @@ int main()
     GUI gui;
     gui.init(window);
 
-    Renderer renderer;
+    Renderer renderer(RenderMode::PBR);
     Scene scene;
 
     bool pause = false;
