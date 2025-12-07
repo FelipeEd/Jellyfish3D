@@ -1,7 +1,5 @@
 #pragma once
 
-#include <GLFW/glfw3.h>
-
 #include <Display.hpp>
 #include <Resources.hpp>
 #include <Clock.hpp>
@@ -22,12 +20,10 @@ public:
     {
         m_name = name;
         assets.set_path(name);
+        inputs.setWindow(display.getWindow());
     }
 
-    double getTime() const noexcept
-    {
-        return glfwGetTime();
-    }
+    double getTime() const;
 
     // Runs once
     void OnStart() {}

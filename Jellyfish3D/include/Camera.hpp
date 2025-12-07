@@ -1,7 +1,5 @@
 #pragma once
 
-#include <GLFW/glfw3.h>
-
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -39,7 +37,7 @@ public:
     ~Camera(){};
 
     void pointTo(glm::vec3 pos);
-    void reactToInput(GLFWwindow *window, KeyStates input);
+    void reactToInput(KeyStates input);
     glm::mat4 getViewMatrix() const;
     glm::mat4 getProjectionMatrix() const;
 };

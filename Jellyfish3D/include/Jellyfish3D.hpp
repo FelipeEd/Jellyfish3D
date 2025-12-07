@@ -20,6 +20,7 @@
 // #include <glm/gtx/rotate_vector.hpp>
 // #include <glm/gtx/vector_angle.hpp>
 
+#include <Input.hpp>
 #include <Clock.hpp>
 #include <Timer.hpp>
 #include <GUI.hpp>

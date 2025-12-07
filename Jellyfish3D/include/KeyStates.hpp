@@ -4,10 +4,14 @@
 #include <map>
 #include <string>
 
-#include <GLFW/glfw3.h>
+// Forward declaration to hide GLFW
+struct GLFWwindow;
 
 class KeyStates
 {
+private:
+    GLFWwindow *m_window;
+
 public:
     double m_mouseX;
     double m_mouseY;
@@ -20,7 +24,8 @@ public:
     KeyStates();
     ~KeyStates(){};
 
-    void observeInputs(GLFWwindow *window);
+    void setWindow(GLFWwindow *window) { m_window = window; }
+    void observeInputs();
     void resetState();
 
     void printInputs();

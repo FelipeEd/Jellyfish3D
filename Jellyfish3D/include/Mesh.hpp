@@ -30,6 +30,6 @@ public:
     void bindBuffer() const;
     void unbindBuffer() const;
 
-    unsigned int getNVertex() const noexcept { return m_nvertex; }
+    unsigned int getNVertex() const { return m_nvertex; }
     // unsigned int getNIndices() const noexcept { return m_nindices; }
 };

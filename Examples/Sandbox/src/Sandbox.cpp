@@ -9,11 +9,9 @@ int main()
 {
 
     App app("Examples/Sandbox/");
-    // When using opengl
-    GLFWwindow *window = app.display.getWindow();
     Timer pauseCooldown(10);
     GUI gui;
-    gui.init(window);
+    gui.init(app.display.getWindow());
 
     Renderer renderer(RenderMode::PBR);
     // renderer.switchWireframeMode();
@@ -50,22 +48,21 @@ int main()
     float y = 0.0f;
     float z = 0.0f;
 
-    while (!glfwWindowShouldClose(window))
+    while (!app.display.shouldClose())
     {
         // Real loop ------------------------------------------------------------------------------------------
 
-        // Define a cor de fundo da janela
-        glClearColor(0.08f, 0.08f, 0.08f, 1.0f);
-        // Limpa algum buffer específico
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        // Define a cor de fundo da janela e limpa os buffers
+        app.display.setClearColor(0.08f, 0.08f, 0.08f, 1.0f);
+        app.display.clear();
         gui.startFrame("Boid Parameters");
 
         if (app.clock.tick())
         {
-            app.inputs.observeInputs(window);
+            app.inputs.observeInputs();
             // scene.setRotation("suzanne", scene.getRotation("suzanne") + glm::vec3(0.0, 0.3, 0.0));
-            scene.reactToInput(window, app.inputs);
-            // scene.getActiveCam()->reactToInput(window, app.inputs);
+            scene.reactToInput(app.inputs);
+            // scene.getActiveCam()->reactToInput(app.inputs);
 
             gui.sliderFloat("x", x, -360.0f, 360.0f);
             gui.sliderFloat("y", y, -360.0f, 360.0f);
@@ -84,10 +81,10 @@ int main()
         gui.endFrame();
         app.inputs.resetState();
         // Faz a troca do framebuffer antigo para o novo (double buffer)
-        glfwSwapBuffers(window);
+        app.display.swapBuffers();
 
         // Captura eventos de IO (movimento de mouse, teclas pressionadas, etc)
-        glfwPollEvents();
+        app.display.pollEvents();
     }
 
     return 0;

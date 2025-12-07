@@ -1,5 +1,6 @@
 #include <Display.hpp>
 
+#include <GLFW/glfw3.h>
 #include <glad/glad.h>
 #include <iostream>
 
@@ -57,26 +58,66 @@ Display::~Display()
 }
 
 // process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
-void Display::processInput(GLFWwindow *window)
+void Display::processInput()
 {
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+    if (glfwGetKey(m_window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
     {
-        glfwSetWindowShouldClose(window, true);
+        glfwSetWindowShouldClose(m_window, true);
     }
 
-    if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
-    {
-    }
-
-    if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_MIDDLE) == GLFW_PRESS)
+    if (glfwGetMouseButton(m_window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
     {
     }
 
-    if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
+    if (glfwGetMouseButton(m_window, GLFW_MOUSE_BUTTON_MIDDLE) == GLFW_PRESS)
     {
     }
 
-    if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS)
+    if (glfwGetMouseButton(m_window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
     {
     }
+
+    if (glfwGetKey(m_window, GLFW_KEY_R) == GLFW_PRESS)
+    {
+    }
+}
+
+bool Display::shouldClose() const
+{
+    return glfwWindowShouldClose(m_window);
+}
+
+void Display::swapBuffers()
+{
+    glfwSwapBuffers(m_window);
+}
+
+void Display::pollEvents()
+{
+    glfwPollEvents();
+}
+
+void Display::setClearColor(float r, float g, float b, float a)
+{
+    glClearColor(r, g, b, a);
+}
+
+void Display::clear()
+{
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+void Display::clearColor()
+{
+    glClear(GL_COLOR_BUFFER_BIT);
+}
+
+void Display::clearDepth()
+{
+    glClear(GL_DEPTH_BUFFER_BIT);
+}
+
+void Display::flush()
+{
+    glFlush();
 }

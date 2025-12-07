@@ -22,7 +22,7 @@ void Scene::addLight(const std::string &name, glm::vec3 color, glm::vec3 pos)
     this->m_lights.push_back(light);
 }
 
-void Scene::reactToInput(GLFWwindow *window, KeyStates input)
+void Scene::reactToInput(KeyStates input)
 {
     if (input.keys["selectcam0"])
         this->activeCam = 0;
@@ -33,7 +33,7 @@ void Scene::reactToInput(GLFWwindow *window, KeyStates input)
     if (input.keys["selectcam3"])
         this->activeCam = 3;
 
-    m_cams[this->activeCam].reactToInput(window, input);
+    m_cams[this->activeCam].reactToInput(input);
 }
 
 void Scene::setPosition(const std::string &name, glm::vec3 newPos) //! Bad implementation O(n) its not necessary to see every element

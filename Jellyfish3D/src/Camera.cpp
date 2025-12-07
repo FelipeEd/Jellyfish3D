@@ -1,6 +1,7 @@
 #include <Camera.hpp>
+#include <GLFW/glfw3.h>
 
-void Camera::reactToInput(GLFWwindow *window, KeyStates input)
+void Camera::reactToInput(KeyStates input)
 {
     float walkSpeed = 0.15f;
     if (input.keys["camaccel"])
@@ -42,7 +43,8 @@ void Camera::reactToInput(GLFWwindow *window, KeyStates input)
 
     if (isRotating)
     {
-        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+        // Window is handled internally by KeyStates now
+        // glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
         // Normalizes and shifts the coordinates of the cursor such that they begin in the middle of the screen
         // and then "transforms" them into degrees
         float sensitivity = 100.0f;
@@ -81,11 +83,11 @@ void Camera::reactToInput(GLFWwindow *window, KeyStates input)
         m_cameraRight = glm::rotate(m_cameraRight, glm::radians(-rotY), Up);
 
         // Sets mouse cursor to the middle of the screen so that it doesn't end up roaming around
-        glfwSetCursorPos(window, (WIDTH / 2), (HEIGHT / 2));
+        // glfwSetCursorPos(window, (WIDTH / 2), (HEIGHT / 2));
     }
     else
     {
-        glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+        // glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
     }
 }
 

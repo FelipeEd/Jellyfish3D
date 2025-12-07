@@ -23,7 +23,7 @@ public:
     void addLight(const std::string &name, glm::vec3 color, glm::vec3 pos);
     void removeLastObject();
 
-    void reactToInput(GLFWwindow *window, KeyStates input);
+    void reactToInput(KeyStates input);
 
     void setPosition(const std::string &name, glm::vec3 newPos);
     void setRotation(const std::string &name, glm::vec3 newPos);
@@ -34,5 +34,5 @@ public:
     glm::vec3 getPosition(const std::string &name) const;
     glm::vec3 getRotation(const std::string &name) const;
     glm::vec3 getScale(const std::string &name) const;
-    Camera *getActiveCam() noexcept { return &m_cams[activeCam]; }
+    Camera *getActiveCam() { return &m_cams[activeCam]; }
 };

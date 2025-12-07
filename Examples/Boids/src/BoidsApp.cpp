@@ -16,13 +16,11 @@ int main()
 
     App app("Examples/Boids/");
 
-    // When using opengl
-    GLFWwindow *window = app.display.getWindow();
     Timer pauseCooldown(5);
     Timer addsubBoidsCooldown(5);
 
     GUI gui;
-    gui.init(window);
+    gui.init(app.display.getWindow());
 
     Renderer renderer(RenderMode::PBR);
     Scene scene;
@@ -91,7 +89,7 @@ int main()
     int leaderBoidIndex = scene.m_object.size();
     Boids boids = Boids(scene.m_object.size(), NUM_BOIDS, scene);
 
-    while (!glfwWindowShouldClose(window))
+    while (!app.display.shouldClose())
     {
 
         TIME_IT("Whole loop")
@@ -99,10 +97,9 @@ int main()
         {
             TIME_IT("Clear Buffers")
 
-            // Define a cor de fundo da janela
-            glClearColor(0.05f, 0.05f, 0.09f, 1.0f);
-            // Limpa algum buffer específico
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            // Define a cor de fundo da janela e limpa os buffers
+            app.display.setClearColor(0.05f, 0.05f, 0.09f, 1.0f);
+            app.display.clear();
         }
 
         {
@@ -113,9 +110,9 @@ int main()
             if (app.clock.tick())
             {
                 // Inputs---------------------------------------------------------------------------------------------------
-                app.inputs.observeInputs(window);
+                app.inputs.observeInputs();
                 // app.inputs.printInputs();
-                scene.reactToInput(window, app.inputs);
+                scene.reactToInput(app.inputs);
 
                 pauseCooldown.tick();
                 if (app.inputs.keys["pause"] && pauseCooldown.isUp())
@@ -186,8 +183,8 @@ int main()
                 {
                     {
                         // TIME_IT("Find Target")
-                        // scene.setPosition("Target", {radius * glm::cos(glfwGetTime() * freq), 0.0f, radius * glm::sin(glfwGetTime() * freq)});
-                        scene.m_object[leaderBoidIndex].reactToInput(window, app.inputs);
+                        // scene.setPosition("Target", {radius * glm::cos(app.getTime() * freq), 0.0f, radius * glm::sin(app.getTime() * freq)});
+                        scene.m_object[leaderBoidIndex].reactToInput(app.inputs);
 
                         {
                             TIME_IT("Update Boids")
@@ -210,12 +207,12 @@ int main()
             app.inputs.resetState();
             gui.endFrame();
             // Faz a troca do framebuffer antigo para o novo (double buffer)
-            glfwSwapBuffers(window);
-            glFlush();
+            app.display.swapBuffers();
+            app.display.flush();
         }
 
         // Captura eventos de IO (movimento de mouse, teclas pressionadas, etc)
-        glfwPollEvents();
+        app.display.pollEvents();
     }
 
     END_TIMER
