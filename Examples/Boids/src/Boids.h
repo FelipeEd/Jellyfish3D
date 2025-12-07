@@ -31,6 +31,7 @@ public:
     glm::vec3 boidsAvgVelocity = glm::vec3(1.0, 0, 0);
 
     std::vector<glm::vec3> m_speeds;
+    std::vector<Object*> m_boidObjects;
     // std::vector<glm::vec3> m_accels;
 
     Boids(int startIndex, int nBoids, Scene &scene);

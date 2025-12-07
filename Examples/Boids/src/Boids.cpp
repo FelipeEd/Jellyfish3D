@@ -27,6 +27,7 @@ Boids::Boids(int startIndex, int nBoids, Scene &scene)
     m_nBoids = nBoids;
 
     m_speeds.resize(m_nBoids + 20);  // Mudado de reserve para resize
+    m_boidObjects.reserve(m_nBoids + 20);
     // m_accels.resize(m_nBoids);
 
     for (int i = 0; i < m_nBoids; i++)
@@ -38,6 +39,12 @@ Boids::Boids(int startIndex, int nBoids, Scene &scene)
         m_speeds[i] = glm::sphericalRand(m_maxSpeed);
         // m_accels[i] = glm::vec3(0.0f);
     }
+    
+    // Cache pointers after all objects are added
+    for (int i = 0; i < m_nBoids; i++)
+    {
+        m_boidObjects.push_back(&m_scene->m_object[i + m_startIndex]);
+    }
 }
 
 void Boids::reset()
@@ -46,7 +53,7 @@ void Boids::reset()
     {
         m_scene->setPosition("boid" + std::to_string(i), glm::sphericalRand(20.0f));
         m_scene->setScale("boid" + std::to_string(i), m_boidScale);
-        m_scene->m_object[i + m_startIndex].isBoids = true;
+        m_boidObjects[i]->isBoids = true;
         m_speeds[i] = glm::sphericalRand(m_maxSpeed);
         // m_accels[i] = glm::vec3(0.0f);
     }
@@ -56,7 +63,7 @@ void Boids::reset()
 // Boid index
 void Boids::updatePosition(int i)
 {
-    comp_Transform *transf = &m_scene->m_object[i + m_startIndex].transform;
+    comp_Transform *transf = &m_boidObjects[i]->transform;
 
     glm::vec3 trueSpeed = m_speeds[i];
     glm::vec3 newpos = transf->position + trueSpeed;
@@ -98,14 +105,14 @@ void Boids::updateSpeed(int i)
 
     glm::vec3 accel(0.0f);
 
-    glm::vec3 thisPos = m_scene->m_object[i + m_startIndex].transform.position;
+    glm::vec3 thisPos = m_boidObjects[i]->transform.position;
 
     unsigned int countClose = 0;
 
     // Calculating avg stuff from the flock
     for (int j = 0; j < m_nBoids; j++)
     {
-        glm::vec3 otherPos = m_scene->m_object[j + m_startIndex].transform.position;
+        glm::vec3 otherPos = m_boidObjects[j]->transform.position;
         float cdist = dist(thisPos, otherPos);
 
         if (i != j && cdist < m_viewRad && glm::angle(m_speeds[i], thisPos - otherPos) < m_boidsFOV)
@@ -178,6 +185,13 @@ void Boids::addBoid()
     m_scene->setScale("boid" + std::to_string(i), m_boidScale);
     m_scene->m_object[i + m_startIndex].isBoids = true;
     m_speeds.push_back(glm::sphericalRand(1.0));
+    
+    // Rebuild cache since vector may have reallocated
+    m_boidObjects.clear();
+    for (int j = 0; j < m_nBoids + 1; j++)
+    {
+        m_boidObjects.push_back(&m_scene->m_object[j + m_startIndex]);
+    }
 
     m_nBoids++;
 }
@@ -188,6 +202,7 @@ void Boids::removeBoid()
     {
         m_scene->removeLastObject();
         m_speeds.pop_back();
+        m_boidObjects.pop_back();
         m_nBoids--;
     }
 }
@@ -198,7 +213,7 @@ void Boids::calcAvgs()
     boidsAvgVelocity = glm::vec3(0.0);
     for (int i = 0; i < m_nBoids; i++)
     {
-        boidsAvgPos += m_scene->m_object[i + m_startIndex].transform.position;
+        boidsAvgPos += m_boidObjects[i]->transform.position;
         boidsAvgVelocity += m_speeds[i];
     }
     boidsAvgPos /= m_nBoids;
