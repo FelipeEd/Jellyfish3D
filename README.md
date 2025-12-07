@@ -1,13 +1,13 @@
 # Jellyfish3D
 
-Engine gráfica 3D desenvolvida para a disciplina de Computação Gráfica na UFMG. Implementa renderização PBR, carregamento de modelos 3D, sistema de iluminação e skybox.
+3D graphics engine developed for the Computer Graphics course at UFMG. Features PBR rendering, 3D model loading, lighting system, and skybox.
 
 ## Build & Run
 
-**Linux (com scripts auxiliares):**
+**Linux (with helper scripts):**
 ```bash
-./build.sh          # Compila (debug)
-./run.sh            # Menu interativo para executar exemplos
+./build.sh          # Build (debug)
+./run.sh            # Interactive menu to run examples
 ```
 
 **Manual (Linux/Windows/Mac):**
@@ -15,12 +15,12 @@ Engine gráfica 3D desenvolvida para a disciplina de Computação Gráfica na UF
 cmake --preset debug
 cmake --build build/debug
 
-# Executar
+# Run
 ./build/debug/bin/Sandbox    # Linux/Mac
 build\debug\bin\Sandbox.exe  # Windows
 ```
 
-## Dependências do Sistema
+## System Dependencies
 
 **Arch Linux:**
 ```bash
@@ -32,9 +32,9 @@ sudo pacman -S base-devel cmake libx11 libxrandr libxinerama libxcursor libxi
 sudo apt install build-essential cmake libx11-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev
 ```
 
-**Windows:** Visual Studio com CMake support ou MinGW
+**Windows:** Visual Studio with CMake support or MinGW
 
-**Bibliotecas:** GLFW, GLM, GLAD, ImGui, STB (baixadas automaticamente pelo CMake)
+**Libraries:** GLFW, GLM, GLAD, ImGui, STB (automatically downloaded by CMake)
 
 ## Imagens
 

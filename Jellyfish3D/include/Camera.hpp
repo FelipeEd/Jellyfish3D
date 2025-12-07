@@ -8,9 +8,9 @@
 #include <glm/gtx/rotate_vector.hpp>
 #include <glm/gtx/vector_angle.hpp>
 
-#include "Timer.hpp"
-#include "Components.hpp"
-#include "KeyStates.hpp"
+#include <Timer.hpp>
+#include <Components.hpp>
+#include <KeyStates.hpp>
 
 extern unsigned int WIDTH;
 extern unsigned int HEIGHT;

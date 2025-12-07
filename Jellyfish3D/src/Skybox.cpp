@@ -1,4 +1,4 @@
-#include "Skybox.hpp"
+#include <Skybox.hpp>
 
 #include <iostream>
 #include <string.h>

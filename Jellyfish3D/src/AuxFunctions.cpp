@@ -1,4 +1,4 @@
-#include "AuxFunctions.hpp"
+#include <AuxFunctions.hpp>
 
 std::vector<Vertex> loadOBJ(const char *file_name)
 {

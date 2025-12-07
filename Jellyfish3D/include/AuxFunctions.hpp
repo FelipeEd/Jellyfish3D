@@ -8,8 +8,8 @@
 #include <glad/glad.h>
 #include <stbi/stb_image.h>
 
-#include "PrimitiveStructs.hpp"
-#include "Shader.hpp"
+#include <PrimitiveStructs.hpp>
+#include <Shader.hpp>
 
 std::vector<Vertex> loadOBJ(const char *file_name);
 unsigned int createTexture(const std::string &textureName);

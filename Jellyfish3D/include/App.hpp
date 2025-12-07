@@ -2,10 +2,10 @@
 
 #include <GLFW/glfw3.h>
 
-#include "Display.hpp"
-#include "Resources.hpp"
-#include "Clock.hpp"
-#include "KeyStates.hpp"
+#include <Display.hpp>
+#include <Resources.hpp>
+#include <Clock.hpp>
+#include <KeyStates.hpp>
 
 class App
 {

@@ -1,6 +1,6 @@
-#include "Material.hpp"
+#include <Material.hpp>
 
-#include "AuxFunctions.hpp"
+#include <AuxFunctions.hpp>
 
 Material::Material()
 {

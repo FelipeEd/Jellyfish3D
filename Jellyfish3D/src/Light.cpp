@@ -1,4 +1,4 @@
-#include "Light.hpp"
+#include <Light.hpp>
 
 Light::Light(std::string name, glm::vec3 color, glm::vec3 pos) : Object(name, 1, 0)
 {

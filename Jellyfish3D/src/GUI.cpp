@@ -1,4 +1,4 @@
-#include "GUI.hpp"
+#include <GUI.hpp>
 
 GUI::~GUI()
 {

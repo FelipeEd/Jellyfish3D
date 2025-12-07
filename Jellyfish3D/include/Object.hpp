@@ -6,8 +6,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtx/euler_angles.hpp>
 
-#include "Components.hpp"
-#include "KeyStates.hpp"
+#include <Components.hpp>
+#include <KeyStates.hpp>
 
 class Object
 {

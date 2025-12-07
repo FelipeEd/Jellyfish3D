@@ -1,8 +1,8 @@
 #pragma once
 
-#include "App.hpp"
-#include "Scene.hpp"
-#include "Skybox.hpp"
+#include <App.hpp>
+#include <Scene.hpp>
+#include <Skybox.hpp>
 
 class Renderer
 {

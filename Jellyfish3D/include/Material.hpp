@@ -4,7 +4,7 @@
 
 #include <glm/glm.hpp>
 
-#include "Shader.hpp"
+#include <Shader.hpp>
 
 extern bool pbr;
 

@@ -3,7 +3,7 @@
 #include <string.h>
 #include <glm/glm.hpp>
 
-#include "Object.hpp"
+#include <Object.hpp>
 
 // Light types
 // enum ltype

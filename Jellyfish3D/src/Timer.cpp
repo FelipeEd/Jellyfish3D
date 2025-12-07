@@ -1,4 +1,4 @@
-#include "Timer.hpp"
+#include <Timer.hpp>
 
 Timer::Timer(unsigned int alarm) { m_framesLeft = m_alarm = alarm; }
 

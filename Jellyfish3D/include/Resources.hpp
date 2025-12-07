@@ -2,8 +2,8 @@
 
 #include <string>
 
-#include "Mesh.hpp"
-#include "Material.hpp"
+#include <Mesh.hpp>
+#include <Material.hpp>
 // A class that stores all the Meshes and Materials that the application will use
 // The "0" position is defined to have the default objects
 class Resources

@@ -2,7 +2,7 @@
 
 #include <GLFW/glfw3.h>
 
-// #include "AuxFunctions.hpp"
+// #include <AuxFunctions.hpp>
 
 extern unsigned int WIDTH;
 extern unsigned int HEIGHT;

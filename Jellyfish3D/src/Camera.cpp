@@ -1,4 +1,4 @@
-#include "Camera.hpp"
+#include <Camera.hpp>
 
 void Camera::reactToInput(GLFWwindow *window, KeyStates input)
 {

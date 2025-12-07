@@ -5,8 +5,8 @@
 
 #include <glm/glm.hpp>
 
-#include "AuxFunctions.hpp"
-#include "PrimitiveStructs.hpp"
+#include <AuxFunctions.hpp>
+#include <PrimitiveStructs.hpp>
 
 class Mesh
 {

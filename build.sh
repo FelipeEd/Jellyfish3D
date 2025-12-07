@@ -31,7 +31,14 @@ case "$preset" in
         rm -rf build/
         ;;
     deep-clean)
-        rm -rf build/ _deps/ CMakeFiles/ CMakeCache.txt cmake_install.cmake compile_commands.json
+        echo "Deep cleaning all CMake artifacts..."
+        rm -rf build/ _deps/
+        find . -type f -name "CMakeCache.txt" -delete
+        find . -type f -name "cmake_install.cmake" -delete
+        find . -type f -name "compile_commands.json" -delete
+        find . -type f -name "Makefile" -delete
+        find . -type d -name "CMakeFiles" -exec rm -rf {} + 2>/dev/null || true
+        echo "Clean complete!"
         ;;
     help|--help|-h)
         print_help

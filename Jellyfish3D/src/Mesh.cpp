@@ -1,4 +1,4 @@
-#include "Mesh.hpp"
+#include <Mesh.hpp>
 
 // For now it will only work with cubes
 Mesh::Mesh()

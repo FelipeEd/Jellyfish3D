@@ -4,8 +4,8 @@
 
 #include <glm/glm.hpp>
 
-#include "Camera.hpp"
-#include "Light.hpp"
+#include <Camera.hpp>
+#include <Light.hpp>
 
 class Scene
 {

@@ -1,10 +1,10 @@
-#include "Renderer.hpp"
+#include <Renderer.hpp>
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-#include "Material.hpp"
-#include "Object.hpp"
+#include <Material.hpp>
+#include <Object.hpp>
 
 Renderer::Renderer()
 {
