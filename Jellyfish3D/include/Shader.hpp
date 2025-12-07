@@ -16,6 +16,22 @@ public:
     // Constructor will read and build the shader
     Shader(){};
     Shader(const char *vertexPath, const char *fragmentPath);
+    
+    // Move semantics
+    Shader(Shader&& other) noexcept : id(other.id) { other.id = 0; }
+    Shader& operator=(Shader&& other) noexcept {
+        if (this != &other) {
+            Delete();
+            id = other.id;
+            other.id = 0;
+        }
+        return *this;
+    }
+    
+    // Prevent copying
+    Shader(const Shader&) = delete;
+    Shader& operator=(const Shader&) = delete;
+    
     // Function to use/activate this shader
     void use() const;
     // Utility functions to set values to uniforms in the shader program
