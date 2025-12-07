@@ -31,8 +31,8 @@ public:
     void setScale(const std::string &name, float newPos);
     void setActiveCam(unsigned int i);
 
-    glm::vec3 getPosition(const std::string &name);
-    glm::vec3 getRotation(const std::string &name);
-    glm::vec3 getScale(const std::string &name);
-    Camera *getActiveCam();
+    glm::vec3 getPosition(const std::string &name) const;
+    glm::vec3 getRotation(const std::string &name) const;
+    glm::vec3 getScale(const std::string &name) const;
+    Camera *getActiveCam() noexcept { return &m_cams[activeCam]; }
 };

@@ -2,9 +2,9 @@
 
 void Camera::reactToInput(GLFWwindow *window, KeyStates input)
 {
-    float walkSpeed = 0.15;
+    float walkSpeed = 0.15f;
     if (input.keys["camaccel"])
-        walkSpeed = 0.7;
+        walkSpeed = 0.7f;
 
     if (input.keys["camright"])
     {
@@ -89,7 +89,7 @@ void Camera::reactToInput(GLFWwindow *window, KeyStates input)
     }
 }
 
-glm::mat4 Camera::getViewMatrix()
+glm::mat4 Camera::getViewMatrix() const
 {
     // Initializes matrices since otherwise they will be the null matrix
     glm::vec3 orientation = m_orientation;
@@ -102,7 +102,7 @@ glm::mat4 Camera::getViewMatrix()
     return glm::lookAt(transform.position, transform.position + m_orientation, glm::vec3(0.0f, 1.0f, 0.0f));
 }
 
-glm::mat4 Camera::getProjectionMatrix()
+glm::mat4 Camera::getProjectionMatrix() const
 {
     return glm::perspective(glm::radians(m_FOV), (float)WIDTH / HEIGHT, m_nearPlane, m_farPlane);
 }

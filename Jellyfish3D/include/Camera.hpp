@@ -18,12 +18,16 @@ extern unsigned int HEIGHT;
 class Camera
 {
 private:
+    static constexpr float DEFAULT_FOV = 60.0f;
+    static constexpr float DEFAULT_NEAR_PLANE = 0.1f;
+    static constexpr float DEFAULT_FAR_PLANE = 300.0f;
+
     Timer m_rotatingCooldown = Timer(10);
     bool isRotating = false;
 
-    float m_FOV = 60.0f;
-    float m_nearPlane = 0.1f;
-    float m_farPlane = 300.0f;
+    float m_FOV = DEFAULT_FOV;
+    float m_nearPlane = DEFAULT_NEAR_PLANE;
+    float m_farPlane = DEFAULT_FAR_PLANE;
     glm::vec3 m_orientation = glm::vec3(0.0f, 0.0f, -1.0f);
     glm::vec3 m_cameraRight = glm::vec3(1.0f, 0.0f, 0.0f);
     glm::vec3 Up = glm::vec3(0.0f, 1.0f, 0.0f);
@@ -36,6 +40,6 @@ public:
 
     void pointTo(glm::vec3 pos);
     void reactToInput(GLFWwindow *window, KeyStates input);
-    glm::mat4 getViewMatrix();
-    glm::mat4 getProjectionMatrix();
+    glm::mat4 getViewMatrix() const;
+    glm::mat4 getProjectionMatrix() const;
 };

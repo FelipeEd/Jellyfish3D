@@ -24,7 +24,7 @@ public:
         assets.set_path(name);
     }
 
-    double getTime()
+    double getTime() const noexcept
     {
         return glfwGetTime();
     }

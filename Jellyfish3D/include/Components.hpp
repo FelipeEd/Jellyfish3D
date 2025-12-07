@@ -22,5 +22,5 @@ struct comp_Transform
 
     void lookAt(glm::vec3 target);
 
-    glm::mat4 getModelMatrix();
+    glm::mat4 getModelMatrix() const;
 };

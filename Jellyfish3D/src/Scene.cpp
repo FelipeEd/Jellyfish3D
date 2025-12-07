@@ -78,12 +78,7 @@ void Scene::setActiveCam(unsigned int i)
         activeCam = i;
 }
 
-Camera *Scene::getActiveCam()
-{
-    return &m_cams[activeCam];
-}
-
-glm::vec3 Scene::getPosition(const std::string &name)
+glm::vec3 Scene::getPosition(const std::string &name) const
 {
     for (size_t i = 0; i < m_object.size(); i++)
     {
@@ -93,7 +88,7 @@ glm::vec3 Scene::getPosition(const std::string &name)
     return glm::vec3(0);
 }
 
-glm::vec3 Scene::getRotation(const std::string &name)
+glm::vec3 Scene::getRotation(const std::string &name) const
 {
     for (size_t i = 0; i < m_object.size(); i++)
     {
@@ -103,7 +98,7 @@ glm::vec3 Scene::getRotation(const std::string &name)
     return glm::vec3(0);
 }
 
-glm::vec3 Scene::getScale(const std::string &name)
+glm::vec3 Scene::getScale(const std::string &name) const
 {
     for (size_t i = 0; i < m_object.size(); i++)
     {

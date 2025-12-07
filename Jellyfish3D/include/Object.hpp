@@ -25,14 +25,14 @@ public:
 
     void reactToInput(GLFWwindow *window, KeyStates input);
 
-    glm::mat4 getScaleMatrix();
-    glm::mat4 getRotateMatrix();
-    glm::mat4 getTranslateMatrix();
-    glm::mat4 getModelMatrix();
+    glm::mat4 getScaleMatrix() const;
+    glm::mat4 getRotateMatrix() const;
+    glm::mat4 getTranslateMatrix() const;
+    glm::mat4 getModelMatrix() const;
 
-    unsigned int getMeshId();
-    unsigned int getMaterialId();
-    std::string getName();
+    unsigned int getMeshId() const noexcept { return m_mesh; }
+    unsigned int getMaterialId() const noexcept { return m_material; }
+    const std::string& getName() const noexcept { return m_name; }
 
     void setMeshId(unsigned int id) { m_mesh = id; }
 };

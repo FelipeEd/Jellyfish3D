@@ -5,7 +5,7 @@ void comp_Transform::lookAt(glm::vec3 target)
     speed = target;
 }
 
-glm::mat4 comp_Transform::getModelMatrix()
+glm::mat4 comp_Transform::getModelMatrix() const
 {
     glm::mat4 rotationM;
 

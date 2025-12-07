@@ -157,14 +157,11 @@ void Mesh::deleteBuffers()
     //glDeleteBuffers(1, &m_ebo);
 }
 
-void Mesh::bindBuffer()
+void Mesh::bindBuffer() const
 {
     glBindVertexArray(m_vao);
 }
-void Mesh::unbindBuffer()
+void Mesh::unbindBuffer() const
 {
     glBindVertexArray(0);
 }
-
-unsigned int Mesh::getNVertex() { return m_nvertex; };
-//unsigned int Mesh::getNIndices() { return m_nindices; };

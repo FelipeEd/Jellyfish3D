@@ -20,5 +20,5 @@ private:
 
 public:
     Light(std::string name, glm::vec3 color, glm::vec3 pos);
-    glm::vec3 getColor() { return m_color; }
+    glm::vec3 getColor() const noexcept { return m_color; }
 };

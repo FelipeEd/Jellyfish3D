@@ -39,7 +39,4 @@ void Object::reactToInput(GLFWwindow*, KeyStates input)
     transform.position += glm::vec3(leaderSpeed * glm::mat4(glm::quat(transform.rotation)) * glm::vec4(0.0, 0.0, 1.0, 1.0)); // glm::vec3(leaderSpeed * glm::eulerAngleXY(transform.rotation.x, transform.rotation.y) * glm::vec4(0.0, 0.0, 1.0, 1.0));
 }
 
-glm::mat4 Object::getModelMatrix() { return transform.getModelMatrix(); }
-unsigned int Object::getMeshId() { return m_mesh; }
-unsigned int Object::getMaterialId() { return m_material; }
-std::string Object::getName() { return m_name; }
+glm::mat4 Object::getModelMatrix() const { return transform.getModelMatrix(); }

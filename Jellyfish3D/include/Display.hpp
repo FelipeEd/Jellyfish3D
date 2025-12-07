@@ -18,5 +18,5 @@ public:
     Display();
     ~Display();
 
-    GLFWwindow *getWindow() { return m_window; }
+    GLFWwindow *getWindow() const noexcept { return m_window; }
 };
