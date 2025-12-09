@@ -30,12 +30,11 @@ Material::Material(const std::string &textureFile, const std::string &size)
 
 void Material::deleteTextures()
 {
-    printf("Destroing Textures\n");
-    glDeleteTextures(1, &m_texAlbedo);
-    glDeleteTextures(1, &m_texNormal);
-    glDeleteTextures(1, &m_texMetallic);
-    glDeleteTextures(1, &m_texRoughness);
-    glDeleteTextures(1, &m_texAo);
+    if (m_texAlbedo != 0) { glDeleteTextures(1, &m_texAlbedo); m_texAlbedo = 0; }
+    if (m_texNormal != 0) { glDeleteTextures(1, &m_texNormal); m_texNormal = 0; }
+    if (m_texMetallic != 0) { glDeleteTextures(1, &m_texMetallic); m_texMetallic = 0; }
+    if (m_texRoughness != 0) { glDeleteTextures(1, &m_texRoughness); m_texRoughness = 0; }
+    if (m_texAo != 0) { glDeleteTextures(1, &m_texAo); m_texAo = 0; }
 }
 
 void Material::setUniforms(Shader &shader, RenderMode mode)
@@ -66,4 +65,46 @@ void Material::setUniforms(Shader &shader, RenderMode mode)
         shader.setBool("uUseNormalmap", useNormalmap);
     }
     shader.setVec4("uColor", m_color);
+}
+
+Material::Material(Material&& other) noexcept
+    : m_texAlbedo(other.m_texAlbedo),
+      m_texMetallic(other.m_texMetallic),
+      m_texNormal(other.m_texNormal),
+      m_texRoughness(other.m_texRoughness),
+      m_texAo(other.m_texAo),
+      m_texARM(other.m_texARM),
+      m_color(other.m_color),
+      useNormalmap(other.useNormalmap)
+{
+    other.m_texAlbedo = 0;
+    other.m_texMetallic = 0;
+    other.m_texNormal = 0;
+    other.m_texRoughness = 0;
+    other.m_texAo = 0;
+    other.m_texARM = 0;
+}
+
+Material& Material::operator=(Material&& other) noexcept
+{
+    if (this != &other) {
+        deleteTextures();
+        
+        m_texAlbedo = other.m_texAlbedo;
+        m_texMetallic = other.m_texMetallic;
+        m_texNormal = other.m_texNormal;
+        m_texRoughness = other.m_texRoughness;
+        m_texAo = other.m_texAo;
+        m_texARM = other.m_texARM;
+        m_color = other.m_color;
+        useNormalmap = other.useNormalmap;
+        
+        other.m_texAlbedo = 0;
+        other.m_texMetallic = 0;
+        other.m_texNormal = 0;
+        other.m_texRoughness = 0;
+        other.m_texAo = 0;
+        other.m_texARM = 0;
+    }
+    return *this;
 }

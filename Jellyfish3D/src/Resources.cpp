@@ -8,14 +8,7 @@ Resources::Resources()
 
 Resources::~Resources()
 {
-    for (auto var : meshes)
-    {
-        var.deleteBuffers();
-    }
-    for (auto var : materials)
-    {
-        var.deleteTextures();
-    }
+    // Destrutores de Mesh e Material agora cuidam automaticamente da limpeza
 }
 
 void Resources::loadMesh(const std::string &fileName)

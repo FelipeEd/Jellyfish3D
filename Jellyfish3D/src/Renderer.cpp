@@ -41,8 +41,8 @@ void Renderer::drawObjects(Scene &scene, App &app)
     // For all objects in the scene
     for (size_t i = 0; i < scene.m_object.size(); i++)
     {
-        Mesh mesh = app.assets.meshes[scene.m_object[i].getMeshId()];
-        Material material = app.assets.materials[scene.m_object[i].getMaterialId()];
+        const Mesh& mesh = app.assets.meshes[scene.m_object[i].getMeshId()];
+        Material& material = app.assets.materials[scene.m_object[i].getMaterialId()];
 
         m_objectShader.setFloat("uTime", app.getTime() + 0.1 * i);
         skybox.setUniforms(m_objectShader);
@@ -87,7 +87,7 @@ void Renderer::drawLights(Scene &scene, App &app)
     {
 
         // Retrieving the mesh from global resources
-        Mesh mesh = app.assets.meshes[scene.m_lights[i].getMeshId()];
+        const Mesh& mesh = app.assets.meshes[scene.m_lights[i].getMeshId()];
 
         m_lightShader.use();
         m_lightShader.setVec4("uColor", glm::vec4(scene.m_lights[i].getColor(), 1.0f));

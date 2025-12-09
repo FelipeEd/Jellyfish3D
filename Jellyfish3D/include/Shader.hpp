@@ -10,18 +10,19 @@ class Shader
 {
 private:
     // the program ID
-    unsigned int id;
+    unsigned int id = 0;
 
 public:
     // Constructor will read and build the shader
     Shader(){};
     Shader(const char *vertexPath, const char *fragmentPath);
+    ~Shader() { if (id != 0) Delete(); }
     
     // Move semantics
     Shader(Shader&& other) noexcept : id(other.id) { other.id = 0; }
     Shader& operator=(Shader&& other) noexcept {
         if (this != &other) {
-            Delete();
+            if (id != 0) Delete();
             id = other.id;
             other.id = 0;
         }

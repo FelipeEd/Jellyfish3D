@@ -11,10 +11,10 @@
 class Mesh
 {
 private:
-    unsigned int m_vao;
-    unsigned int m_vbo;
+    unsigned int m_vao = 0;
+    unsigned int m_vbo = 0;
     // unsigned int m_ebo;
-    unsigned int m_nvertex;
+    unsigned int m_nvertex = 0;
     // unsigned int m_nindices;
 
     std::vector<Vertex> m_vertexData;
@@ -24,6 +24,14 @@ public:
     Mesh(); // Cube place holder
     Mesh(const std::string &objName);
     ~Mesh();
+    
+    // Move semantics
+    Mesh(Mesh&& other) noexcept;
+    Mesh& operator=(Mesh&& other) noexcept;
+    
+    // Prevent copying
+    Mesh(const Mesh&) = delete;
+    Mesh& operator=(const Mesh&) = delete;
 
     void genBuffers();
     void deleteBuffers();

@@ -110,6 +110,36 @@ Mesh::Mesh(const std::string &objName)
 
 Mesh::~Mesh()
 {
+    deleteBuffers();
+}
+
+Mesh::Mesh(Mesh&& other) noexcept
+    : m_vao(other.m_vao), m_vbo(other.m_vbo), 
+      m_nvertex(other.m_nvertex),
+      m_vertexData(std::move(other.m_vertexData)),
+      m_vetexIndex(std::move(other.m_vetexIndex))
+{
+    other.m_vao = 0;
+    other.m_vbo = 0;
+    other.m_nvertex = 0;
+}
+
+Mesh& Mesh::operator=(Mesh&& other) noexcept
+{
+    if (this != &other) {
+        deleteBuffers();
+        
+        m_vao = other.m_vao;
+        m_vbo = other.m_vbo;
+        m_nvertex = other.m_nvertex;
+        m_vertexData = std::move(other.m_vertexData);
+        m_vetexIndex = std::move(other.m_vetexIndex);
+        
+        other.m_vao = 0;
+        other.m_vbo = 0;
+        other.m_nvertex = 0;
+    }
+    return *this;
 }
 
 void Mesh::genBuffers()
@@ -152,8 +182,14 @@ void Mesh::genBuffers()
 
 void Mesh::deleteBuffers()
 {
-    glDeleteVertexArrays(1, &m_vao);
-    glDeleteBuffers(1, &m_vbo);
+    if (m_vao != 0) {
+        glDeleteVertexArrays(1, &m_vao);
+        m_vao = 0;
+    }
+    if (m_vbo != 0) {
+        glDeleteBuffers(1, &m_vbo);
+        m_vbo = 0;
+    }
     //glDeleteBuffers(1, &m_ebo);
 }
 
