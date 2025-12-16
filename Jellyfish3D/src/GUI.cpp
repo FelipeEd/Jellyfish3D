@@ -38,6 +38,11 @@ void GUI::sliderFloat(const std::string &variableName, float &a, float min, floa
     ImGui::SliderFloat(variableName.c_str(), &a, min, max);
 }
 
+void GUI::sliderInt(const std::string &variableName, int &a, int min, int max)
+{
+    ImGui::SliderInt(variableName.c_str(), &a, min, max);
+}
+
 bool GUI::button(const std::string &buttonName)
 {
     return ImGui::Button(buttonName.c_str());
@@ -46,4 +51,18 @@ bool GUI::button(const std::string &buttonName)
 void GUI::text(const std::string &text)
 {
     ImGui::Text(text.c_str());
+}
+void GUI::checkbox(const std::string &label, bool &value)
+{
+    ImGui::Checkbox(label.c_str(), &value);
+}
+
+void GUI::separator()
+{
+    ImGui::Separator();
+}
+
+bool GUI::collapsingHeader(const std::string &label)
+{
+    return ImGui::CollapsingHeader(label.c_str());
 }

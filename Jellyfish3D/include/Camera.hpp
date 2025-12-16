@@ -10,6 +10,8 @@
 #include <Components.hpp>
 #include <KeyStates.hpp>
 
+struct GLFWwindow;
+
 extern unsigned int WIDTH;
 extern unsigned int HEIGHT;
 
@@ -22,6 +24,10 @@ private:
 
     Timer m_rotatingCooldown = Timer(10);
     bool isRotating = false;
+    double m_lastMouseX = 0.0;
+    double m_lastMouseY = 0.0;
+    bool m_firstMouse = true;
+    GLFWwindow* m_window = nullptr;
 
     float m_FOV = DEFAULT_FOV;
     float m_nearPlane = DEFAULT_NEAR_PLANE;
@@ -36,6 +42,7 @@ public:
     Camera(){};
     ~Camera(){};
 
+    void setWindow(GLFWwindow* window) { m_window = window; }
     void pointTo(glm::vec3 pos);
     void reactToInput(KeyStates input);
     glm::mat4 getViewMatrix() const;

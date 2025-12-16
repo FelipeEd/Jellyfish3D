@@ -5,6 +5,14 @@ Scene::Scene()
     m_cams[0].transform.position = glm::vec3(0.0, 0.0, 50.0);
 }
 
+void Scene::initCameras(GLFWwindow* window)
+{
+    for (int i = 0; i < 4; i++)
+    {
+        m_cams[i].setWindow(window);
+    }
+}
+
 void Scene::addObject(const std::string &name, unsigned int meshID, unsigned int materialId)
 {
     Object newObj = Object(name, meshID, materialId);
@@ -24,14 +32,35 @@ void Scene::addLight(const std::string &name, glm::vec3 color, glm::vec3 pos)
 
 void Scene::reactToInput(KeyStates input)
 {
-    if (input.keys["selectcam0"])
-        this->activeCam = 0;
-    if (input.keys["selectcam1"])
-        this->activeCam = 1;
-    if (input.keys["selectcam2"])
-        this->activeCam = 2;
-    if (input.keys["selectcam3"])
-        this->activeCam = 3;
+    m_camSelectCooldown.tick();
+    
+    if (m_camSelectCooldown.isUp())
+    {
+        bool camChanged = false;
+        if (input.keys["selectcam0"])
+        {
+            this->activeCam = 0;
+            camChanged = true;
+        }
+        else if (input.keys["selectcam1"])
+        {
+            this->activeCam = 1;
+            camChanged = true;
+        }
+        else if (input.keys["selectcam2"])
+        {
+            this->activeCam = 2;
+            camChanged = true;
+        }
+        else if (input.keys["selectcam3"])
+        {
+            this->activeCam = 3;
+            camChanged = true;
+        }
+        
+        if (camChanged)
+            m_camSelectCooldown.reset();
+    }
 
     m_cams[this->activeCam].reactToInput(input);
 }

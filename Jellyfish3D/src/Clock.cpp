@@ -4,6 +4,8 @@ Clock::Clock()
 {
     crntTime = prevTime = glfwGetTime();
     timeDiff = 0;
+    lastFrameTime = glfwGetTime();
+    deltaTime = 0.0;
 }
 
 bool Clock::tick()
@@ -18,6 +20,13 @@ bool Clock::tick()
     }
     else
         return false;
+}
+
+void Clock::updateDeltaTime()
+{
+    double currentTime = glfwGetTime();
+    deltaTime = currentTime - lastFrameTime;
+    lastFrameTime = currentTime;
 }
 
 /*if (timeDiff >= 1.0 / 120.0)

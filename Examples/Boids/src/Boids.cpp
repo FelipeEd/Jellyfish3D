@@ -61,39 +61,39 @@ void Boids::reset()
 }
 
 // Boid index
-void Boids::updatePosition(int i)
+void Boids::updatePosition(int i, float deltaTime)
 {
     comp_Transform *transf = &m_boidObjects[i]->transform;
 
     glm::vec3 trueSpeed = m_speeds[i];
-    glm::vec3 newpos = transf->position + trueSpeed;
+    glm::vec3 newpos = transf->position + trueSpeed * deltaTime * 60.0f; // 60 FPS as reference
 
-    // teleport 1 or inviWall -1
-    // float a = 1;
+    // Boundary box with teleportation
+    if (m_enableBoundary)
+    {
+        if (newpos.x > m_boundaryX)
+            newpos.x = -m_boundaryX;
+        if (newpos.x < -m_boundaryX)
+            newpos.x = m_boundaryX;
 
-    // if (newpos.x > 25)
-    //     newpos.x = -a * 25;
-    // if (newpos.x < -25)
-    //     newpos.x = a * 25;
+        if (newpos.y > m_boundaryY)
+            newpos.y = -m_boundaryY;
+        if (newpos.y < -m_boundaryY)
+            newpos.y = m_boundaryY;
 
-    // if (newpos.y > 12.5)
-    //     newpos.y = -a * 12.5;
-    // if (newpos.y < -12.5)
-    //     newpos.y = a * 12.5;
+        if (newpos.z > m_boundaryZ)
+            newpos.z = -m_boundaryZ;
+        if (newpos.z < -m_boundaryZ)
+            newpos.z = m_boundaryZ;
+    }
 
-    // if (newpos.z < -25)
-    //     newpos.z = a * 25;
-    // if (newpos.z > 25)
-    //     newpos.z = -a * 25;
-
-    // newpos.z = 0; //! force 2d
     transf->position = newpos;
 
     transf->lookAt(glm::normalize(trueSpeed + glm::sphericalRand(0.0001f)));
 }
 
 // Based on the laws
-void Boids::updateSpeed(int i)
+void Boids::updateSpeed(int i, float deltaTime)
 {
     glm::vec3 avgPos(0.0f);
     glm::vec3 avgSpeed(0.0f);
@@ -115,13 +115,20 @@ void Boids::updateSpeed(int i)
         glm::vec3 otherPos = m_boidObjects[j]->transform.position;
         float cdist = dist(thisPos, otherPos);
 
-        if (i != j && cdist < m_viewRad && glm::angle(m_speeds[i], thisPos - otherPos) < m_boidsFOV)
+        // FOV check: angle between velocity and direction to neighbor
+        if (i != j && cdist < m_viewRad && cdist > 0.001f)
         {
-            avgPos += otherPos;
-            avgSpeed += m_speeds[j];
-            avgRepulsion -= 1.0f / cdist * (otherPos - thisPos);
+            glm::vec3 toOther = otherPos - thisPos;
+            float angle = glm::degrees(glm::angle(glm::normalize(m_speeds[i]), glm::normalize(toOther)));
+            
+            if (angle < m_boidsFOV)
+            {
+                avgPos += otherPos;
+                avgSpeed += m_speeds[j];
+                avgRepulsion += (thisPos - otherPos) / (cdist * cdist); // inverse square law
 
-            countClose++;
+                countClose++;
+            }
         }
     }
 
@@ -132,43 +139,63 @@ void Boids::updateSpeed(int i)
         avgSpeed /= countClose;
         avgRepulsion /= countClose;
 
+        // Forces mantêm magnitudes proporcionais - afetam aceleração
         alignForce = avgSpeed - m_speeds[i];
         cohesionForce = avgPos - thisPos;
         separationForce = avgRepulsion;
     }
 
-    glm::vec3 followForce = m_scene->m_object[targetIndex].transform.position - thisPos;
+    glm::vec3 followForce(0.0f);
+    if (hasLeadingBoid)
+    {
+        followForce = m_scene->m_object[targetIndex].transform.position - thisPos;
+    }
+    
+    // Soma das forças = aceleração resultante
     accel = alignForce * A_fac + cohesionForce * C_fac + separationForce * S_fac + followForce * F_fac;
 
     accel *= m_accelMultiplier;
     if (glm::length(accel) > m_maxAccel)
         accel = glm::normalize(accel) * m_maxAccel;
 
-    m_speeds[i] += accel;
+    m_speeds[i] += accel * deltaTime * 60.0f; // 60 FPS as reference
 
+    // Limits the boid speed
+    float currentSpeed = glm::length(m_speeds[i]);
+    if (currentSpeed > m_maxSpeed)
+    {
+        m_speeds[i] = glm::normalize(m_speeds[i]) * m_maxSpeed;
+    }
+    else if (currentSpeed < m_minSpeed && currentSpeed > 0.001f)
+    {
+        // Maintain minimum speed to avoid trembling
+        m_speeds[i] = glm::normalize(m_speeds[i]) * m_minSpeed;
+    }
+    
+    // Apply speed multiplier AFTER clamping
     m_speeds[i] *= m_speedMultiplier;
-
-    // limits the boid speed
-    if (glm::length(m_speeds[i]) > m_maxSpeed)
-        m_speeds[i] = normalize(m_speeds[i]) * m_maxSpeed;
 }
 
-void Boids::updateAll()
+void Boids::updateAll(float deltaTime)
 {
-
+    // Atualiza apenas alguns boids por frame (ciclo)
+    int boidsToUpdate = std::min(m_boidsPerFrame, m_nBoids);
+    
     {
         TIME_IT("Calc Speeds")
-        for (int i = 0; i < m_nBoids; i++)
+        for (int count = 0; count < boidsToUpdate; count++)
         {
-            updateSpeed(i);
+            updateSpeed(m_currentBoidIndex, deltaTime);
+            m_currentBoidIndex = (m_currentBoidIndex + 1) % m_nBoids;
         }
     }
 
     {
         TIME_IT("Update Positions")
+        // Atualiza posições de todos (leve)
         for (int i = 0; i < m_nBoids; i++)
         {
-            updatePosition(i);
+            updatePosition(i, deltaTime);
         }
     }
     {

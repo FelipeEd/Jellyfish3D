@@ -6,11 +6,15 @@
 
 #include <Camera.hpp>
 #include <Light.hpp>
+#include <Timer.hpp>
+
+struct GLFWwindow;
 
 class Scene
 {
 private:
     unsigned int activeCam = 0;
+    Timer m_camSelectCooldown = Timer(5);
 
 public:
     Camera m_cams[4];
@@ -18,6 +22,8 @@ public:
     std::vector<Light> m_lights;
     Scene();
     ~Scene(){};
+
+    void initCameras(GLFWwindow* window);
 
     void addObject(const std::string &name, unsigned int meshID, unsigned int materialId);
     void addLight(const std::string &name, glm::vec3 color, glm::vec3 pos);

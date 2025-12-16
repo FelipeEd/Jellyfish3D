@@ -14,6 +14,9 @@ void App::Run()
     // Main loop
     while (!display.shouldClose())
     {
+        // Update delta time
+        clock.updateDeltaTime();
+        
         // Update inputs
         inputs.observeInputs();
 

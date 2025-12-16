@@ -39,20 +39,41 @@ void Camera::reactToInput(KeyStates input)
     {
         isRotating = !isRotating;
         m_rotatingCooldown.reset();
+        
+        // Ativa/desativa captura do cursor
+        if (m_window)
+        {
+            if (isRotating)
+                glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+            else
+                glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+        }
     }
 
     if (isRotating)
     {
-        // Window is handled internally by KeyStates now
-        // glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
-        // Normalizes and shifts the coordinates of the cursor such that they begin in the middle of the screen
-        // and then "transforms" them into degrees
-        float sensitivity = 100.0f;
+        // Use mouse delta instead of absolute position
         double mouseX = input.m_mouseX;
         double mouseY = input.m_mouseY;
-
-        float rotX = sensitivity * (float)(mouseY - (HEIGHT / 2)) / HEIGHT;
-        float rotY = sensitivity * (float)(mouseX - (WIDTH / 2)) / WIDTH;
+        
+        // Initialize last position on first mouse movement
+        if (m_firstMouse)
+        {
+            m_lastMouseX = mouseX;
+            m_lastMouseY = mouseY;
+            m_firstMouse = false;
+            return; // Skip this frame to avoid jump
+        }
+        
+        // Calculate mouse delta
+        double deltaX = mouseX - m_lastMouseX;
+        double deltaY = mouseY - m_lastMouseY;
+        m_lastMouseX = mouseX;
+        m_lastMouseY = mouseY;
+        
+        float sensitivity = 0.1f; // Much lower sensitivity for delta-based movement
+        float rotX = sensitivity * (float)deltaY;
+        float rotY = sensitivity * (float)deltaX;
 
         glm::vec3 newOrientation = m_orientation;
 
@@ -87,7 +108,7 @@ void Camera::reactToInput(KeyStates input)
     }
     else
     {
-        // glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+        m_firstMouse = true; // Reset for next rotation
     }
 }
 

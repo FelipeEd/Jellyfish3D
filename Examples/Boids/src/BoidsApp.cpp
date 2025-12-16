@@ -8,7 +8,7 @@
 unsigned int WIDTH = 1980;  // 1280;
 unsigned int HEIGHT = 1080; // 720;
 
-#define NUM_BOIDS 500
+#define NUM_BOIDS 1000
 
 // -----------------------------------------------------------------------------------
 class BoidsApp : public App
@@ -24,6 +24,8 @@ private:
     
     bool pause = false;
     int leaderBoidIndex = 0;
+    bool enableLeadingBoid = false;
+    bool previousLeadingBoidState = true;
     
     // Box dimensions
     float BoxSize = 50.0f;
@@ -43,6 +45,7 @@ public:
         INIT_TIMER("Boids")
         
         gui.init(display.getWindow());
+        scene.initCameras(display.getWindow());
 
         {
             TIME_IT("Load Assets")
@@ -150,10 +153,35 @@ public:
         float freq = 0.05f;
         if (!pause)
         {
-            scene.m_object[leaderBoidIndex].reactToInput(inputs);
+            if (enableLeadingBoid)
+            {
+                scene.m_object[leaderBoidIndex].reactToInput(inputs);
+                
+                // Apply boundary box to leading boid
+                if (boids->m_enableBoundary)
+                {
+                    glm::vec3 &pos = scene.m_object[leaderBoidIndex].transform.position;
+                    
+                    if (pos.x > boids->m_boundaryX)
+                        pos.x = -boids->m_boundaryX;
+                    if (pos.x < -boids->m_boundaryX)
+                        pos.x = boids->m_boundaryX;
+                    
+                    if (pos.y > boids->m_boundaryY)
+                        pos.y = -boids->m_boundaryY;
+                    if (pos.y < -boids->m_boundaryY)
+                        pos.y = boids->m_boundaryY;
+                    
+                    if (pos.z > boids->m_boundaryZ)
+                        pos.z = -boids->m_boundaryZ;
+                    if (pos.z < -boids->m_boundaryZ)
+                        pos.z = boids->m_boundaryZ;
+                }
+            }
             
             TIME_IT("Update Boids")
-            boids->updateAll();
+            float deltaTime = static_cast<float>(clock.getDeltaTime());
+            boids->updateAll(deltaTime);
         }
     }
 
@@ -170,10 +198,31 @@ public:
         // GUI
         gui.startFrame("Boid Parameters");
         
+        // Controls Guide
+        if (gui.collapsingHeader("Controls Guide"))
+        {
+            gui.text("Camera:");
+            gui.text("  WASD - Move camera");
+            gui.text("  Q/E - Move up/down");
+            gui.text("  Mouse - Look around");
+            gui.text("  1/2/3/4 - Switch camera");
+            gui.separator();
+            gui.text("Boids:");
+            gui.text("  P - Pause/Resume");
+            gui.text("  + - Add boid");
+            gui.text("  - - Remove boid");
+            gui.separator();
+            gui.text("Leading Boid (when enabled):");
+            gui.text("  Arrow Keys - Move horizontally");
+            gui.text("  Page Up/Down - Move vertically");
+            gui.separator();
+        }
+        
         gui.text("Limits : ");
         gui.sliderFloat("View Radius", boids->m_viewRad, 0.5, 25.0);
         gui.sliderFloat("View FOV", boids->m_boidsFOV, 10.0f, 359.0);
-        gui.sliderFloat("Max Speed", boids->m_maxSpeed, 0.001, 2.0);
+        gui.sliderFloat("Max Speed", boids->m_maxSpeed, 0.1, 2.0);
+        gui.sliderFloat("Min Speed", boids->m_minSpeed, 0.0, 0.5);
         gui.sliderFloat("Max Accel", boids->m_maxAccel, 0.0001, 0.2);
         gui.text("Forces : ");
         gui.sliderFloat("Speed Multiplier", boids->m_speedMultiplier, 0.01, 3.0);
@@ -182,11 +231,53 @@ public:
         gui.sliderFloat("Cohesion factor", boids->C_fac, 0.001, 2.0);
         gui.sliderFloat("Separation factor", boids->S_fac, 0.001, 10.0);
         gui.sliderFloat("Follow factor", boids->F_fac, 0.000, 10.0);
+        gui.separator();
+        gui.text("Boundary Box:");
+        gui.checkbox("Enable Boundary", boids->m_enableBoundary);
+        if (boids->m_enableBoundary)
+        {
+            gui.sliderFloat("Boundary X", boids->m_boundaryX, 10.0f, 100.0f);
+            gui.sliderFloat("Boundary Y", boids->m_boundaryY, 5.0f, 50.0f);
+            gui.sliderFloat("Boundary Z", boids->m_boundaryZ, 10.0f, 100.0f);
+        }
+        gui.separator();
+        gui.text("Performance:");
+        gui.sliderInt("Boids per Frame", boids->m_boidsPerFrame, 1, boids->m_nBoids);
+        gui.separator();
+        gui.checkbox("Enable Leading Boid", enableLeadingBoid);
+        
+        // Manage leading boid visibility
+        if (enableLeadingBoid != previousLeadingBoidState)
+        {
+            if (enableLeadingBoid)
+            {
+                // Show leading boid
+                scene.m_object[leaderBoidIndex].transform.scale = glm::vec3(boids->m_boidScale * 2);
+                boids->hasLeadingBoid = true;
+            }
+            else
+            {
+                // Hide leading boid by setting scale to 0
+                scene.m_object[leaderBoidIndex].transform.scale = glm::vec3(0.0f);
+                boids->hasLeadingBoid = false;
+            }
+            previousLeadingBoidState = enableLeadingBoid;
+        }
+        
+        gui.separator();
 
         if (gui.button("Reset"))
         {
             boids->reset();
             scene.m_object[leaderBoidIndex].transform.position = glm::vec3(0.0f);
+            if (enableLeadingBoid)
+            {
+                scene.m_object[leaderBoidIndex].transform.scale = glm::vec3(boids->m_boidScale * 2);
+            }
+            else
+            {
+                scene.m_object[leaderBoidIndex].transform.scale = glm::vec3(0.0f);
+            }
         }
 
         if (gui.button("Wireframe"))

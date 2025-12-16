@@ -28,6 +28,7 @@ public:
     {
         // Initialize GUI
         gui.init(display.getWindow());
+        scene.initCameras(display.getWindow());
 
         // Load assets
         assets.loadMesh("resources/simplesphere.obj");

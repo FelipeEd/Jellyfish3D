@@ -21,6 +21,10 @@ public:
     void endFrame();
 
     void sliderFloat(const std::string &variableName, float &a, float min, float max);
+    void sliderInt(const std::string &variableName, int &a, int min, int max);
     bool button(const std::string &buttonName);
     void text(const std::string &text);
+    void checkbox(const std::string &label, bool &value);
+    void separator();
+    bool collapsingHeader(const std::string &label);
 };

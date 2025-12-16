@@ -1,6 +1,6 @@
 # Jellyfish3D
 
-3D graphics engine developed for the Computer Graphics course at UFMG. Features PBR rendering, 3D model loading, lighting system, and skybox.
+A 3D Graphics Engine originally developed as a distinguished academic project at UFMG. This engine showcases advanced 3D rendering techniques including physically-based rendering (PBR), complex model loading, lighting, skyboxes, and interactive simulations.
 
 ## Build & Run
 
